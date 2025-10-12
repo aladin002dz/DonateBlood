@@ -4,7 +4,6 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { sendVerificationEmail, useSession } from "@/lib/auth-client";
 import { Mail, X } from "lucide-react";
-import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
 
@@ -12,7 +11,6 @@ export default function EmailVerificationBanner() {
     const { data: session, isPending } = useSession();
     const [resending, setResending] = useState(false);
     const [dismissed, setDismissed] = useState(false);
-    const router = useRouter();
 
     // Don't show banner if session is loading, user is not logged in, or email is verified
     if (isPending || !session?.user || session.user.emailVerified || dismissed) {

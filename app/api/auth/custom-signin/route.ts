@@ -27,15 +27,31 @@ export async function POST(request: NextRequest) {
 
         const userRecord = foundUser[0];
 
-        // Use better-auth to sign in with the user's email
-        // This will verify the password through better-auth's built-in verification
-        const session = await auth.api.signInEmail({
-            body: {
-                email: userRecord.email,
-                password: password,
-            },
-            headers: request.headers
-        });
+        // Determine if identifier is email or phone
+        // Use better-auth to sign in with the appropriate method
+        let session;
+        if (userRecord.email && identifier === userRecord.email) {
+            // Sign in with email
+            session = await auth.api.signInEmail({
+                body: {
+                    email: userRecord.email,
+                    password: password,
+                },
+                headers: request.headers
+            });
+        } else if (userRecord.email) {
+            // User signed in with phone but has email, use email for auth
+            session = await auth.api.signInEmail({
+                body: {
+                    email: userRecord.email,
+                    password: password,
+                },
+                headers: request.headers
+            });
+        } else {
+            // No email available, cannot authenticate
+            return NextResponse.json({ error: 'Cannot authenticate user without email' }, { status: 401 });
+        }
 
         if (session.error) {
             return NextResponse.json({ error: 'Invalid credentials' }, { status: 401 });

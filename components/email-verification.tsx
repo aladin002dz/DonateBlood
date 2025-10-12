@@ -46,7 +46,7 @@ export default function EmailVerification() {
         } finally {
             setLoading(false);
         }
-    }, [token, router]);
+    }, [token, email]);
 
     useEffect(() => {
         if (token) {

@@ -45,7 +45,7 @@ const WelcomeVerificationEmail = (props: VerifyEmailProps) => {
                             </Text>
 
                             <Text className="text-[16px] text-gray-700 mb-[24px] leading-[24px]">
-                                Once verified, you'll have full access to all our features and can begin exploring everything we have to offer.
+                                Once verified, you&apos;ll have full access to all our features and can begin exploring everything we have to offer.
                             </Text>
 
                             {/* Verification Button */}
@@ -59,7 +59,7 @@ const WelcomeVerificationEmail = (props: VerifyEmailProps) => {
                             </Section>
 
                             <Text className="text-[14px] text-gray-500 mb-[16px] leading-[20px]">
-                                If the button doesn't work, you can also copy and paste this link into your browser:
+                                If the button doesn&apos;t work, you can also copy and paste this link into your browser:
                             </Text>
 
                             <Text className="text-[14px] text-blue-600 mb-[24px] break-all">
@@ -67,7 +67,7 @@ const WelcomeVerificationEmail = (props: VerifyEmailProps) => {
                             </Text>
 
                             <Text className="text-[14px] text-gray-500 leading-[20px]">
-                                This verification link will expire in 24 hours for security reasons. If you didn't create an account with us, you can safely ignore this email.
+                                This verification link will expire in 24 hours for security reasons. If you didn&apos;t create an account with us, you can safely ignore this email.
                             </Text>
                         </Section>
 
