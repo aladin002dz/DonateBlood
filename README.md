@@ -48,6 +48,23 @@ Push schema to the database
 npx drizzle-kit push
 ```
 
+### Husky
+
+```bash
+npm install husky
+npx husky init
+```
+Edit the `.husky/pre-commit` file to run the build command
+
+Add the following to the `.husky/pre-commit` file
+```bash
+npm run build
+```
+
+Add the following to the `.gitignore` file
+```bash
+.husky/_
+```
 
 ### Technical Stack
 
