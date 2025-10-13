@@ -62,7 +62,7 @@ export default function EmailVerification() {
 
         setResending(true);
         try {
-            await resendVerificationEmail({
+            await sendVerificationEmail({
                 email,
                 fetchOptions: {
                     onSuccess: () => {
