@@ -46,7 +46,7 @@ const registrationSchema = z.object({
   phone: z
     .string()
     .min(1, "Phone number is required")
-    .regex(/^\+?[1-9]\d{1,14}$/, "Please enter a valid phone number (e.g., +1234567890)"),
+    .regex(/^(\+?[1-9]\d{1,14}|0\d{9,14})$/, "Please enter a valid phone number (e.g., +1234567890 or 0540109714)"),
 
   wilaya: z
     .string()
@@ -129,9 +129,14 @@ export default function RegisterPage() {
 
       if (result?.success === false) {
         toast.error(result.error || 'Registration failed')
-      } else {
+      } else if (result?.success === true) {
         toast.success('Registration successful!')
         reset() // Reset form after successful submission
+
+        // Handle redirect on client side
+        if (result.redirectTo) {
+          window.location.href = result.redirectTo
+        }
       }
     } catch (error) {
       console.error('Registration error:', error)

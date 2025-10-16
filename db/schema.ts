@@ -16,7 +16,7 @@ export const user = pgTable("user", {
     id: text("id").primaryKey(),
     name: text("name").notNull(),
     email: text("email").unique(),
-    phone: text("phone").notNull().unique(),
+    phone: text("phone").unique(),
     emailVerified: boolean("email_verified").default(false).notNull(),
     phoneVerified: boolean("phone_verified").default(false).notNull(),
     // Blood donation specific fields

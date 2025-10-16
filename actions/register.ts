@@ -4,7 +4,6 @@ import { db } from '@/db/db';
 import { user } from '@/db/schema';
 import { auth } from '@/lib/auth';
 import { eq } from 'drizzle-orm';
-import { redirect } from 'next/navigation';
 import { z } from 'zod';
 
 const registerSchema = z.object({
@@ -25,8 +24,8 @@ const registerSchema = z.object({
 });
 
 const validatePhoneNumber = (phone: string): boolean => {
-    // Basic phone number validation - accepts international format
-    const phoneRegex = /^\+?[1-9]\d{1,14}$/;
+    // Basic phone number validation - accepts international format and local format starting with 0
+    const phoneRegex = /^(\+?[1-9]\d{1,14}|0\d{9,14})$/;
     return phoneRegex.test(phone.replace(/\s/g, ''));
 };
 
@@ -101,7 +100,7 @@ export async function registerUser(formData: FormData) {
             };
         }
 
-        // Update user with additional information
+        // Update user with additional information immediately after creation
         await db.update(user)
             .set({
                 phone: validatedData.phone,
@@ -114,8 +113,19 @@ export async function registerUser(formData: FormData) {
             })
             .where(eq(user.id, signUpResult.user.id));
 
-        // Redirect to dashboard after successful registration
-        redirect('/dashboard');
+        // Verify that the phone field was set correctly
+        if (!validatedData.phone) {
+            return {
+                success: false,
+                error: 'Phone number is required',
+            };
+        }
+
+        // Return success - redirect will be handled by the client
+        return {
+            success: true,
+            redirectTo: '/dashboard'
+        };
 
     } catch (error) {
         console.error('Registration error:', error);
