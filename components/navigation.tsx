@@ -1,15 +1,16 @@
 "use client"
 
+import { cn } from "@/lib/utils"
+import { Heart, Home, LogIn, Search, User, UserPlus } from "lucide-react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { Heart, Home, UserPlus, Search, User } from "lucide-react"
-import { cn } from "@/lib/utils"
 
 export function Navigation() {
   const pathname = usePathname()
 
   const navItems = [
     { href: "/", label: "Home", icon: Home },
+    { href: "/signin", label: "Sign In", icon: LogIn },
     { href: "/register", label: "Register", icon: UserPlus },
     { href: "/search", label: "Search", icon: Search },
     { href: "/profile", label: "Profile", icon: User },

@@ -12,21 +12,108 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { signIn } from "@/lib/auth-client";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { useForm } from "react-hook-form";
 import { toast } from "sonner";
+import * as z from "zod";
+
+// Zod validation schema
+const signInSchema = z.object({
+    identifier: z
+        .string()
+        .min(1, "Email or phone number is required")
+        .refine(
+            (value) => {
+                // Check if it's a valid email
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if (emailRegex.test(value)) return true;
+
+                // Check if it's a valid phone number
+                const phoneRegex = /^\+?[1-9]\d{1,14}$/;
+                return phoneRegex.test(value.replace(/\s/g, ''));
+            },
+            {
+                message: "Please enter a valid email address or phone number (e.g., +1234567890)",
+            }
+        ),
+    password: z
+        .string()
+        .min(1, "Password is required")
+        .min(6, "Password must be at least 6 characters"),
+});
+
+type SignInFormData = z.infer<typeof signInSchema>;
 
 export default function SignIn() {
-    const [identifier, setIdentifier] = useState("");
-    const [password, setPassword] = useState("");
     const router = useRouter();
     const [loading, setLoading] = useState(false);
 
-    const validatePhoneNumber = (phone: string): boolean => {
-        // Basic phone number validation - accepts international format
-        const phoneRegex = /^\+?[1-9]\d{1,14}$/;
-        return phoneRegex.test(phone.replace(/\s/g, ''));
+    const {
+        register,
+        handleSubmit,
+        formState: { errors, isValid },
+    } = useForm<SignInFormData>({
+        resolver: zodResolver(signInSchema),
+        mode: "onChange",
+    });
+
+
+    const onSubmit = async (data: SignInFormData) => {
+        setLoading(true);
+
+        try {
+            // Check if identifier is email or phone number
+            const isEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.identifier);
+
+            if (isEmail) {
+                // Use email sign-in directly with Better Auth
+                await signIn.email({
+                    email: data.identifier,
+                    password: data.password,
+                    callbackURL: "/dashboard",
+                    fetchOptions: {
+                        onError: (ctx) => {
+                            console.error("Sign-in error:", ctx.error.message);
+                            toast.error(ctx.error.message);
+                            setLoading(false);
+                        },
+                        onSuccess: async () => {
+                            toast.success('Signed in successfully');
+                            router.push("/dashboard");
+                        },
+                    },
+                });
+            } else {
+                // Use custom sign-in for phone number
+                const response = await fetch('/api/auth/custom-signin', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        identifier: data.identifier,
+                        password: data.password,
+                    }),
+                });
+
+                const result = await response.json();
+
+                if (response.ok) {
+                    toast.success('Signed in successfully');
+                    router.push("/dashboard");
+                } else {
+                    toast.error(result.error || 'Invalid credentials');
+                }
+            }
+        } catch (error) {
+            console.error('Sign-in error:', error);
+            toast.error('An error occurred during sign-in');
+        } finally {
+            setLoading(false);
+        }
     };
 
     return (
@@ -131,105 +218,44 @@ export default function SignIn() {
                     </div>
 
                     {/* Email/Password Form */}
-                    <div className="grid gap-2">
-                        <Label htmlFor="identifier">Email or Phone Number</Label>
-                        <Input
-                            id="identifier"
-                            type="text"
-                            placeholder="m@example.com or +1234567890"
-                            required
-                            onChange={(e) => {
-                                setIdentifier(e.target.value);
-                            }}
-                            value={identifier}
-                        />
-                    </div>
-                    <div className="grid gap-2">
-                        <Label htmlFor="password">Password</Label>
-                        <Input
-                            id="password"
-                            type="password"
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                            autoComplete="current-password"
-                            placeholder="Password"
-                        />
-                    </div>
-                    <Button
-                        type="submit"
-                        className="w-full"
-                        disabled={loading}
-                        onClick={async () => {
-                            // Check if identifier is email or phone number
-                            const isEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(identifier);
-
-                            if (isEmail) {
-                                // Use email sign-in
-                                await signIn.email({
-                                    email: identifier,
-                                    password,
-                                    callbackURL: "/dashboard",
-                                    fetchOptions: {
-                                        onResponse: () => {
-                                            setLoading(false);
-                                        },
-                                        onRequest: () => {
-                                            setLoading(true);
-                                        },
-                                        onError: (ctx) => {
-                                            console.log("ctx=============================");
-                                            console.log(ctx.error.message);
-                                            toast.error(ctx.error.message);
-                                            setLoading(false);
-                                        },
-                                        onSuccess: async () => {
-                                            router.push("/dashboard");
-                                        },
-                                    },
-                                });
-                            } else {
-                                // Validate phone number format
-                                if (!validatePhoneNumber(identifier)) {
-                                    toast.error('Please enter a valid email or phone number (e.g., +1234567890)');
-                                    return;
-                                }
-
-                                // Use custom sign-in for phone number
-                                try {
-                                    const response = await fetch('/api/auth/custom-signin', {
-                                        method: 'POST',
-                                        headers: {
-                                            'Content-Type': 'application/json',
-                                        },
-                                        body: JSON.stringify({
-                                            identifier,
-                                            password,
-                                        }),
-                                    });
-
-                                    const data = await response.json();
-
-                                    if (response.ok) {
-                                        toast.success('Signed in successfully');
-                                        router.push("/dashboard");
-                                    } else {
-                                        toast.error(data.error || 'Invalid credentials');
-                                    }
-                                } catch (error) {
-                                    toast.error('An error occurred during sign-in');
-                                    console.error('Sign-in error:', error);
-                                } finally {
-                                    setLoading(false);
-                                }
-                            }
-                        }}
-                    >
-                        {loading ? (
-                            <Loader2 size={16} className="animate-spin" />
-                        ) : (
-                            "Sign In"
-                        )}
-                    </Button>
+                    <form onSubmit={handleSubmit(onSubmit)} className="grid gap-4">
+                        <div className="grid gap-2">
+                            <Label htmlFor="identifier">Email or Phone Number</Label>
+                            <Input
+                                id="identifier"
+                                type="text"
+                                placeholder="m@example.com or +1234567890"
+                                {...register("identifier")}
+                            />
+                            {errors.identifier && (
+                                <p className="text-sm text-red-500">{errors.identifier.message}</p>
+                            )}
+                        </div>
+                        <div className="grid gap-2">
+                            <Label htmlFor="password">Password</Label>
+                            <Input
+                                id="password"
+                                type="password"
+                                autoComplete="current-password"
+                                placeholder="Password"
+                                {...register("password")}
+                            />
+                            {errors.password && (
+                                <p className="text-sm text-red-500">{errors.password.message}</p>
+                            )}
+                        </div>
+                        <Button
+                            type="submit"
+                            className="w-full"
+                            disabled={loading || !isValid}
+                        >
+                            {loading ? (
+                                <Loader2 size={16} className="animate-spin" />
+                            ) : (
+                                "Sign In"
+                            )}
+                        </Button>
+                    </form>
                 </div>
             </CardContent>
             <CardFooter>

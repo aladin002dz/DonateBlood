@@ -27,35 +27,39 @@ export async function POST(request: NextRequest) {
 
         const userRecord = foundUser[0];
 
-        // Determine if identifier is email or phone
-        // Use better-auth to sign in with the appropriate method
-        if (userRecord.email && identifier === userRecord.email) {
-            // Sign in with email
-            await auth.api.signInEmail({
-                body: {
-                    email: userRecord.email,
-                    password: password,
-                },
-                headers: request.headers
-            });
-        } else if (userRecord.email) {
-            // User signed in with phone but has email, use email for auth
-            await auth.api.signInEmail({
-                body: {
-                    email: userRecord.email,
-                    password: password,
-                },
-                headers: request.headers
-            });
-        } else {
-            // No email available, cannot authenticate
-            return NextResponse.json({ error: 'Cannot authenticate user without email' }, { status: 401 });
+        // Check if user has an email (required for Better Auth)
+        if (!userRecord.email) {
+            return NextResponse.json({ error: 'User account is missing email address' }, { status: 401 });
+        }
+
+        // Use Better Auth to authenticate the user
+        // This will verify the password against the account table
+        const signInResult = await auth.api.signInEmail({
+            body: {
+                email: userRecord.email,
+                password: password,
+            },
+            headers: request.headers
+        });
+
+        if (!signInResult) {
+            return NextResponse.json({ error: 'Invalid credentials' }, { status: 401 });
         }
 
         // If we get here, authentication was successful
-        return NextResponse.json({ success: true, user: userRecord });
+        return NextResponse.json({
+            success: true,
+            user: userRecord,
+            session: signInResult.session
+        });
     } catch (error) {
         console.error('Error in custom sign-in:', error);
+
+        // Check if it's a Better Auth error
+        if (error && typeof error === 'object' && 'message' in error) {
+            return NextResponse.json({ error: error.message }, { status: 401 });
+        }
+
         return NextResponse.json({ error: 'Invalid credentials' }, { status: 401 });
     }
 }
