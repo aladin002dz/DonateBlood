@@ -70,42 +70,53 @@ export default function SignIn() {
 
             if (isEmail) {
                 // Use email sign-in directly with Better Auth
-                await signIn.email({
-                    email: data.identifier,
-                    password: data.password,
-                    callbackURL: "/dashboard",
-                    fetchOptions: {
-                        onError: (ctx) => {
-                            console.error("Sign-in error:", ctx.error.message);
-                            toast.error(ctx.error.message);
-                            setLoading(false);
-                        },
-                        onSuccess: async () => {
-                            toast.success('Signed in successfully');
-                            router.push("/dashboard");
-                        },
-                    },
-                });
+                try {
+                    await signIn.email({
+                        email: data.identifier,
+                        password: data.password,
+                        callbackURL: "/dashboard",
+                        /*fetchOptions: {
+                            onError: (ctx) => {
+                                console.error("Sign-in error:", ctx.error.message);
+                                toast.error(ctx.error.message);
+                                setLoading(false);
+                            },
+                            onSuccess: async () => {
+                                toast.success('Signed in successfully');
+                                router.push("/dashboard");
+                            },
+                        },*/
+                    });
+                } catch (error) {
+                    console.error("Email sign-in error:", error);
+                    toast.error('An error occurred during email sign-in');
+                    setLoading(false);
+                }
             } else {
                 // Use custom sign-in for phone number
-                const response = await fetch('/api/auth/custom-signin', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        identifier: data.identifier,
-                        password: data.password,
-                    }),
-                });
+                try {
+                    const response = await fetch('/api/auth/custom-signin', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            identifier: data.identifier,
+                            password: data.password,
+                        }),
+                    });
 
-                const result = await response.json();
+                    const result = await response.json();
 
-                if (response.ok) {
-                    toast.success('Signed in successfully');
-                    router.push("/dashboard");
-                } else {
-                    toast.error(result.error || 'Invalid credentials');
+                    if (response.ok) {
+                        toast.success('Signed in successfully');
+                        router.push("/dashboard");
+                    } else {
+                        toast.error(result.error || 'Invalid credentials');
+                    }
+                } catch (error) {
+                    console.error('Phone sign-in error:', error);
+                    toast.error('An error occurred during phone sign-in');
                 }
             }
         } catch (error) {
@@ -126,8 +137,59 @@ export default function SignIn() {
             </CardHeader>
             <CardContent>
                 <div className="grid gap-4">
+                    {/* Email/Password Form */}
+                    <form onSubmit={handleSubmit(onSubmit)} className="grid gap-4" >
+                        <div className="grid gap-2">
+                            <Label htmlFor="identifier">Email or Phone Number</Label>
+                            <Input
+                                id="identifier"
+                                type="text"
+                                placeholder="m@example.com or +1234567890"
+                                {...register("identifier")}
+                            />
+                            {errors.identifier && (
+                                <p className="text-sm text-red-500">{errors.identifier.message}</p>
+                            )}
+                        </div>
+                        <div className="grid gap-2">
+                            <Label htmlFor="password">Password</Label>
+                            <Input
+                                id="password"
+                                type="password"
+                                autoComplete="current-password"
+                                placeholder="Password"
+                                {...register("password")}
+                            />
+                            {errors.password && (
+                                <p className="text-sm text-red-500">{errors.password.message}</p>
+                            )}
+                        </div>
+                        <Button
+                            type="submit"
+                            className="w-full"
+                            disabled={loading || !isValid}
+                        >
+                            {loading ? (
+                                <Loader2 size={16} className="animate-spin" />
+                            ) : (
+                                "Sign In"
+                            )}
+                        </Button>
+                    </ form >
+
+                    {/* Divider */}
+                    <div className="relative" >
+                        <div className="absolute inset-0 flex items-center">
+                            <span className="w-full border-t" />
+                        </div>
+                        <div className="relative flex justify-center text-xs uppercase">
+                            <span className="bg-background px-2 text-muted-foreground">
+                                Or continue with
+                            </span>
+                        </div>
+                    </div>
                     {/* Social Login Buttons */}
-                    <div className="grid gap-2">
+                    <div className="grid gap-2" >
                         <Button
                             variant="outline"
                             className="w-full"
@@ -148,7 +210,9 @@ export default function SignIn() {
                                             },
                                         },
                                     });
-                                } catch {
+                                } catch (error) {
+                                    console.error('Google sign-in error:', error);
+                                    toast.error('An error occurred during Google sign-in');
                                     setLoading(false);
                                 }
                             }}
@@ -193,7 +257,9 @@ export default function SignIn() {
                                             },
                                         },
                                     });
-                                } catch {
+                                } catch (error) {
+                                    console.error('GitHub sign-in error:', error);
+                                    toast.error('An error occurred during GitHub sign-in');
                                     setLoading(false);
                                 }
                             }}
@@ -204,60 +270,8 @@ export default function SignIn() {
                             Continue with GitHub
                         </Button>
                     </div>
-
-                    {/* Divider */}
-                    <div className="relative">
-                        <div className="absolute inset-0 flex items-center">
-                            <span className="w-full border-t" />
-                        </div>
-                        <div className="relative flex justify-center text-xs uppercase">
-                            <span className="bg-background px-2 text-muted-foreground">
-                                Or continue with
-                            </span>
-                        </div>
-                    </div>
-
-                    {/* Email/Password Form */}
-                    <form onSubmit={handleSubmit(onSubmit)} className="grid gap-4">
-                        <div className="grid gap-2">
-                            <Label htmlFor="identifier">Email or Phone Number</Label>
-                            <Input
-                                id="identifier"
-                                type="text"
-                                placeholder="m@example.com or +1234567890"
-                                {...register("identifier")}
-                            />
-                            {errors.identifier && (
-                                <p className="text-sm text-red-500">{errors.identifier.message}</p>
-                            )}
-                        </div>
-                        <div className="grid gap-2">
-                            <Label htmlFor="password">Password</Label>
-                            <Input
-                                id="password"
-                                type="password"
-                                autoComplete="current-password"
-                                placeholder="Password"
-                                {...register("password")}
-                            />
-                            {errors.password && (
-                                <p className="text-sm text-red-500">{errors.password.message}</p>
-                            )}
-                        </div>
-                        <Button
-                            type="submit"
-                            className="w-full"
-                            disabled={loading || !isValid}
-                        >
-                            {loading ? (
-                                <Loader2 size={16} className="animate-spin" />
-                            ) : (
-                                "Sign In"
-                            )}
-                        </Button>
-                    </form>
-                </div>
-            </CardContent>
+                </div >
+            </CardContent >
             <CardFooter>
                 <div className="flex justify-center w-full border-t py-4">
                     <p className="text-center text-xs text-neutral-500">
@@ -265,6 +279,6 @@ export default function SignIn() {
                     </p>
                 </div>
             </CardFooter>
-        </Card>
+        </Card >
     );
 }

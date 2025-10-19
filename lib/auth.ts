@@ -38,7 +38,7 @@ export const auth = betterAuth({
                     subject: "Verify your email address",
                     react: WelcomeVerificationEmail({
                         userName: user.name || user.email,
-                        verificationUrl: url
+                        verificationUrl: `${process.env.EMAIL_FROM}${url}`
                     })
                 })
             } catch (error) {
