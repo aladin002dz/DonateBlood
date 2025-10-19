@@ -31,9 +31,9 @@ const signInSchema = z.object({
                 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
                 if (emailRegex.test(value)) return true;
 
-                // Check if it's a valid phone number
-                const phoneRegex = /^(\+?[1-9]\d{1,14}|0\d{9,14})$/;
-                return phoneRegex.test(value.replace(/\s/g, ''));
+                // Check if it's a valid phone number (more flexible regex)
+                const phoneRegex = /^(\+?[1-9]\d{1,14}|0\d{8,14}|\d{8,15})$/;
+                return phoneRegex.test(value.replace(/[\s\-\(\)]/g, ''));
             },
             {
                 message: "Please enter a valid email address or phone number (e.g., +1234567890)",
@@ -110,13 +110,16 @@ export default function SignIn() {
 
                     if (response.ok) {
                         toast.success('Signed in successfully');
-                        router.push("/profile");
+                        // Refresh the page to update the session state
+                        window.location.href = result.redirect || "/profile";
                     } else {
                         toast.error(result.error || 'Invalid credentials');
+                        setLoading(false);
                     }
                 } catch (error) {
                     console.error('Phone sign-in error:', error);
                     toast.error('An error occurred during phone sign-in');
+                    setLoading(false);
                 }
             }
         } catch (error) {

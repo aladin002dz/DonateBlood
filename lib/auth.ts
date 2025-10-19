@@ -13,7 +13,8 @@ export const auth = betterAuth({
         provider: "pg",
     }),
     emailAndPassword: {
-        enabled: true
+        enabled: true,
+        requireEmailVerification: false, // Allow unverified emails for phone users
     },
     socialProviders: {
         google: {

@@ -32,9 +32,9 @@ export async function POST(request: NextRequest) {
             return NextResponse.json({ error: 'User account is missing email address' }, { status: 401 });
         }
 
-        // Use Better Auth to authenticate the user
-        // This will verify the password against the account table
-        const signInResult = await auth.api.signInEmail({
+        // Use Better Auth to authenticate the user directly
+        // This will handle password verification using Better Auth's built-in mechanism (scrypt)
+        const sessionResult = await auth.api.signInEmail({
             body: {
                 email: userRecord.email,
                 password: password,
@@ -42,15 +42,15 @@ export async function POST(request: NextRequest) {
             headers: request.headers
         });
 
-        if (!signInResult) {
+        if (!sessionResult) {
             return NextResponse.json({ error: 'Invalid credentials' }, { status: 401 });
         }
 
-        // If we get here, authentication was successful
+        // Return success response
         return NextResponse.json({
             success: true,
             user: userRecord,
-            token: signInResult.token
+            redirect: '/profile'
         });
     } catch (error) {
         console.error('Error in custom sign-in:', error);
