@@ -32,7 +32,7 @@ const signInSchema = z.object({
                 if (emailRegex.test(value)) return true;
 
                 // Check if it's a valid phone number
-                const phoneRegex = /^\+?[1-9]\d{1,14}$/;
+                const phoneRegex = /^(\+?[1-9]\d{1,14}|0\d{9,14})$/;
                 return phoneRegex.test(value.replace(/\s/g, ''));
             },
             {

@@ -25,6 +25,8 @@ export function Navigation() {
     { href: "/", label: "Home", icon: Home },
     ...(session
       ? [
+        { href: "/profile", label: "Profile", icon: User },
+        { href: "/search", label: "Search", icon: Search },
         {
           href: "#",
           label: "Sign Out",
@@ -33,11 +35,10 @@ export function Navigation() {
         },
       ]
       : [
+        { href: "/search", label: "Search", icon: Search },
         { href: "/signin", label: "Sign In", icon: LogIn },
         { href: "/register", label: "Register", icon: UserPlus },
       ]),
-    { href: "/search", label: "Search", icon: Search },
-    { href: "/profile", label: "Profile", icon: User },
   ]
 
   return (
