@@ -1,8 +1,12 @@
-import Link from "next/link"
+"use client"
+
 import { Button } from "@/components/ui/button"
-import { Heart, UserPlus, Search } from "lucide-react"
+import { useSession } from "@/lib/auth-client"
+import { Heart, Search, UserPlus } from "lucide-react"
+import Link from "next/link"
 
 export default function HomePage() {
+  const { data: session } = useSession()
   return (
     <div className="container mx-auto px-4 py-8 md:py-16">
       <div className="max-w-4xl mx-auto text-center">
@@ -18,15 +22,17 @@ export default function HomePage() {
         </div>
 
         {/* Main Action Buttons */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-2xl mx-auto mb-12">
-          <Link href="/register">
-            <Button
-              size="lg"
-              className="w-full h-24 text-lg font-semibold bg-primary hover:bg-primary/90 text-primary-foreground rounded-xl shadow-lg hover:shadow-xl transition-all duration-200"
-            >
-              <UserPlus className="h-6 w-6 mr-3" />I want to donate
-            </Button>
-          </Link>
+        <div className={`grid gap-6 max-w-2xl mx-auto mb-12 ${session ? 'grid-cols-1' : 'grid-cols-1 md:grid-cols-2'}`}>
+          {!session && (
+            <Link href="/register">
+              <Button
+                size="lg"
+                className="w-full h-24 text-lg font-semibold bg-primary hover:bg-primary/90 text-primary-foreground rounded-xl shadow-lg hover:shadow-xl transition-all duration-200"
+              >
+                <UserPlus className="h-6 w-6 mr-3" />I want to donate
+              </Button>
+            </Link>
+          )}
 
           <Link href="/search">
             <Button
