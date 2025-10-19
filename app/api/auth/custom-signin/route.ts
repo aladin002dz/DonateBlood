@@ -50,7 +50,7 @@ export async function POST(request: NextRequest) {
         return NextResponse.json({
             success: true,
             user: userRecord,
-            session: signInResult.session
+            token: signInResult.token
         });
     } catch (error) {
         console.error('Error in custom sign-in:', error);
