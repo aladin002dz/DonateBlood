@@ -72,7 +72,7 @@ export async function PUT(request: NextRequest) {
         } = body;
 
         // Update user profile data
-        const updateData: any = {};
+        const updateData: Partial<typeof user.$inferSelect> = {};
 
         if (name !== undefined) updateData.name = name;
         if (phone !== undefined) updateData.phone = phone;
