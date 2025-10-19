@@ -10,40 +10,142 @@ import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Separator } from "@/components/ui/separator"
 import { Switch } from "@/components/ui/switch"
-import { AlertTriangle, Heart, Save, Trash2, User } from "lucide-react"
-import { useState } from "react"
+import { useSession } from "@/lib/auth-client"
+import { AlertTriangle, Heart, Loader2, Save, Trash2, User } from "lucide-react"
+import { useRouter } from "next/navigation"
+import { useEffect, useState } from "react"
+import { toast } from "sonner"
+
+interface UserProfile {
+  id: string
+  name: string
+  email: string | null
+  phone: string
+  emailVerified: boolean
+  phoneVerified: boolean
+  bloodGroup: string | null
+  wilaya: string | null
+  commune: string | null
+  lastDonation: string | null
+  donationType: string | null
+  emergencyAvailable: boolean | null
+  createdAt: string
+  updatedAt: string
+}
 
 export default function ProfilePage() {
-  const [isAvailable, setIsAvailable] = useState(true)
-  const [profileData, setProfileData] = useState({
-    fullName: "Ahmed Benali",
-    bloodGroup: "O+",
-    email: "ahmed.benali@email.com",
-    phone: "0555 123 456",
-    wilaya: "Algiers",
-    commune: "Bab Ezzouar",
-    lastDonation: "2024-01-15",
-    donationType: "Blood",
-    emergencyAvailable: true,
-  })
+  const { data: session, isPending: sessionLoading } = useSession()
+  const router = useRouter()
+  const [loading, setLoading] = useState(true)
+  const [updating, setUpdating] = useState(false)
+  const [profileData, setProfileData] = useState<UserProfile | null>(null)
+  const [isAvailable, setIsAvailable] = useState(false)
 
   const bloodGroups = ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"]
   const donationTypes = ["Blood", "Blood & Platelets"]
 
+  // Redirect if not authenticated
+  useEffect(() => {
+    if (!sessionLoading && !session) {
+      router.push("/signin")
+    }
+  }, [session, sessionLoading, router])
+
+  // Fetch user profile data
+  useEffect(() => {
+    const fetchProfileData = async () => {
+      if (!session?.user) return
+
+      try {
+        setLoading(true)
+        const response = await fetch('/api/profile')
+
+        if (!response.ok) {
+          throw new Error('Failed to fetch profile data')
+        }
+
+        const data = await response.json()
+        setProfileData(data)
+        setIsAvailable(data.emergencyAvailable || false)
+      } catch (error) {
+        console.error('Error fetching profile:', error)
+        toast.error('Failed to load profile data')
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    fetchProfileData()
+  }, [session])
+
   const handleInputChange = (field: string, value: string | boolean) => {
-    setProfileData((prev) => ({ ...prev, [field]: value }))
+    if (!profileData) return
+
+    setProfileData((prev) => {
+      if (!prev) return prev
+      return { ...prev, [field]: value }
+    })
   }
 
-  const handleUpdate = (e: React.FormEvent) => {
+  const handleUpdate = async (e: React.FormEvent) => {
     e.preventDefault()
-    console.log("Updated profile data:", profileData)
-    alert("Profile updated successfully! (This is a static prototype)")
+    if (!profileData) return
+
+    try {
+      setUpdating(true)
+
+      const response = await fetch('/api/profile', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: profileData.name,
+          phone: profileData.phone,
+          email: profileData.email,
+          bloodGroup: profileData.bloodGroup,
+          wilaya: profileData.wilaya,
+          commune: profileData.commune,
+          lastDonation: profileData.lastDonation,
+          donationType: profileData.donationType,
+          emergencyAvailable: isAvailable,
+        }),
+      })
+
+      if (!response.ok) {
+        throw new Error('Failed to update profile')
+      }
+
+      toast.success('Profile updated successfully!')
+    } catch (error) {
+      console.error('Error updating profile:', error)
+      toast.error('Failed to update profile')
+    } finally {
+      setUpdating(false)
+    }
   }
 
   const handleDeleteAccount = () => {
     if (confirm("Are you sure you want to delete your account? This action cannot be undone.")) {
-      alert("Account deleted! (This is a static prototype)")
+      toast.error("Account deletion not implemented yet")
     }
+  }
+
+  // Show loading state
+  if (sessionLoading || loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="flex flex-col items-center gap-4">
+          <Loader2 className="h-8 w-8 animate-spin" />
+          <p className="text-muted-foreground">Loading profile...</p>
+        </div>
+      </div>
+    )
+  }
+
+  // Show nothing if not authenticated (will redirect)
+  if (!session || !profileData) {
+    return null
   }
 
   return (
@@ -92,17 +194,20 @@ export default function ProfilePage() {
                   <div className="flex justify-between">
                     <span className="text-muted-foreground">Blood Group:</span>
                     <Badge variant="secondary" className="bg-primary text-primary-foreground">
-                      {profileData.bloodGroup}
+                      {profileData.bloodGroup || "Not specified"}
                     </Badge>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-muted-foreground">Last Donation:</span>
-                    <span>{new Date(profileData.lastDonation).toLocaleDateString()}</span>
+                    <span>{profileData.lastDonation ? new Date(profileData.lastDonation).toLocaleDateString() : "Not specified"}</span>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-muted-foreground">Location:</span>
                     <span className="text-right">
-                      {profileData.commune}, {profileData.wilaya}
+                      {profileData.commune && profileData.wilaya
+                        ? `${profileData.commune}, ${profileData.wilaya}`
+                        : "Not specified"
+                      }
                     </span>
                   </div>
                 </div>
@@ -129,8 +234,8 @@ export default function ProfilePage() {
                       <Input
                         id="fullName"
                         type="text"
-                        value={profileData.fullName}
-                        onChange={(e) => handleInputChange("fullName", e.target.value)}
+                        value={profileData.name || ""}
+                        onChange={(e) => handleInputChange("name", e.target.value)}
                         className="rounded-lg"
                       />
                     </div>
@@ -138,11 +243,11 @@ export default function ProfilePage() {
                     <div className="space-y-2">
                       <Label htmlFor="bloodGroup">Blood Group</Label>
                       <Select
-                        value={profileData.bloodGroup}
+                        value={profileData.bloodGroup || ""}
                         onValueChange={(value) => handleInputChange("bloodGroup", value)}
                       >
                         <SelectTrigger className="rounded-lg">
-                          <SelectValue />
+                          <SelectValue placeholder="Select blood group" />
                         </SelectTrigger>
                         <SelectContent>
                           {bloodGroups.map((group) => (
@@ -160,7 +265,7 @@ export default function ProfilePage() {
                         <Input
                           id="email"
                           type="email"
-                          value={profileData.email}
+                          value={profileData.email || ""}
                           onChange={(e) => handleInputChange("email", e.target.value)}
                           className="rounded-lg"
                         />
@@ -171,7 +276,7 @@ export default function ProfilePage() {
                         <Input
                           id="phone"
                           type="tel"
-                          value={profileData.phone}
+                          value={profileData.phone || ""}
                           onChange={(e) => handleInputChange("phone", e.target.value)}
                           className="rounded-lg"
                         />
@@ -189,7 +294,7 @@ export default function ProfilePage() {
                         <Input
                           id="wilaya"
                           type="text"
-                          value={profileData.wilaya}
+                          value={profileData.wilaya || ""}
                           onChange={(e) => handleInputChange("wilaya", e.target.value)}
                           className="rounded-lg"
                         />
@@ -200,7 +305,7 @@ export default function ProfilePage() {
                         <Input
                           id="commune"
                           type="text"
-                          value={profileData.commune}
+                          value={profileData.commune || ""}
                           onChange={(e) => handleInputChange("commune", e.target.value)}
                           className="rounded-lg"
                         />
@@ -218,7 +323,7 @@ export default function ProfilePage() {
                         <Input
                           id="lastDonation"
                           type="date"
-                          value={profileData.lastDonation}
+                          value={profileData.lastDonation || ""}
                           onChange={(e) => handleInputChange("lastDonation", e.target.value)}
                           className="rounded-lg"
                         />
@@ -227,11 +332,11 @@ export default function ProfilePage() {
                       <div className="space-y-2">
                         <Label htmlFor="donationType">Donation Type</Label>
                         <Select
-                          value={profileData.donationType}
+                          value={profileData.donationType || ""}
                           onValueChange={(value) => handleInputChange("donationType", value)}
                         >
                           <SelectTrigger className="rounded-lg">
-                            <SelectValue />
+                            <SelectValue placeholder="Select donation type" />
                           </SelectTrigger>
                           <SelectContent>
                             {donationTypes.map((type) => (
@@ -249,10 +354,20 @@ export default function ProfilePage() {
                   <div className="flex flex-col sm:flex-row gap-4 pt-6">
                     <Button
                       type="submit"
+                      disabled={updating}
                       className="flex-1 bg-primary hover:bg-primary/90 text-primary-foreground rounded-lg h-12 font-semibold shadow-lg hover:shadow-xl transition-all duration-200"
                     >
-                      <Save className="h-5 w-5 mr-2" />
-                      Update Profile
+                      {updating ? (
+                        <>
+                          <Loader2 className="h-5 w-5 mr-2 animate-spin" />
+                          Updating...
+                        </>
+                      ) : (
+                        <>
+                          <Save className="h-5 w-5 mr-2" />
+                          Update Profile
+                        </>
+                      )}
                     </Button>
 
                     <Button
