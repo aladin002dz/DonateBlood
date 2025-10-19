@@ -74,7 +74,7 @@ export default function SignIn() {
                     await signIn.email({
                         email: data.identifier,
                         password: data.password,
-                        callbackURL: "/dashboard",
+                        callbackURL: "/profile",
                         /*fetchOptions: {
                             onError: (ctx) => {
                                 console.error("Sign-in error:", ctx.error.message);
@@ -110,7 +110,7 @@ export default function SignIn() {
 
                     if (response.ok) {
                         toast.success('Signed in successfully');
-                        router.push("/dashboard");
+                        router.push("/profile");
                     } else {
                         toast.error(result.error || 'Invalid credentials');
                     }
@@ -199,14 +199,14 @@ export default function SignIn() {
                                 try {
                                     await signIn.social({
                                         provider: "google",
-                                        callbackURL: "/dashboard",
+                                        callbackURL: "/profile",
                                         fetchOptions: {
                                             onError: (ctx) => {
                                                 toast.error(ctx.error.message);
                                                 setLoading(false);
                                             },
                                             onSuccess: async () => {
-                                                router.push("/dashboard");
+                                                router.push("/profile");
                                             },
                                         },
                                     });
@@ -246,14 +246,14 @@ export default function SignIn() {
                                 try {
                                     await signIn.social({
                                         provider: "github",
-                                        callbackURL: "/dashboard",
+                                        callbackURL: "/profile",
                                         fetchOptions: {
                                             onError: (ctx) => {
                                                 toast.error(ctx.error.message);
                                                 setLoading(false);
                                             },
                                             onSuccess: async () => {
-                                                router.push("/dashboard");
+                                                router.push("/profile");
                                             },
                                         },
                                     });

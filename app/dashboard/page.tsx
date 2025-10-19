@@ -69,18 +69,7 @@ export default function Dashboard() {
                             <span className="text-sm">Back to Home</span>
                         </Link>
                     </div>
-                    <Button
-                        variant="outline"
-                        onClick={handleSignOut}
-                        className="flex items-center gap-2"
-                    >
-                        <LogOut className="h-4 w-4" />
-                        Sign Out
-                    </Button>
                 </div>
-
-                {/* Email Verification Banner */}
-                <EmailVerificationBanner />
 
                 {/* Welcome Section */}
                 <div className="mb-8">
@@ -187,7 +176,9 @@ export default function Dashboard() {
 
                 {/* Account Stats */}
                 <div className="mt-8">
-                    <Card>
+                    {/* Email Verification Banner */}
+                    <EmailVerificationBanner />
+                    <Card className="mt-4">
                         <CardHeader>
                             <CardTitle>Account Statistics</CardTitle>
                             <CardDescription>

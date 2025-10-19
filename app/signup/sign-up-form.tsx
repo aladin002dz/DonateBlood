@@ -146,7 +146,7 @@ export default function SignUp() {
                                     email: email || `temp_${Date.now()}@example.com`, // Use temp email if none provided
                                     password,
                                     name: `${firstName} ${lastName}`,
-                                    callbackURL: "/dashboard",
+                                    callbackURL: "/profile",
                                     fetchOptions: {
                                         onResponse: () => {
                                             setLoading(false);
@@ -174,8 +174,8 @@ export default function SignUp() {
                                             } catch (error) {
                                                 console.error('Failed to update user details:', error);
                                             }
-                                            // Redirect to dashboard after successful sign up
-                                            router.push("/dashboard");
+                                            // Redirect to profile after successful sign up
+                                            router.push("/profile");
                                         },
                                     },
                                 });
@@ -213,14 +213,14 @@ export default function SignUp() {
                                 try {
                                     await signIn.social({
                                         provider: "google",
-                                        callbackURL: "/dashboard",
+                                        callbackURL: "/profile",
                                         fetchOptions: {
                                             onError: (ctx: { error: { message: string } }) => {
                                                 toast.error(ctx.error.message);
                                                 setLoading(false);
                                             },
                                             onSuccess: async () => {
-                                                router.push("/dashboard");
+                                                router.push("/profile");
                                             },
                                         },
                                     });
@@ -260,14 +260,14 @@ export default function SignUp() {
                                 try {
                                     await signIn.social({
                                         provider: "github",
-                                        callbackURL: "/dashboard",
+                                        callbackURL: "/profile",
                                         fetchOptions: {
                                             onError: (ctx: { error: { message: string } }) => {
                                                 toast.error(ctx.error.message);
                                                 setLoading(false);
                                             },
                                             onSuccess: async () => {
-                                                router.push("/dashboard");
+                                                router.push("/profile");
                                             },
                                         },
                                     });

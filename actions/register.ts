@@ -124,7 +124,7 @@ export async function registerUser(formData: FormData) {
         // Return success - redirect will be handled by the client
         return {
             success: true,
-            redirectTo: '/dashboard'
+            redirectTo: '/profile'
         };
 
     } catch (error) {

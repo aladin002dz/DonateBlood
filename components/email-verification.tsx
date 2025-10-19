@@ -30,7 +30,7 @@ export default function EmailVerification() {
         try {
             await sendVerificationEmail({
                 email,
-                callbackURL: "/dashboard",
+                callbackURL: "/profile",
                 fetchOptions: {
                     onSuccess: () => {
                         setVerified(true);
@@ -89,7 +89,7 @@ export default function EmailVerification() {
                     </div>
                     <CardTitle className="text-xl">Email Verified!</CardTitle>
                     <CardDescription>
-                        Your email has been successfully verified. Redirecting to dashboard...
+                        Your email has been successfully verified. Redirecting to profile...
                     </CardDescription>
                 </CardHeader>
             </Card>

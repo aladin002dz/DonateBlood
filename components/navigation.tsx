@@ -1,17 +1,41 @@
 "use client"
 
+import { signOut, useSession } from "@/lib/auth-client"
 import { cn } from "@/lib/utils"
-import { Heart, Home, LogIn, Search, User, UserPlus } from "lucide-react"
+import { Heart, Home, LogIn, LogOut, Search, User, UserPlus } from "lucide-react"
 import Link from "next/link"
-import { usePathname } from "next/navigation"
+import { usePathname, useRouter } from "next/navigation"
 
 export function Navigation() {
   const pathname = usePathname()
+  const router = useRouter()
+  const { data: session } = useSession()
+
+  const handleSignOut = async () => {
+    await signOut({
+      fetchOptions: {
+        onSuccess: () => {
+          router.push("/")
+        },
+      },
+    })
+  }
 
   const navItems = [
     { href: "/", label: "Home", icon: Home },
-    { href: "/signin", label: "Sign In", icon: LogIn },
-    { href: "/register", label: "Register", icon: UserPlus },
+    ...(session
+      ? [
+        {
+          href: "#",
+          label: "Sign Out",
+          icon: LogOut,
+          onClick: handleSignOut,
+        },
+      ]
+      : [
+        { href: "/signin", label: "Sign In", icon: LogIn },
+        { href: "/register", label: "Register", icon: UserPlus },
+      ]),
     { href: "/search", label: "Search", icon: Search },
     { href: "/profile", label: "Profile", icon: User },
   ]
@@ -30,6 +54,24 @@ export function Navigation() {
           <div className="hidden md:flex space-x-8">
             {navItems.map((item) => {
               const Icon = item.icon
+              const isSignOut = 'onClick' in item
+
+              if (isSignOut) {
+                return (
+                  <button
+                    key={item.label}
+                    onClick={item.onClick}
+                    className={cn(
+                      "flex items-center space-x-1 px-3 py-2 rounded-md text-sm font-medium transition-colors hover:bg-secondary",
+                      "text-muted-foreground hover:text-foreground",
+                    )}
+                  >
+                    <Icon className="h-4 w-4" />
+                    <span>{item.label}</span>
+                  </button>
+                )
+              }
+
               return (
                 <Link
                   key={item.href}
@@ -52,6 +94,23 @@ export function Navigation() {
           <div className="md:hidden flex space-x-4">
             {navItems.map((item) => {
               const Icon = item.icon
+              const isSignOut = 'onClick' in item
+
+              if (isSignOut) {
+                return (
+                  <button
+                    key={item.label}
+                    onClick={item.onClick}
+                    className={cn(
+                      "p-2 rounded-md transition-colors hover:bg-secondary",
+                      "text-muted-foreground hover:text-foreground",
+                    )}
+                  >
+                    <Icon className="h-5 w-5" />
+                  </button>
+                )
+              }
+
               return (
                 <Link
                   key={item.href}
