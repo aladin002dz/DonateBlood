@@ -75,17 +75,23 @@ export default function SignIn() {
                         email: data.identifier,
                         password: data.password,
                         callbackURL: "/profile",
-                        /*fetchOptions: {
+                        fetchOptions: {
                             onError: (ctx) => {
-                                console.error("Sign-in error:", ctx.error.message);
-                                toast.error(ctx.error.message);
+                                console.error("Sign-in error:", ctx);
+                                console.error("Error message:", ctx.error?.message);
+
+                                // Get the error message safely
+                                const errorMessage = ctx.error?.message || 'An error occurred during sign-in';
+
+                                toast.error(errorMessage);
+
                                 setLoading(false);
                             },
                             onSuccess: async () => {
                                 toast.success('Signed in successfully');
-                                router.push("/dashboard");
+                                router.push("/profile");
                             },
-                        },*/
+                        },
                     });
                 } catch (error) {
                     console.error("Email sign-in error:", error);
@@ -113,12 +119,20 @@ export default function SignIn() {
                         // Refresh the page to update the session state
                         window.location.href = result.redirect || "/profile";
                     } else {
-                        toast.error(result.error || 'Invalid credentials');
+                        // Show specific error message based on the error type
+                        const errorMessage = result.error || 'Invalid credentials';
+                        if (errorMessage === 'Incorrect password') {
+                            toast.error('Incorrect password');
+                        } else if (errorMessage === 'User not found') {
+                            toast.error('User not found');
+                        } else {
+                            toast.error(errorMessage);
+                        }
                         setLoading(false);
                     }
                 } catch (error) {
                     console.error('Phone sign-in error:', error);
-                    toast.error('An error occurred during phone sign-in');
+                    toast.error('Network error. Please check your connection and try again.');
                     setLoading(false);
                 }
             }

@@ -4,6 +4,7 @@ import { GeistSans } from "geist/font/sans"
 import type { Metadata } from "next"
 import type React from "react"
 import { Suspense } from "react"
+import { Toaster } from "sonner"
 import "./globals.css"
 
 export const metadata: Metadata = {
@@ -24,6 +25,7 @@ export default function RootLayout({
           <Navigation />
           <main className="min-h-screen bg-secondary/30">{children}</main>
         </Suspense>
+        <Toaster />
       </body>
     </html>
   )

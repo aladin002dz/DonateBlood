@@ -22,7 +22,7 @@ export async function POST(request: NextRequest) {
             .limit(1);
 
         if (foundUser.length === 0) {
-            return NextResponse.json({ error: 'Invalid credentials' }, { status: 401 });
+            return NextResponse.json({ error: 'User not found' }, { status: 401 });
         }
 
         const userRecord = foundUser[0];
@@ -43,7 +43,7 @@ export async function POST(request: NextRequest) {
         });
 
         if (!sessionResult) {
-            return NextResponse.json({ error: 'Invalid credentials' }, { status: 401 });
+            return NextResponse.json({ error: 'Incorrect password' }, { status: 401 });
         }
 
         // Return success response
@@ -57,9 +57,11 @@ export async function POST(request: NextRequest) {
 
         // Check if it's a Better Auth error
         if (error && typeof error === 'object' && 'message' in error) {
-            return NextResponse.json({ error: error.message }, { status: 401 });
+            const errorMessage = error.message as string;
+            // Check if it's a password-related error
+            return NextResponse.json({ error: errorMessage }, { status: 401 });
         }
 
-        return NextResponse.json({ error: 'Invalid credentials' }, { status: 401 });
+        return NextResponse.json({ error: 'An error occurred during sign-in' }, { status: 500 });
     }
 }
