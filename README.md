@@ -8,6 +8,9 @@
 ![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=flat-square&logo=typescript&logoColor=white)
 ![Shadcn UI](https://img.shields.io/badge/Shadcn%20UI-black?style=flat-square&logo=shadcnui&logoColor=white)
 ![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=flat-square&logo=tailwind-css&logoColor=white)
+![Drizzle](https://img.shields.io/badge/Drizzle-FF6B35?style=flat-square&logo=drizzle&logoColor=white)
+![Zod](https://img.shields.io/badge/Zod-3E67B1?style=flat-square&logo=zod&logoColor=white)
+![React Hook Form](https://img.shields.io/badge/React%20Hook%20Form-EC5990?style=flat-square&logo=react&logoColor=white)
 
 
 </div>
@@ -16,7 +19,7 @@
 
 A modern Next.js application demonstrating secure authentication with **Better Auth**, featuring social login providers, email/password authentication, and a beautiful user dashboard.
 
-[🚀 Live Demo](#) • [📖 Documentation](#learn-more) • [🐛 Report Bug](#) • [✨ Request Feature](#)
+[🚀 Live Demo](https://donate-blood-virid.vercel.app/) • [🐛 Report Bug](https://github.com/aladin002dz/DonateBlood/issues) • [✨ Request Feature](https://github.com/aladin002dz/DonateBlood/issues)
 
 </div>
 
@@ -66,8 +69,6 @@ Add the following to the `.gitignore` file
 .husky/_
 ```
 
-### Technical Stack
-
 
 ## 🚀 Features
 
@@ -86,6 +87,66 @@ Add the following to the `.gitignore` file
 - **Loading States** - Smooth loading indicators and error handling
 - **Toast Notifications** - User-friendly feedback with Sonner
 
+## ✅ Features Checklist
+
+### 🔐 Authentication & Security
+- [x] **Email & Password Authentication** - Secure sign-up and sign-in
+- [x] **Email Verification** - Required email verification for new accounts
+- [x] **Social Login Providers** - Google and GitHub OAuth integration
+- [x] **Profile Management** - Upload profile images and manage user information
+- [x] **Session Management** - Secure session handling with automatic redirects
+- [x] **Protected Routes** - Dashboard access requires authentication
+- [ ] **Two-Factor Authentication (2FA)** - Additional security layer
+- [ ] **Password Reset** - Forgot password functionality
+- [ ] **Account Lockout** - Security after multiple failed attempts
+
+### 🎨 UI/UX Features
+- [x] **Modern Design** - Built with shadcn/ui components and Tailwind CSS
+- [x] **Responsive Layout** - Mobile-first design that works on all devices
+- [x] **Loading States** - Smooth loading indicators and error handling
+- [x] **Toast Notifications** - User-friendly feedback with Sonner
+- [ ] **Dark Mode Support** - Automatic theme switching
+- [ ] **Accessibility Features** - Screen reader support and keyboard navigation
+- [ ] **Internationalization (i18n)** - Multi-language support
+- [ ] **PWA Support** - Progressive Web App capabilities
+
+### 🩸 Blood Donation Features
+- [ ] **Donor Registration** - Complete donor profile creation
+- [ ] **Blood Type Management** - Track and manage blood types
+- [ ] **Donation History** - Track past donations and eligibility
+- [ ] **Appointment Booking** - Schedule donation appointments
+- [ ] **Donor Search** - Find donors by location and blood type
+- [ ] **Emergency Requests** - Urgent blood donation requests
+- [ ] **Donation Reminders** - Automated notifications for eligible donations
+- [ ] **Blood Bank Integration** - Connect with local blood banks
+
+### 📊 Dashboard & Analytics
+- [x] **User Dashboard** - Basic user profile and account information
+- [ ] **Donation Statistics** - Personal donation history and impact
+- [ ] **Achievement System** - Badges and milestones for donors
+- [ ] **Health Tracking** - Pre-donation health assessments
+- [ ] **Community Features** - Connect with other donors
+- [ ] **Impact Metrics** - Lives saved and community impact
+
+### 🔧 Technical Features
+- [x] **Database Integration** - Drizzle ORM with PostgreSQL
+- [x] **Form Validation** - Zod schema validation
+- [x] **Form Handling** - React Hook Form integration
+- [ ] **Real-time Notifications** - WebSocket or Server-Sent Events
+- [ ] **File Upload** - Document and image upload functionality
+- [ ] **API Rate Limiting** - Protect against abuse
+- [ ] **Caching Strategy** - Redis or in-memory caching
+- [ ] **Search Functionality** - Advanced search and filtering
+
+### 🚀 Performance & Deployment
+- [x] **Next.js 15** - Latest React framework with App Router
+- [x] **TypeScript** - Full type safety throughout the application
+- [x] **ESLint** - Code linting and formatting
+- [ ] **Performance Monitoring** - Analytics and error tracking
+- [ ] **SEO Optimization** - Meta tags and structured data
+- [ ] **CDN Integration** - Global content delivery
+- [ ] **Database Optimization** - Query optimization and indexing
+- [ ] **Automated Testing** - Unit, integration, and E2E tests
 
 #### Core Technologies
 - **Next.js 15** ![Next.js](https://img.shields.io/badge/Next.js-15-black?style=flat-square&logo=next.js&logoColor=white) - Latest React framework with App Router
@@ -114,22 +175,73 @@ Add the following to the `.gitignore` file
 ## 📁 Project Structure
 
 ```
-├── app/                    # Next.js App Router
-│   ├── api/[...all]/      # Better Auth API routes
-│   ├── dashboard/         # Protected dashboard page
-│   ├── signin/           # Sign-in page
-│   ├── signup/           # Sign-up page
-│   ├── layout.tsx        # Root layout
-│   └── page.tsx          # Home page
-├── components/           # React components
-│   ├── ui/              # shadcn/ui components
-│   ├── sign-in.tsx      # Sign-in form component
-│   └── sign-up.tsx      # Sign-up form component
-├── lib/                 # Utility libraries
-│   ├── auth.ts          # Better Auth server configuration
-│   ├── auth-client.ts   # Better Auth client configuration
-│   └── utils.ts         # Utility functions
-└── hooks/               # Custom React hooks
+├── actions/                    # Server actions
+│   ├── email.ts               # Email verification actions
+│   └── register.ts            # User registration actions
+├── app/                       # Next.js App Router
+│   ├── api/                   # API routes
+│   │   ├── [...all]/         # Better Auth API routes
+│   │   ├── auth/             # Authentication endpoints
+│   │   │   ├── custom-signin/ # Custom sign-in route
+│   │   │   └── update-user/   # User update route
+│   │   └── profile/          # Profile API route
+│   ├── dashboard/            # Protected dashboard page
+│   ├── profile/              # User profile page
+│   ├── search/               # Search functionality
+│   ├── signin/               # Sign-in page
+│   ├── signup/               # Sign-up page
+│   ├── verify-email/         # Email verification page
+│   ├── layout.tsx            # Root layout
+│   ├── page.tsx              # Home page
+│   └── loading.tsx           # Global loading component
+├── components/               # React components
+│   ├── ui/                   # shadcn/ui components
+│   │   ├── accordion.tsx     # Accordion component
+│   │   ├── alert-dialog.tsx  # Alert dialog component
+│   │   ├── avatar.tsx        # Avatar component
+│   │   ├── button.tsx        # Button component
+│   │   ├── card.tsx          # Card component
+│   │   ├── dialog.tsx        # Dialog component
+│   │   ├── form.tsx          # Form component
+│   │   ├── input.tsx         # Input component
+│   │   ├── label.tsx         # Label component
+│   │   ├── select.tsx        # Select component
+│   │   ├── table.tsx         # Table component
+│   │   └── ...               # Other UI components
+│   ├── email-verification-banner.tsx  # Email verification banner
+│   ├── email-verification.tsx         # Email verification component
+│   └── navigation.tsx                 # Navigation component
+├── db/                       # Database configuration
+│   ├── db.ts                 # Database connection
+│   └── schema.ts             # Database schema
+├── drizzle/                  # Database migrations
+│   ├── 0000_next_nocturne.sql # Initial migration
+│   ├── meta/                 # Migration metadata
+│   ├── relations.ts          # Database relations
+│   └── schema.ts             # Drizzle schema
+├── hooks/                    # Custom React hooks
+│   └── use-mobile.ts         # Mobile detection hook
+├── lib/                      # Utility libraries
+│   ├── auth.ts               # Better Auth server configuration
+│   ├── auth-client.ts        # Better Auth client configuration
+│   ├── email/                # Email templates
+│   │   └── WelcomeVerificationEmail.tsx
+│   ├── resend-client.ts      # Email service client
+│   └── utils.ts              # Utility functions
+├── public/                   # Static assets
+│   ├── file.svg              # File icon
+│   ├── globe.svg             # Globe icon
+│   ├── next.svg              # Next.js logo
+│   ├── vercel.svg            # Vercel logo
+│   └── window.svg            # Window icon
+├── components.json            # shadcn/ui configuration
+├── drizzle.config.ts         # Drizzle configuration
+├── eslint.config.mjs         # ESLint configuration
+├── next.config.ts            # Next.js configuration
+├── package.json              # Dependencies and scripts
+├── postcss.config.mjs        # PostCSS configuration
+├── tsconfig.json             # TypeScript configuration
+└── README.md                 # Project documentation
 ```
 
 ## 🛠️ Getting Started
@@ -252,123 +364,6 @@ export const auth = betterAuth({
 2. Create a new OAuth App
 3. Set Authorization callback URL to `http://localhost:3000/api/auth/callback/github`
 
-## 📖 Usage Guide
-
-### Authentication Flow
-
-1. **Sign Up**
-   - Navigate to `/signup`
-   - Fill in personal information (name, email, password)
-   - Optionally upload a profile image
-   - Choose email/password or social login
-   - **Email Verification Required**: After signup, users must verify their email
-
-2. **Email Verification**
-   - Users are redirected to `/verify-email` after signup
-   - Verification link is sent to their email address
-   - Users can resend verification email if needed
-   - Once verified, users are redirected to dashboard
-
-3. **Sign In**
-   - Navigate to `/signin`
-   - Use email/password or social providers
-   - Automatic redirect to dashboard upon success
-
-4. **Dashboard**
-   - Protected route requiring authentication
-   - Email verification banner shown for unverified users
-   - View profile information and account statistics
-   - Access quick actions and sign out
-
-### Key Components
-
-#### Sign-In Component (`components/sign-in.tsx`)
-- Social login buttons for Google and GitHub
-- Email/password form with validation
-- Loading states and error handling
-- Automatic redirect on success
-
-#### Sign-Up Component (`app/signup/sign-up-form.tsx`)
-- Complete registration form with name, email, phone, and password
-- Password confirmation
-- Phone number validation
-- Social authentication options (Google, GitHub)
-
-#### Dashboard (`app/dashboard/page.tsx`)
-- Protected route with session validation
-- User profile display with initials-based avatar
-- Account statistics and information
-- Quick actions for account management
-
-### API Routes
-
-The authentication API is handled by Better Auth at `/api/[...all]/route.ts`:
-
-```typescript
-export const { GET, POST } = toNextJsHandler(auth.handler);
-```
-
-This catch-all route handles all authentication endpoints automatically.
-
-## 🎨 UI Components
-
-This project uses [shadcn/ui](https://ui.shadcn.com/) components including:
-
-- **Forms** - Input, Label, Button with validation
-- **Cards** - Card, CardHeader, CardContent, CardFooter
-- **Navigation** - Buttons with icons and hover states
-- **Feedback** - Toast notifications, loading states
-- **Layout** - Separators, badges, avatars
-
-## 🔒 Security Features
-
-- **Secure Session Management** - Better Auth handles sessions securely
-- **Protected Routes** - Dashboard requires authentication
-- **CSRF Protection** - Built-in with Better Auth
-- **Environment Variables** - Sensitive data properly configured
-- **Input Validation** - Form validation on client and server
-
-## 📱 Responsive Design
-
-- Mobile-first approach with Tailwind CSS
-- Responsive grid layouts
-- Touch-friendly interface elements
-- Optimized for all screen sizes
-
-## 🚀 Deployment
-
-### Vercel (Recommended)
-
-1. Push your code to GitHub
-2. Connect your repository to Vercel
-3. Add environment variables in Vercel dashboard
-4. Deploy automatically on push
-
-### Other Platforms
-
-The app can be deployed to any platform supporting Next.js:
-- Netlify
-- Railway
-- AWS Amplify
-- DigitalOcean App Platform
-
-## 🛠️ Development
-
-### Available Scripts
-
-```bash
-npm run dev      # Start development server with Turbopack
-npm run build    # Build for production with Turbopack  
-npm run start    # Start production server
-npm run lint     # Run ESLint
-```
-
-### Adding New Features
-
-1. **New Pages**: Add to `app/` directory following Next.js App Router conventions
-2. **Components**: Add to `components/` directory
-3. **UI Components**: Use `npx shadcn-ui@latest add [component]` to add new shadcn components
-4. **Authentication**: Modify `lib/auth.ts` for new auth features
 
 ## 📚 Learn More
 
