@@ -148,30 +148,6 @@ Add the following to the `.gitignore` file
 - [ ] **Database Optimization** - Query optimization and indexing
 - [ ] **Automated Testing** - Unit, integration, and E2E tests
 
-#### Core Technologies
-- **Next.js 15** ![Next.js](https://img.shields.io/badge/Next.js-15-black?style=flat-square&logo=next.js&logoColor=white) - Latest React framework with App Router
-- **TypeScript** ![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=flat-square&logo=typescript&logoColor=white) - Full type safety throughout the application
-- **Better Auth** ![Better Auth](https://img.shields.io/badge/Better%20Auth-FF6B35?style=flat-square&logo=shield&logoColor=white) - Modern authentication library
-- **shadcn/ui** ![shadcn/ui](https://img.shields.io/badge/shadcn%2Fui-000000?style=flat-square&logo=react&logoColor=white) - Beautiful, accessible UI components
-- **Tailwind CSS** ![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=flat-square&logo=tailwind-css&logoColor=white) - Utility-first CSS framework
-- **Lucide React** ![Lucide](https://img.shields.io/badge/Lucide-FF6B35?style=flat-square&logo=feather&logoColor=white) - Beautiful icons
-
-#### Authentication & Security
-- **Better Auth** ![Better Auth](https://img.shields.io/badge/Better%20Auth-FF6B35?style=flat-square&logo=shield&logoColor=white) - Secure, modern authentication library
-- **OAuth 2.0** ![OAuth](https://img.shields.io/badge/OAuth-4285F4?style=flat-square&logo=google&logoColor=white) - Google and GitHub social login
-- **Session Management** ![Security](https://img.shields.io/badge/Security-Green?style=flat-square&logo=security&logoColor=white) - Secure cookie-based sessions
-
-#### UI & Styling
-- **shadcn/ui** ![shadcn/ui](https://img.shields.io/badge/shadcn%2Fui-000000?style=flat-square&logo=react&logoColor=white) - Accessible component library built on Radix UI
-- **Tailwind CSS** ![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=flat-square&logo=tailwind-css&logoColor=white) - Utility-first CSS framework
-- **Radix UI** ![Radix UI](https://img.shields.io/badge/Radix%20UI-000000?style=flat-square&logo=react&logoColor=white) - Unstyled, accessible UI primitives
-- **Lucide React** ![Lucide](https://img.shields.io/badge/Lucide-FF6B35?style=flat-square&logo=feather&logoColor=white) - Beautiful, customizable icons
-
-#### Development Tools
-- **ESLint** ![ESLint](https://img.shields.io/badge/ESLint-4B32C3?style=flat-square&logo=eslint&logoColor=white) - Code linting and formatting
-- **Turbopack** ![Turbopack](https://img.shields.io/badge/Turbopack-000000?style=flat-square&logo=turborepo&logoColor=white) - Fast bundler for development
-- **PostCSS** ![PostCSS](https://img.shields.io/badge/PostCSS-DD3A0A?style=flat-square&logo=postcss&logoColor=white) - CSS processing
-
 ## 📁 Project Structure
 
 ```
