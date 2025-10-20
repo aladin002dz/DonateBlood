@@ -51,7 +51,7 @@ Push schema to the database
 npx drizzle-kit push
 ```
 
-### Husky
+## Husky
 
 ```bash
 npm install husky
@@ -265,49 +265,6 @@ Add the following to the `.gitignore` file
    yarn install
    # or
    pnpm install
-   ```
-
-3. **Environment Setup**
-   
-   Create a `.env` file in the root directory:
-   ```env
-   # App URL (for development)
-   NEXT_PUBLIC_APP_URL=http://localhost:3000
-
-   # Database
-   DATABASE_URL=postgresql://username:password@localhost:5432/database_name
-
-   # Google OAuth (optional)
-   GOOGLE_CLIENT_ID=your_google_client_id
-   GOOGLE_CLIENT_SECRET=your_google_client_secret
-
-   # GitHub OAuth (optional)
-   GITHUB_CLIENT_ID=your_github_client_id
-   GITHUB_CLIENT_SECRET=your_github_client_secret
-
-   # Email Configuration (for production)
-   # Choose one of the following email services:
-   
-   # Option 1: Resend (recommended)
-   # RESEND_API_KEY=your-resend-api-key
-   # EMAIL_FROM=noreply@yourdomain.com
-   
-   # Option 2: SendGrid
-   # SENDGRID_API_KEY=your-sendgrid-api-key
-   # EMAIL_FROM=noreply@yourdomain.com
-   
-   # Option 3: AWS SES
-   # AWS_ACCESS_KEY_ID=your-aws-access-key
-   # AWS_SECRET_ACCESS_KEY=your-aws-secret-key
-   # AWS_REGION=us-east-1
-   # EMAIL_FROM=noreply@yourdomain.com
-   
-   # Option 4: SMTP (generic)
-   # SMTP_HOST=smtp.gmail.com
-   # SMTP_PORT=587
-   # SMTP_USER=your-email@gmail.com
-   # SMTP_PASS=your-app-password
-   # EMAIL_FROM=your-email@gmail.com
    ```
 
 4. **Run the development server**
