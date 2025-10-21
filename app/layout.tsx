@@ -25,7 +25,10 @@ export default function RootLayout({
           <Navigation />
           <main className="min-h-screen bg-secondary/30">{children}</main>
         </Suspense>
-        <Toaster />
+        <Toaster
+          richColors
+          position="top-right"
+        />
       </body>
     </html>
   )
