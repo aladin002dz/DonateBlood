@@ -47,7 +47,7 @@ export default function HomePage() {
         </div>
 
         {/* Info Section */}
-        <div className="bg-white rounded-xl p-6 md:p-8 shadow-lg">
+        <div className="bg-card rounded-xl p-6 md:p-8 shadow-lg">
           <h2 className="text-2xl font-bold text-foreground mb-4">Why donate blood?</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-left">
             <div className="text-center">
