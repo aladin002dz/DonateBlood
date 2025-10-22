@@ -1,4 +1,6 @@
 import { Navigation } from "@/components/navigation"
+import { ThemeProvider } from "@/components/theme-provider"
+import { ThemeToggle } from "@/components/theme-toggle"
 import { GeistMono } from "geist/font/mono"
 import { GeistSans } from "geist/font/sans"
 import type { Metadata } from "next"
@@ -19,16 +21,24 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body className={`font-sans ${GeistSans.variable} ${GeistMono.variable}`}>
-        <Suspense fallback={<div>Loading...</div>}>
-          <Navigation />
-          <main className="min-h-screen bg-secondary/30">{children}</main>
-        </Suspense>
-        <Toaster
-          richColors
-          position="top-right"
-        />
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <Suspense fallback={<div>Loading...</div>}>
+            <Navigation />
+            <main className="min-h-screen bg-secondary/30">{children}</main>
+          </Suspense>
+          <ThemeToggle />
+          <Toaster
+            richColors
+            position="top-right"
+          />
+        </ThemeProvider>
       </body>
     </html>
   )
