@@ -133,48 +133,89 @@ Add the following to the `.gitignore` file
 ```
 ├── actions/                    # Server actions
 │   ├── email.ts               # Email verification actions
-│   └── register.ts            # User registration actions
+│   ├── profile.ts             # Profile management actions
+│   ├── register.ts            # User registration actions
+│   └── signin.ts              # Sign-in actions
 ├── app/                       # Next.js App Router
 │   ├── api/                   # API routes
-│   │   ├── [...all]/         # Better Auth API routes
-│   │   ├── auth/             # Authentication endpoints
-│   │   │   ├── custom-signin/ # Custom sign-in route
-│   │   │   └── update-user/   # User update route
-│   │   └── profile/          # Profile API route
+│   │   └── [...all]/         # Better Auth API routes
+│   │       └── route.ts       # Catch-all API route
 │   ├── dashboard/            # Protected dashboard page
+│   │   └── page.tsx          # Dashboard component
 │   ├── profile/              # User profile page
+│   │   ├── loading.tsx       # Profile loading component
+│   │   └── page.tsx          # Profile page component
+│   ├── register/             # User registration page
+│   │   └── page.tsx          # Registration page component
 │   ├── search/               # Search functionality
+│   │   ├── loading.tsx       # Search loading component
+│   │   └── page.tsx          # Search page component
 │   ├── signin/               # Sign-in page
-│   ├── signup/               # Sign-up page
+│   │   ├── page.tsx          # Sign-in page component
+│   │   └── sign-in-form.tsx  # Sign-in form component
 │   ├── verify-email/         # Email verification page
+│   │   └── page.tsx          # Email verification component
+│   ├── favicon.ico           # Site favicon
+│   ├── globals.css           # Global styles
 │   ├── layout.tsx            # Root layout
-│   ├── page.tsx              # Home page
-│   └── loading.tsx           # Global loading component
+│   ├── loading.tsx           # Global loading component
+│   └── page.tsx              # Home page
 ├── components/               # React components
 │   ├── ui/                   # shadcn/ui components
 │   │   ├── accordion.tsx     # Accordion component
 │   │   ├── alert-dialog.tsx  # Alert dialog component
+│   │   ├── alert.tsx         # Alert component
+│   │   ├── aspect-ratio.tsx  # Aspect ratio component
 │   │   ├── avatar.tsx        # Avatar component
+│   │   ├── badge.tsx         # Badge component
+│   │   ├── breadcrumb.tsx    # Breadcrumb component
 │   │   ├── button.tsx        # Button component
+│   │   ├── calendar.tsx      # Calendar component
 │   │   ├── card.tsx          # Card component
+│   │   ├── carousel.tsx      # Carousel component
+│   │   ├── chart.tsx         # Chart component
+│   │   ├── checkbox.tsx      # Checkbox component
+│   │   ├── collapsible.tsx   # Collapsible component
+│   │   ├── command.tsx       # Command component
+│   │   ├── context-menu.tsx  # Context menu component
 │   │   ├── dialog.tsx        # Dialog component
+│   │   ├── drawer.tsx        # Drawer component
+│   │   ├── dropdown-menu.tsx # Dropdown menu component
 │   │   ├── form.tsx          # Form component
+│   │   ├── hover-card.tsx    # Hover card component
+│   │   ├── input-otp.tsx     # OTP input component
 │   │   ├── input.tsx         # Input component
 │   │   ├── label.tsx         # Label component
+│   │   ├── menubar.tsx       # Menu bar component
+│   │   ├── navigation-menu.tsx # Navigation menu component
+│   │   ├── pagination.tsx    # Pagination component
+│   │   ├── popover.tsx       # Popover component
+│   │   ├── progress.tsx      # Progress component
+│   │   ├── radio-group.tsx   # Radio group component
+│   │   ├── resizable.tsx     # Resizable component
+│   │   ├── scroll-area.tsx   # Scroll area component
 │   │   ├── select.tsx        # Select component
+│   │   ├── separator.tsx     # Separator component
+│   │   ├── sheet.tsx         # Sheet component
+│   │   ├── sidebar.tsx       # Sidebar component
+│   │   ├── skeleton.tsx      # Skeleton component
+│   │   ├── slider.tsx        # Slider component
+│   │   ├── sonner.tsx        # Sonner toast component
+│   │   ├── switch.tsx        # Switch component
 │   │   ├── table.tsx         # Table component
-│   │   └── ...               # Other UI components
+│   │   ├── tabs.tsx          # Tabs component
+│   │   ├── textarea.tsx      # Textarea component
+│   │   ├── toggle-group.tsx  # Toggle group component
+│   │   ├── toggle.tsx        # Toggle component
+│   │   └── tooltip.tsx       # Tooltip component
 │   ├── email-verification-banner.tsx  # Email verification banner
 │   ├── email-verification.tsx         # Email verification component
-│   └── navigation.tsx                 # Navigation component
+│   ├── navigation.tsx                 # Navigation component
+│   ├── theme-provider.tsx             # Theme provider component
+│   └── theme-toggle.tsx               # Theme toggle component
 ├── db/                       # Database configuration
 │   ├── db.ts                 # Database connection
 │   └── schema.ts             # Database schema
-├── drizzle/                  # Database migrations
-│   ├── 0000_next_nocturne.sql # Initial migration
-│   ├── meta/                 # Migration metadata
-│   ├── relations.ts          # Database relations
-│   └── schema.ts             # Drizzle schema
 ├── hooks/                    # Custom React hooks
 │   └── use-mobile.ts         # Mobile detection hook
 ├── lib/                      # Utility libraries
@@ -190,13 +231,17 @@ Add the following to the `.gitignore` file
 │   ├── next.svg              # Next.js logo
 │   ├── vercel.svg            # Vercel logo
 │   └── window.svg            # Window icon
-├── components.json            # shadcn/ui configuration
+├── components.json           # shadcn/ui configuration
 ├── drizzle.config.ts         # Drizzle configuration
 ├── eslint.config.mjs         # ESLint configuration
+├── LICENSE                   # Project license
+├── next-env.d.ts             # Next.js environment types
 ├── next.config.ts            # Next.js configuration
 ├── package.json              # Dependencies and scripts
+├── package-lock.json         # Package lock file
 ├── postcss.config.mjs        # PostCSS configuration
 ├── tsconfig.json             # TypeScript configuration
+├── tsconfig.tsbuildinfo      # TypeScript build info
 └── README.md                 # Project documentation
 ```
 
