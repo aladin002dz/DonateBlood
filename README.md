@@ -96,7 +96,6 @@ Add the following to the `.gitignore` file
 - [x] **Profile Management** - Upload profile images and manage user information
 - [x] **Session Management** - Secure session handling with automatic redirects
 - [x] **Protected Routes** - Dashboard access requires authentication
-- [ ] **Two-Factor Authentication (2FA)** - Additional security layer
 - [ ] **Password Reset** - Forgot password functionality
 - [ ] **Account Lockout** - Security after multiple failed attempts
 
@@ -110,30 +109,11 @@ Add the following to the `.gitignore` file
 - [ ] **Internationalization (i18n)** - Multi-language support
 - [ ] **PWA Support** - Progressive Web App capabilities
 
-### 🩸 Blood Donation Features
-- [ ] **Donor Registration** - Complete donor profile creation
-- [ ] **Blood Type Management** - Track and manage blood types
-- [ ] **Donation History** - Track past donations and eligibility
-- [ ] **Appointment Booking** - Schedule donation appointments
-- [ ] **Donor Search** - Find donors by location and blood type
-- [ ] **Emergency Requests** - Urgent blood donation requests
-- [ ] **Donation Reminders** - Automated notifications for eligible donations
-- [ ] **Blood Bank Integration** - Connect with local blood banks
-
-### 📊 Dashboard & Analytics
-- [x] **User Dashboard** - Basic user profile and account information
-- [ ] **Donation Statistics** - Personal donation history and impact
-- [ ] **Achievement System** - Badges and milestones for donors
-- [ ] **Health Tracking** - Pre-donation health assessments
-- [ ] **Community Features** - Connect with other donors
-- [ ] **Impact Metrics** - Lives saved and community impact
-
 ### 🔧 Technical Features
 - [x] **Database Integration** - Drizzle ORM with PostgreSQL
 - [x] **Form Validation** - Zod schema validation
 - [x] **Form Handling** - React Hook Form integration
 - [ ] **Real-time Notifications** - WebSocket or Server-Sent Events
-- [ ] **File Upload** - Document and image upload functionality
 - [ ] **API Rate Limiting** - Protect against abuse
 - [ ] **Caching Strategy** - Redis or in-memory caching
 - [ ] **Search Functionality** - Advanced search and filtering
@@ -220,44 +200,6 @@ Add the following to the `.gitignore` file
 └── README.md                 # Project documentation
 ```
 
-## 🛠️ Getting Started
-
-### Prerequisites
-- Node.js 18+ 
-- npm, yarn, pnpm, or bun
-
-### Installation
-
-1. **Clone the repository**
-   ```bash
-   git clone <your-repo-url>
-   cd better-auth-prot-i
-   ```
-
-2. **Install dependencies**
-   ```bash
-   npm install
-   # or
-   yarn install
-   # or
-   pnpm install
-   ```
-
-4. **Run the development server**
-   ```bash
-   npm run dev
-   # or
-   yarn dev
-   # or
-   pnpm dev
-   # or
-   bun dev
-   ```
-
-5. **Open your browser**
-   
-   Navigate to [http://localhost:3000](http://localhost:3000)
-
 ## 🔧 Configuration
 
 ### Better Auth Setup
@@ -304,6 +246,7 @@ export const auth = betterAuth({
 - [Better Auth Documentation](https://better-auth.com) - Authentication library docs
 - [shadcn/ui Documentation](https://ui.shadcn.com) - UI component library
 - [Tailwind CSS Documentation](https://tailwindcss.com/docs) - CSS framework
+- [Drizzle Documentation](https://orm.drizzle.team/docs/introduction) - Database ORM library
 
 ## 🤝 Contributing
 
