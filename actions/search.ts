@@ -2,13 +2,14 @@
 
 import { db } from '@/db/db';
 import { user } from '@/db/schema';
-import { and, eq, ilike, isNotNull } from 'drizzle-orm';
+import { and, desc, eq, ilike, isNotNull } from 'drizzle-orm';
 
 export interface SearchFilters {
     bloodGroup?: string;
     wilaya?: string;
     commune?: string;
     donationType?: string;
+    emergencyOnly?: boolean;
 }
 
 export interface DonorData {
@@ -36,21 +37,26 @@ export async function searchDonors(filters: SearchFilters = {}) {
         conditions.push(isNotNull(user.commune));
 
 
-        // Apply filters
-        if (filters.bloodGroup) {
+        // Apply filters - only add conditions for non-empty values
+        if (filters.bloodGroup && filters.bloodGroup.trim() !== '') {
             conditions.push(eq(user.bloodGroup, filters.bloodGroup));
         }
 
-        if (filters.wilaya) {
+        if (filters.wilaya && filters.wilaya.trim() !== '') {
             conditions.push(ilike(user.wilaya, `%${filters.wilaya}%`));
         }
 
-        if (filters.commune) {
+        if (filters.commune && filters.commune.trim() !== '') {
             conditions.push(ilike(user.commune, `%${filters.commune}%`));
         }
 
-        if (filters.donationType) {
+        if (filters.donationType && filters.donationType.trim() !== '') {
             conditions.push(eq(user.donationType, filters.donationType));
+        }
+
+        // Filter for emergency available donors only if requested
+        if (filters.emergencyOnly) {
+            conditions.push(eq(user.emergencyAvailable, true));
         }
 
         // Fetch donors from database
@@ -70,7 +76,7 @@ export async function searchDonors(filters: SearchFilters = {}) {
             })
             .from(user)
             .where(and(...conditions))
-            .orderBy(user.createdAt);
+            .orderBy(desc(user.emergencyAvailable), desc(user.createdAt));
 
         return {
             success: true,

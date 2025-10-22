@@ -7,6 +7,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { Switch } from "@/components/ui/switch"
 import { Clock, Heart, Loader2, MapPin, Phone, Search } from "lucide-react"
 import { useEffect, useState } from "react"
 
@@ -16,6 +17,7 @@ export default function SearchPage() {
     wilaya: "",
     commune: "",
     donationType: "",
+    emergencyOnly: false,
   })
 
   const [donors, setDonors] = useState<DonorData[]>([])
@@ -59,6 +61,7 @@ export default function SearchPage() {
       wilaya: "",
       commune: "",
       donationType: "",
+      emergencyOnly: false,
     })
   }
 
@@ -151,6 +154,17 @@ export default function SearchPage() {
                   </SelectContent>
                 </Select>
               </div>
+            </div>
+
+            <div className="flex items-center space-x-2 mb-4">
+              <Switch
+                id="emergencyOnly"
+                checked={filters.emergencyOnly || false}
+                onCheckedChange={(checked) => setFilters({ ...filters, emergencyOnly: checked })}
+              />
+              <Label htmlFor="emergencyOnly" className="text-sm font-medium">
+                Show only emergency available donors
+              </Label>
             </div>
 
             <div className="flex gap-2">
