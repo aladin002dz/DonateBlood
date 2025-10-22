@@ -2,7 +2,7 @@
 
 import { db } from '@/db/db';
 import { user } from '@/db/schema';
-import { and, eq, ilike, isNotNull, or } from 'drizzle-orm';
+import { and, eq, ilike, isNotNull } from 'drizzle-orm';
 
 export interface SearchFilters {
     bloodGroup?: string;
@@ -35,11 +35,6 @@ export async function searchDonors(filters: SearchFilters = {}) {
         conditions.push(isNotNull(user.wilaya));
         conditions.push(isNotNull(user.commune));
 
-        // Only show verified users (email or phone verified)
-        conditions.push(or(
-            eq(user.emailVerified, true),
-            eq(user.phoneVerified, true)
-        ));
 
         // Apply filters
         if (filters.bloodGroup) {
