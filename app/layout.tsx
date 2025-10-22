@@ -1,3 +1,4 @@
+import { Footer } from "@/components/footer"
 import { Navigation } from "@/components/navigation"
 import { ThemeProvider } from "@/components/theme-provider"
 import { ThemeToggle } from "@/components/theme-toggle"
@@ -29,10 +30,13 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <Suspense fallback={<div>Loading...</div>}>
-            <Navigation />
-            <main className="min-h-screen bg-secondary/30">{children}</main>
-          </Suspense>
+          <div className="flex flex-col min-h-screen">
+            <Suspense fallback={<div>Loading...</div>}>
+              <Navigation />
+              <main className="flex-1 bg-secondary/30">{children}</main>
+            </Suspense>
+            <Footer />
+          </div>
           <ThemeToggle />
           <Toaster
             richColors
