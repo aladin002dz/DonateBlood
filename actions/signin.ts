@@ -1,15 +1,15 @@
+'use server';
+
 import { db } from '@/db/db';
 import { user } from '@/db/schema';
 import { auth } from '@/lib/auth';
 import { eq, or } from 'drizzle-orm';
-import { NextRequest, NextResponse } from 'next/server';
+import { headers } from 'next/headers';
 
-export async function POST(request: NextRequest) {
+export async function customSignIn(identifier: string, password: string) {
     try {
-        const { identifier, password } = await request.json();
-
         if (!identifier || !password) {
-            return NextResponse.json({ error: 'Identifier and password are required' }, { status: 400 });
+            return { error: 'Identifier and password are required' };
         }
 
         // Find user by email or phone
@@ -22,14 +22,14 @@ export async function POST(request: NextRequest) {
             .limit(1);
 
         if (foundUser.length === 0) {
-            return NextResponse.json({ error: 'User not found' }, { status: 401 });
+            return { error: 'User not found' };
         }
 
         const userRecord = foundUser[0];
 
         // Check if user has an email (required for Better Auth)
         if (!userRecord.email) {
-            return NextResponse.json({ error: 'User account is missing email address' }, { status: 401 });
+            return { error: 'User account is missing email address' };
         }
 
         // Use Better Auth to authenticate the user directly
@@ -39,19 +39,19 @@ export async function POST(request: NextRequest) {
                 email: userRecord.email,
                 password: password,
             },
-            headers: request.headers
+            headers: await headers()
         });
 
         if (!sessionResult) {
-            return NextResponse.json({ error: 'Incorrect password' }, { status: 401 });
+            return { error: 'Incorrect password' };
         }
 
         // Return success response
-        return NextResponse.json({
+        return {
             success: true,
             user: userRecord,
             redirect: '/profile'
-        });
+        };
     } catch (error) {
         console.error('Error in custom sign-in:', error);
 
@@ -59,9 +59,9 @@ export async function POST(request: NextRequest) {
         if (error && typeof error === 'object' && 'message' in error) {
             const errorMessage = error.message as string;
             // Check if it's a password-related error
-            return NextResponse.json({ error: errorMessage }, { status: 401 });
+            return { error: errorMessage };
         }
 
-        return NextResponse.json({ error: 'An error occurred during sign-in' }, { status: 500 });
+        return { error: 'An error occurred during sign-in' };
     }
 }

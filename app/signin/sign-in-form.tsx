@@ -1,5 +1,6 @@
 "use client";
 
+import { customSignIn } from "@/actions/signin";
 import { Button } from "@/components/ui/button";
 import {
     Card,
@@ -101,26 +102,11 @@ export default function SignIn() {
             } else {
                 // Use custom sign-in for phone number
                 try {
-                    const response = await fetch('/api/auth/custom-signin', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify({
-                            identifier: data.identifier,
-                            password: data.password,
-                        }),
-                    });
+                    const result = await customSignIn(data.identifier, data.password);
 
-                    const result = await response.json();
-
-                    if (response.ok) {
-                        toast.success('Signed in successfully');
-                        // Refresh the page to update the session state
-                        window.location.href = result.redirect || "/profile";
-                    } else {
+                    if (result.error) {
                         // Show specific error message based on the error type
-                        const errorMessage = result.error || 'Invalid credentials';
+                        const errorMessage = result.error;
                         if (errorMessage === 'Incorrect password') {
                             toast.error('Incorrect password');
                         } else if (errorMessage === 'User not found') {
@@ -129,6 +115,10 @@ export default function SignIn() {
                             toast.error(errorMessage);
                         }
                         setLoading(false);
+                    } else {
+                        toast.success('Signed in successfully');
+                        // Refresh the page to update the session state
+                        window.location.href = result.redirect || "/profile";
                     }
                 } catch (error) {
                     console.error('Phone sign-in error:', error);
