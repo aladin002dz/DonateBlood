@@ -104,7 +104,7 @@ Add the following to the `.gitignore` file
 - [x] **Responsive Layout** - Mobile-first design that works on all devices
 - [x] **Loading States** - Smooth loading indicators and error handling
 - [x] **Toast Notifications** - User-friendly feedback with Sonner
-- [ ] **Dark Mode Support** - Automatic theme switching
+- [x] **Dark Mode Support** - Automatic theme switching
 - [ ] **Accessibility Features** - Screen reader support and keyboard navigation
 - [ ] **Internationalization (i18n)** - Multi-language support
 - [ ] **PWA Support** - Progressive Web App capabilities

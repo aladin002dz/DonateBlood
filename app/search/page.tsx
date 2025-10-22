@@ -1,90 +1,56 @@
 "use client"
 
-import { useState } from "react"
+import { searchDonors, type DonorData, type SearchFilters } from "@/actions/search"
+import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { Search, Phone, MapPin, Clock, Heart } from "lucide-react"
-
-// Mock donor data
-const mockDonors = [
-  {
-    id: 1,
-    name: "Ahmed Benali",
-    bloodGroup: "O+",
-    wilaya: "Algiers",
-    commune: "Bab Ezzouar",
-    donationType: "Blood",
-    available: true,
-    lastDonation: "2024-01-15",
-    phone: "0555 123 456",
-  },
-  {
-    id: 2,
-    name: "Fatima Khelifi",
-    bloodGroup: "A+",
-    wilaya: "Oran",
-    commune: "Es Senia",
-    donationType: "Blood & Platelets",
-    available: true,
-    lastDonation: "2023-12-20",
-    phone: "0661 789 012",
-  },
-  {
-    id: 3,
-    name: "Mohamed Saidi",
-    bloodGroup: "B-",
-    wilaya: "Constantine",
-    commune: "El Khroub",
-    donationType: "Blood",
-    available: false,
-    lastDonation: "2024-02-10",
-    phone: "0770 345 678",
-  },
-  {
-    id: 4,
-    name: "Amina Boudjemaa",
-    bloodGroup: "AB+",
-    wilaya: "Algiers",
-    commune: "Hydra",
-    donationType: "Blood & Platelets",
-    available: true,
-    lastDonation: "2024-01-05",
-    phone: "0555 987 654",
-  },
-]
+import { Clock, Heart, Loader2, MapPin, Phone, Search } from "lucide-react"
+import { useEffect, useState } from "react"
 
 export default function SearchPage() {
-  const [filters, setFilters] = useState({
+  const [filters, setFilters] = useState<SearchFilters>({
     bloodGroup: "",
     wilaya: "",
     commune: "",
     donationType: "",
   })
 
-  const [filteredDonors, setFilteredDonors] = useState(mockDonors)
+  const [donors, setDonors] = useState<DonorData[]>([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
 
   const bloodGroups = ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"]
   const donationTypes = ["Blood", "Blood & Platelets"]
 
-  const handleFilterChange = (field: string, value: string) => {
+  // Load initial data
+  useEffect(() => {
+    const loadDonors = async () => {
+      setLoading(true)
+      setError(null)
+      try {
+        const result = await searchDonors(filters)
+        if (result.success && result.data) {
+          setDonors(result.data as DonorData[])
+        } else {
+          setError(result.error || 'Failed to load donors')
+        }
+      } catch (err) {
+        setError('Failed to load donors')
+        console.error('Error loading donors:', err)
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    loadDonors()
+  }, [filters])
+
+  const handleFilterChange = (field: keyof SearchFilters, value: string) => {
     const newFilters = { ...filters, [field]: value }
     setFilters(newFilters)
-
-    // Apply filters
-    const filtered = mockDonors.filter((donor) => {
-      return (
-        (!newFilters.bloodGroup || donor.bloodGroup === newFilters.bloodGroup) &&
-        (!newFilters.wilaya || donor.wilaya.toLowerCase().includes(newFilters.wilaya.toLowerCase())) &&
-        (!newFilters.commune || donor.commune.toLowerCase().includes(newFilters.commune.toLowerCase())) &&
-        (!newFilters.donationType || donor.donationType === newFilters.donationType)
-      )
-    })
-
-    setFilteredDonors(filtered)
   }
 
   const clearFilters = () => {
@@ -94,11 +60,14 @@ export default function SearchPage() {
       commune: "",
       donationType: "",
     })
-    setFilteredDonors(mockDonors)
   }
 
-  const handleContact = (donor: (typeof mockDonors)[0]) => {
-    alert(`Contacting ${donor.name} at ${donor.phone} (This is a static prototype)`)
+  const handleContact = (donor: DonorData) => {
+    if (donor.phone) {
+      alert(`Contacting ${donor.name} at ${donor.phone}`)
+    } else {
+      alert(`Contact information for ${donor.name} is not available`)
+    }
   }
 
   return (
@@ -126,7 +95,7 @@ export default function SearchPage() {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
               <div className="space-y-2">
                 <Label htmlFor="bloodGroup">Blood Group</Label>
-                <Select value={filters.bloodGroup} onValueChange={(value) => handleFilterChange("bloodGroup", value)}>
+                <Select value={filters.bloodGroup || ""} onValueChange={(value) => handleFilterChange("bloodGroup", value)}>
                   <SelectTrigger className="rounded-lg">
                     <SelectValue placeholder="Any blood group" />
                   </SelectTrigger>
@@ -146,7 +115,7 @@ export default function SearchPage() {
                   id="wilaya"
                   type="text"
                   placeholder="Enter wilaya"
-                  value={filters.wilaya}
+                  value={filters.wilaya || ""}
                   onChange={(e) => handleFilterChange("wilaya", e.target.value)}
                   className="rounded-lg"
                 />
@@ -158,7 +127,7 @@ export default function SearchPage() {
                   id="commune"
                   type="text"
                   placeholder="Enter commune"
-                  value={filters.commune}
+                  value={filters.commune || ""}
                   onChange={(e) => handleFilterChange("commune", e.target.value)}
                   className="rounded-lg"
                 />
@@ -167,7 +136,7 @@ export default function SearchPage() {
               <div className="space-y-2">
                 <Label htmlFor="donationType">Donation Type</Label>
                 <Select
-                  value={filters.donationType}
+                  value={filters.donationType || ""}
                   onValueChange={(value) => handleFilterChange("donationType", value)}
                 >
                   <SelectTrigger className="rounded-lg">
@@ -189,75 +158,107 @@ export default function SearchPage() {
                 Clear Filters
               </Button>
               <div className="text-sm text-muted-foreground flex items-center">
-                Found {filteredDonors.length} donor{filteredDonors.length !== 1 ? "s" : ""}
+                {loading ? (
+                  <div className="flex items-center gap-2">
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                    Loading...
+                  </div>
+                ) : (
+                  `Found ${donors.length} donor${donors.length !== 1 ? "s" : ""}`
+                )}
               </div>
             </div>
           </CardContent>
         </Card>
 
         {/* Results */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredDonors.map((donor) => (
-            <Card key={donor.id} className="shadow-lg hover:shadow-xl transition-shadow duration-200">
-              <CardHeader className="pb-3">
-                <div className="flex items-start justify-between">
-                  <div>
-                    <CardTitle className="text-lg">{donor.name}</CardTitle>
-                    <div className="flex items-center gap-2 mt-2">
-                      <Badge
-                        variant="secondary"
-                        className="bg-primary text-primary-foreground font-bold text-sm px-3 py-1"
-                      >
-                        {donor.bloodGroup}
-                      </Badge>
-                      <Badge
-                        variant={donor.available ? "default" : "secondary"}
-                        className={donor.available ? "bg-green-100 text-green-800" : "bg-gray-100 text-gray-600"}
-                      >
-                        {donor.available ? "Available" : "Unavailable"}
-                      </Badge>
-                    </div>
-                  </div>
-                  <Heart className="h-6 w-6 text-primary fill-current" />
-                </div>
-              </CardHeader>
-
-              <CardContent className="space-y-3">
-                <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                  <MapPin className="h-4 w-4" />
-                  <span>
-                    {donor.commune}, {donor.wilaya}
-                  </span>
-                </div>
-
-                <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                  <Clock className="h-4 w-4" />
-                  <span>Last donation: {new Date(donor.lastDonation).toLocaleDateString()}</span>
-                </div>
-
-                <div className="text-sm">
-                  <span className="font-medium">Type:</span> {donor.donationType}
-                </div>
-
-                <Button
-                  onClick={() => handleContact(donor)}
-                  disabled={!donor.available}
-                  className="w-full bg-primary hover:bg-primary/90 text-primary-foreground rounded-lg mt-4 disabled:opacity-50 disabled:cursor-not-allowed"
-                >
-                  <Phone className="h-4 w-4 mr-2" />
-                  Contact Donor
-                </Button>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
-
-        {filteredDonors.length === 0 && (
-          <div className="text-center py-12">
-            <Search className="h-16 w-16 text-muted-foreground mx-auto mb-4" />
-            <h3 className="text-lg font-semibold text-foreground mb-2">No donors found</h3>
-            <p className="text-muted-foreground">Try adjusting your search filters to find more donors in your area.</p>
+        {error && (
+          <div className="text-center py-8">
+            <div className="text-red-500 mb-2">Error: {error}</div>
+            <Button onClick={() => window.location.reload()} variant="outline">
+              Try Again
+            </Button>
           </div>
+        )}
+
+        {loading && (
+          <div className="text-center py-12">
+            <Loader2 className="h-16 w-16 text-muted-foreground mx-auto mb-4 animate-spin" />
+            <h3 className="text-lg font-semibold text-foreground mb-2">Loading donors...</h3>
+            <p className="text-muted-foreground">Please wait while we fetch the latest donor information.</p>
+          </div>
+        )}
+
+        {!loading && !error && (
+          <>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {donors.map((donor) => (
+                <Card key={donor.id} className="shadow-lg hover:shadow-xl transition-shadow duration-200">
+                  <CardHeader className="pb-3">
+                    <div className="flex items-start justify-between">
+                      <div>
+                        <CardTitle className="text-lg">{donor.name}</CardTitle>
+                        <div className="flex items-center gap-2 mt-2">
+                          <Badge
+                            variant="secondary"
+                            className="bg-primary text-primary-foreground font-bold text-sm px-3 py-1"
+                          >
+                            {donor.bloodGroup}
+                          </Badge>
+                          <Badge
+                            variant={donor.emergencyAvailable ? "default" : "secondary"}
+                            className={donor.emergencyAvailable ? "bg-green-100 text-green-800" : "bg-gray-100 text-gray-600"}
+                          >
+                            {donor.emergencyAvailable ? "Available" : "Unavailable"}
+                          </Badge>
+                        </div>
+                      </div>
+                      <Heart className="h-6 w-6 text-primary fill-current" />
+                    </div>
+                  </CardHeader>
+
+                  <CardContent className="space-y-3">
+                    <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                      <MapPin className="h-4 w-4" />
+                      <span>
+                        {donor.commune}, {donor.wilaya}
+                      </span>
+                    </div>
+
+                    {donor.lastDonation && (
+                      <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                        <Clock className="h-4 w-4" />
+                        <span>Last donation: {new Date(donor.lastDonation).toLocaleDateString()}</span>
+                      </div>
+                    )}
+
+                    {donor.donationType && (
+                      <div className="text-sm">
+                        <span className="font-medium">Type:</span> {donor.donationType}
+                      </div>
+                    )}
+
+                    <Button
+                      onClick={() => handleContact(donor)}
+                      disabled={!donor.emergencyAvailable || !donor.phone}
+                      className="w-full bg-primary hover:bg-primary/90 text-primary-foreground rounded-lg mt-4 disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
+                      <Phone className="h-4 w-4 mr-2" />
+                      {donor.phone ? "Contact Donor" : "No Contact Info"}
+                    </Button>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+
+            {donors.length === 0 && (
+              <div className="text-center py-12">
+                <Search className="h-16 w-16 text-muted-foreground mx-auto mb-4" />
+                <h3 className="text-lg font-semibold text-foreground mb-2">No donors found</h3>
+                <p className="text-muted-foreground">Try adjusting your search filters to find more donors in your area.</p>
+              </div>
+            )}
+          </>
         )}
       </div>
     </div>
