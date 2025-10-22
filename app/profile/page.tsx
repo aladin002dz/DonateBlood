@@ -2,6 +2,7 @@
 
 import type React from "react"
 
+import { getProfile, updateProfile } from "@/actions/profile"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
@@ -20,7 +21,7 @@ interface UserProfile {
   id: string
   name: string
   email: string | null
-  phone: string
+  phone: string | null
   emailVerified: boolean
   phoneVerified: boolean
   bloodGroup: string | null
@@ -29,8 +30,8 @@ interface UserProfile {
   lastDonation: string | null
   donationType: string | null
   emergencyAvailable: boolean | null
-  createdAt: string
-  updatedAt: string
+  createdAt: Date
+  updatedAt: Date
 }
 
 export default function ProfilePage() {
@@ -58,15 +59,14 @@ export default function ProfilePage() {
 
       try {
         setLoading(true)
-        const response = await fetch('/api/profile')
+        const result = await getProfile()
 
-        if (!response.ok) {
-          throw new Error('Failed to fetch profile data')
+        if (!result.success || !result.data) {
+          throw new Error(result.error || 'Failed to fetch profile data')
         }
 
-        const data = await response.json()
-        setProfileData(data)
-        setIsAvailable(data.emergencyAvailable || false)
+        setProfileData(result.data)
+        setIsAvailable(result.data.emergencyAvailable || false)
       } catch (error) {
         console.error('Error fetching profile:', error)
         toast.error('Failed to load profile data')
@@ -94,26 +94,24 @@ export default function ProfilePage() {
     try {
       setUpdating(true)
 
-      const response = await fetch('/api/profile', {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          name: profileData.name,
-          phone: profileData.phone,
-          email: profileData.email,
-          bloodGroup: profileData.bloodGroup,
-          wilaya: profileData.wilaya,
-          commune: profileData.commune,
-          lastDonation: profileData.lastDonation,
-          donationType: profileData.donationType,
-          emergencyAvailable: isAvailable,
-        }),
-      })
+      // Create FormData object for the server action
+      const formData = new FormData()
+      formData.append('name', profileData.name || '')
+      formData.append('phone', profileData.phone || '')
+      formData.append('email', profileData.email || '')
+      formData.append('bloodGroup', profileData.bloodGroup || '')
+      formData.append('wilaya', profileData.wilaya || '')
+      formData.append('commune', profileData.commune || '')
+      formData.append('lastDonation', profileData.lastDonation || '')
+      formData.append('donationType', profileData.donationType || '')
+      if (isAvailable) {
+        formData.append('emergencyAvailable', 'on')
+      }
 
-      if (!response.ok) {
-        throw new Error('Failed to update profile')
+      const result = await updateProfile(formData)
+
+      if (!result.success) {
+        throw new Error(result.error || 'Failed to update profile')
       }
 
       toast.success('Profile updated successfully!')

@@ -165,7 +165,7 @@ export default function SignIn() {
                                 {...register("identifier")}
                             />
                             {errors.identifier && (
-                                <p className="text-sm text-red-500">{errors.identifier.message}</p>
+                                <p className="text-sm text-destructive">{errors.identifier.message}</p>
                             )}
                         </div>
                         <div className="grid gap-2">
@@ -178,7 +178,7 @@ export default function SignIn() {
                                 {...register("password")}
                             />
                             {errors.password && (
-                                <p className="text-sm text-red-500">{errors.password.message}</p>
+                                <p className="text-sm text-destructive">{errors.password.message}</p>
                             )}
                         </div>
                         <Button
@@ -291,8 +291,8 @@ export default function SignIn() {
             </CardContent >
             <CardFooter>
                 <div className="flex justify-center w-full border-t py-4">
-                    <p className="text-center text-xs text-neutral-500">
-                        Secured by <span className="text-orange-400">better-auth.</span>
+                    <p className="text-center text-xs text-muted-foreground">
+                        Secured by <span className="text-primary">better-auth.</span>
                     </p>
                 </div>
             </CardFooter>
