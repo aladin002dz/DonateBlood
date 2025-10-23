@@ -41,9 +41,14 @@ const resetPasswordSchema = z.object({
 
 type ResetPasswordFormData = z.infer<typeof resetPasswordSchema>;
 
-export default function ResetPasswordForm() {
+interface ResetPasswordFormProps {
+    token?: string;
+}
+
+export default function ResetPasswordForm({ token: propToken }: ResetPasswordFormProps = {}) {
     const searchParams = useSearchParams();
-    const token = searchParams.get('token');
+    const token = propToken || searchParams.get('token');
+    const callbackURL = searchParams.get('callbackURL');
 
     const [loading, setLoading] = useState(false);
     const [validating, setValidating] = useState(true);
@@ -61,13 +66,16 @@ export default function ResetPasswordForm() {
 
     useEffect(() => {
         const validateToken = async () => {
+            console.log('Validating token:', token);
             if (!token) {
+                console.log('No token provided');
                 setValidating(false);
                 return;
             }
 
             try {
                 const result = await validateResetToken(token);
+                console.log('Token validation result:', result);
                 setTokenValid(result.valid);
                 if (!result.valid) {
                     toast.error(result.error);
