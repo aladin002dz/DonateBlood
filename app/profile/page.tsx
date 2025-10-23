@@ -3,6 +3,7 @@
 import type React from "react"
 
 import { getProfile, updateProfile } from "@/actions/profile"
+import { DeleteAccountDialog } from "@/components/delete-account-dialog"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
@@ -123,11 +124,6 @@ export default function ProfilePage() {
     }
   }
 
-  const handleDeleteAccount = () => {
-    if (confirm("Are you sure you want to delete your account? This action cannot be undone.")) {
-      toast.error("Account deletion not implemented yet")
-    }
-  }
 
   // Show loading state
   if (sessionLoading || loading) {
@@ -368,15 +364,16 @@ export default function ProfilePage() {
                       )}
                     </Button>
 
-                    <Button
-                      type="button"
-                      variant="destructive"
-                      onClick={handleDeleteAccount}
-                      className="flex-1 sm:flex-none rounded-lg h-12 font-semibold shadow-lg hover:shadow-xl transition-all duration-200"
-                    >
-                      <Trash2 className="h-5 w-5 mr-2" />
-                      Delete Account
-                    </Button>
+                    <DeleteAccountDialog>
+                      <Button
+                        type="button"
+                        variant="destructive"
+                        className="flex-1 sm:flex-none rounded-lg h-12 font-semibold shadow-lg hover:shadow-xl transition-all duration-200"
+                      >
+                        <Trash2 className="h-5 w-5 mr-2" />
+                        Delete Account
+                      </Button>
+                    </DeleteAccountDialog>
                   </div>
                 </form>
               </CardContent>
