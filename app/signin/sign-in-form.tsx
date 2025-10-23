@@ -1,21 +1,21 @@
 "use client";
 
+import Link from "next/link";
+
 import { customSignIn } from "@/actions/signin";
 import { Button } from "@/components/ui/button";
 import {
     Card,
     CardContent,
     CardDescription,
-    CardFooter,
     CardHeader,
-    CardTitle,
+    CardTitle
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { signIn } from "@/lib/auth-client";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Loader2 } from "lucide-react";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -290,13 +290,6 @@ export default function SignIn() {
                     </div>
                 </div >
             </CardContent >
-            <CardFooter>
-                <div className="flex justify-center w-full border-t py-4">
-                    <p className="text-center text-xs text-muted-foreground">
-                        Secured by <span className="text-primary">better-auth.</span>
-                    </p>
-                </div>
-            </CardFooter>
         </Card >
     );
 }
