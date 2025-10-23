@@ -120,7 +120,7 @@ export async function registerUser(formData: FormData) {
             };
         }
 
-        // Return success - redirect will be handled by the client
+        // Return success - redirect to verification page since email verification is required
         return {
             success: true,
             redirectTo: '/profile'

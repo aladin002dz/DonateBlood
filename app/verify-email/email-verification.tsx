@@ -8,7 +8,7 @@ import {
     CardHeader,
     CardTitle,
 } from "@/components/ui/card";
-import { sendVerificationEmail } from "@/lib/auth-client";
+import { sendVerificationEmail, useSession } from "@/lib/auth-client";
 import { CheckCircle, Loader2, Mail } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
@@ -20,21 +20,32 @@ export default function EmailVerification() {
     const [resending, setResending] = useState(false);
     const router = useRouter();
     const searchParams = useSearchParams();
-    const token = searchParams.get('token') || '123456';
-    const email = searchParams.get('email') || 'test@example.com';
+    const { data: session } = useSession();
+    const token = searchParams.get('token');
 
     const handleVerification = useCallback(async () => {
-        if (!token) return;
+        if (!token) {
+            toast.error("Missing verification token");
+            return;
+        }
 
         setLoading(true);
         try {
-            await sendVerificationEmail({
-                email,
-                callbackURL: "/profile",
+            // Use Better-Auth's verifyEmail function
+            const { verifyEmail } = await import("@/lib/auth-client");
+            await verifyEmail({
+                query: {
+                    token: token,
+                    callbackURL: "/profile"
+                },
                 fetchOptions: {
                     onSuccess: () => {
                         setVerified(true);
                         toast.success("Email verified successfully!");
+                        // Redirect to profile after a short delay
+                        setTimeout(() => {
+                            router.push("/profile");
+                        }, 2000);
                     },
                     onError: (ctx) => {
                         toast.error(ctx.error.message || "Verification failed");
@@ -46,7 +57,7 @@ export default function EmailVerification() {
         } finally {
             setLoading(false);
         }
-    }, [token, email]);
+    }, [token, router]);
 
     useEffect(() => {
         if (token) {
@@ -55,7 +66,7 @@ export default function EmailVerification() {
     }, [token, handleVerification]);
 
     const handleResendVerification = async () => {
-        if (!email) {
+        if (!session?.user?.email) {
             toast.error("Email not found");
             return;
         }
@@ -63,7 +74,7 @@ export default function EmailVerification() {
         setResending(true);
         try {
             await sendVerificationEmail({
-                email,
+                email: session.user.email,
                 fetchOptions: {
                     onSuccess: () => {
                         toast.success("Verification email sent!");
@@ -131,7 +142,7 @@ export default function EmailVerification() {
                             Please check your inbox and spam folder.
                         </p>
 
-                        {email && (
+                        {session?.user?.email && (
                             <div className="text-center">
                                 <Button
                                     variant="outline"
