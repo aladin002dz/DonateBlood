@@ -8,9 +8,9 @@ export async function sendVerificationEmail(email: string, code: string) {
         const resend = new Resend(process.env.RESEND_API_KEY);
 
         const { data, error } = await resend.emails.send({
-            from: process.env.FROM_EMAIL ? `Mahfoudh | Donate Blood Platform <${process.env.FROM_EMAIL}>` : 'mahfoudh <hello@marostudio.dev>',
+            from: process.env.EMAIL_FROM ? `Mahfoudh | Donate Blood Platform <${process.env.EMAIL_FROM}>` : 'mahfoudh <hello@marostudio.dev>',
             to: email,
-            subject: 'Verify your email address',
+            subject: 'Verify your email address - Donate Blood Platform',
             html: `
                 <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
                     <h1 style="color: #333; margin-bottom: 20px;">Verify your email address</h1>
@@ -46,7 +46,7 @@ export async function sendPasswordResetEmail(email: string, token: string) {
         const resetUrl = `${process.env.NEXT_PUBLIC_APP_URL}/reset-password?token=${token}`;
 
         const { data, error } = await resend.emails.send({
-            from: process.env.FROM_EMAIL ? `Mahfoudh | Donate Blood Platform <${process.env.FROM_EMAIL}>` : 'mahfoudh <hello@marostudio.dev>',
+            from: process.env.EMAIL_FROM ? `Mahfoudh <${process.env.EMAIL_FROM}>` : 'mahfoudh <hello@marostudio.dev>',
             to: email,
             subject: 'Password Reset Request - Donate Blood Platform',
             react: PasswordResetEmail({

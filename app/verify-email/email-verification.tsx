@@ -21,7 +21,7 @@ export default function EmailVerification() {
     const router = useRouter();
     const searchParams = useSearchParams();
     const token = searchParams.get('token') || '123456';
-    const email = searchParams.get('email') || 'mahfoudh.arous@gmail.com';
+    const email = searchParams.get('email') || 'test@example.com';
 
     const handleVerification = useCallback(async () => {
         if (!token) return;

@@ -34,9 +34,9 @@ export const auth = betterAuth({
         sendVerificationEmail: async ({ user, url }) => {
             try {
                 await resend.emails.send({
-                    from: `"Mahfoudh | Donate Blood Platform" <${process.env.EMAIL_FROM}>`,
+                    from: `"Mahfoudh" <${process.env.EMAIL_FROM}>`,
                     to: user.email,
-                    subject: "Verify your email address",
+                    subject: "Verify your email address - Donate Blood Platform",
                     react: WelcomeVerificationEmail({
                         userName: user.name || user.email,
                         verificationUrl: `${process.env.NEXT_PUBLIC_APP_URL}${url}`
