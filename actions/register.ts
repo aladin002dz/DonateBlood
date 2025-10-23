@@ -30,7 +30,6 @@ const validatePhoneNumber = (phone: string): boolean => {
 };
 
 export async function registerUser(formData: FormData) {
-    console.log("registerUser======================================")
     try {
         // Extract form data
         const rawData = {

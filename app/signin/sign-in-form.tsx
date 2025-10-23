@@ -15,6 +15,7 @@ import { Label } from "@/components/ui/label";
 import { signIn } from "@/lib/auth-client";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Loader2 } from "lucide-react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -182,7 +183,17 @@ export default function SignIn() {
                                 "Sign In"
                             )}
                         </Button>
-                    </ form >
+                    </form>
+
+                    {/* Forgot Password Link */}
+                    <div className="text-center">
+                        <Link
+                            href="/forgot-password"
+                            className="text-sm text-muted-foreground hover:text-primary underline"
+                        >
+                            Forgot your password?
+                        </Link>
+                    </div>
 
                     {/* Divider */}
                     <div className="relative" >

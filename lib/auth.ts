@@ -34,12 +34,12 @@ export const auth = betterAuth({
         sendVerificationEmail: async ({ user, url }) => {
             try {
                 await resend.emails.send({
-                    from: `"MaroStudio" <${process.env.EMAIL_FROM}>`,
+                    from: `"Mahfoudh | Donate Blood Platform" <${process.env.EMAIL_FROM}>`,
                     to: user.email,
                     subject: "Verify your email address",
                     react: WelcomeVerificationEmail({
                         userName: user.name || user.email,
-                        verificationUrl: `${process.env.EMAIL_FROM}${url}`
+                        verificationUrl: `${process.env.NEXT_PUBLIC_APP_URL}${url}`
                     })
                 })
             } catch (error) {
