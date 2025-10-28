@@ -1,11 +1,12 @@
 "use client"
-
-import { Button } from "@/components/ui/button"
-import { useSession } from "@/lib/auth-client"
-import { Heart, Search, UserPlus } from "lucide-react"
-import Link from "next/link"
+import { Button } from "@/components/ui/button";
+import { useSession } from "@/lib/auth-client";
+import { Heart, Search, UserPlus } from "lucide-react";
+import { useTranslations } from 'next-intl';
+import Link from "next/link";
 
 export default function HomePage() {
+  const t = useTranslations('HomePage');
   const { data: session } = useSession()
   return (
     <div className="container mx-auto px-4 py-8 md:py-16">
@@ -15,7 +16,9 @@ export default function HomePage() {
           <div className="flex justify-center mb-4">
             <Heart className="h-16 w-16 md:h-20 md:w-20 text-primary fill-current" />
           </div>
-          <h1 className="text-3xl md:text-5xl font-bold text-primary mb-4 text-balance">Don de Sang DZ</h1>
+          <h1 className="text-3xl md:text-5xl font-bold text-primary mb-4 text-balance">
+            {t('title')}
+          </h1>
           <p className="text-lg md:text-xl text-muted-foreground mb-8 text-balance">
             One donation can save three lives ❤️
           </p>

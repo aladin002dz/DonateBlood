@@ -1,0 +1,15 @@
+{
+    "HomePage": {
+        "title": "Donate Blood - Algeria (DZ)"
+    },
+    "Navigation": {
+        "home": "Home",
+        "search": "Search",
+        "signin": "Sign In",
+        "register": "Register",
+        "profile": "Profile",
+        "logout": "Logout",
+        "language": "Language",
+        "selectLanguage": "Select Language"
+    }
+}

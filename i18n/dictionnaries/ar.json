@@ -1,0 +1,15 @@
+{
+    "HomePage": {
+        "title": "تبرع بالدم -  الجزائر"
+    },
+    "Navigation": {
+        "home": "الرئيسية",
+        "search": "البحث",
+        "signin": "تسجيل الدخول",
+        "register": "التسجيل",
+        "profile": "الملف الشخصي",
+        "logout": "تسجيل الخروج",
+        "language": "اللغة",
+        "selectLanguage": "اختر اللغة"
+    }
+}
