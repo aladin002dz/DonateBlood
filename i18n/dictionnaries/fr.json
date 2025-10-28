@@ -1,0 +1,15 @@
+{
+    "HomePage": {
+        "title": "Don de Sang DZ"
+    },
+    "Navigation": {
+        "home": "Accueil",
+        "search": "Recherche",
+        "signin": "Se connecter",
+        "register": "S'inscrire",
+        "profile": "Profil",
+        "logout": "Se déconnecter",
+        "language": "Langue",
+        "selectLanguage": "Sélectionner la langue"
+    }
+}
