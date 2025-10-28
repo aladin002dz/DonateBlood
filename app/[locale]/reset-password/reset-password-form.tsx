@@ -48,7 +48,6 @@ interface ResetPasswordFormProps {
 export default function ResetPasswordForm({ token: propToken }: ResetPasswordFormProps = {}) {
     const searchParams = useSearchParams();
     const token = propToken || searchParams.get('token');
-    const callbackURL = searchParams.get('callbackURL');
 
     const [loading, setLoading] = useState(false);
     const [validating, setValidating] = useState(true);
