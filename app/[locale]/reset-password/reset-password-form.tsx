@@ -20,32 +20,34 @@ import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import * as z from "zod";
+import { useTranslations } from 'next-intl';
 
-// Zod validation schema
-const resetPasswordSchema = z.object({
-    password: z
-        .string()
-        .min(1, "Password is required")
-        .min(8, "Password must be at least 8 characters")
-        .regex(
-            /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/,
-            "Password must contain at least one uppercase letter, one lowercase letter, and one number"
-        ),
-    confirmPassword: z
-        .string()
-        .min(1, "Please confirm your password"),
-}).refine((data) => data.password === data.confirmPassword, {
-    message: "Passwords don't match",
-    path: ["confirmPassword"],
-});
-
-type ResetPasswordFormData = z.infer<typeof resetPasswordSchema>;
+// Zod validation schema will use translations
 
 interface ResetPasswordFormProps {
     token?: string;
 }
 
 export default function ResetPasswordForm({ token: propToken }: ResetPasswordFormProps = {}) {
+    const t = useTranslations('Auth.Reset');
+    const v = useTranslations('Validation');
+    const resetPasswordSchema = z.object({
+        password: z
+            .string()
+            .min(1, v('requiredPassword'))
+            .min(8, v('passwordMin8'))
+            .regex(
+                /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/,
+                v('passwordComplex')
+            ),
+        confirmPassword: z
+            .string()
+            .min(1, v('confirmRequired')),
+    }).refine((data) => data.password === data.confirmPassword, {
+        message: v('passwordsMismatch'),
+        path: ["confirmPassword"],
+    });
+    type ResetPasswordFormData = z.infer<typeof resetPasswordSchema>;
     const searchParams = useSearchParams();
     const token = propToken || searchParams.get('token');
 
@@ -121,7 +123,7 @@ export default function ResetPasswordForm({ token: propToken }: ResetPasswordFor
                 <CardContent className="pt-6">
                     <div className="flex items-center justify-center space-x-2">
                         <Loader2 className="h-4 w-4 animate-spin" />
-                        <span>Validating reset token...</span>
+                        <span>{t('validating')}</span>
                     </div>
                 </CardContent>
             </Card>
@@ -133,10 +135,10 @@ export default function ResetPasswordForm({ token: propToken }: ResetPasswordFor
             <Card className="z-50 rounded-md rounded-t-none max-w-md">
                 <CardHeader>
                     <CardTitle className="text-lg md:text-xl text-center">
-                        Invalid Reset Link
+                        {t('invalidTitle')}
                     </CardTitle>
                     <CardDescription className="text-xs md:text-sm text-center">
-                        This password reset link is invalid or has expired
+                        {t('invalidDesc')}
                     </CardDescription>
                 </CardHeader>
                 <CardContent>
@@ -145,12 +147,8 @@ export default function ResetPasswordForm({ token: propToken }: ResetPasswordFor
                             <XCircle className="w-8 h-8 text-red-600" />
                         </div>
                         <div className="space-y-2">
-                            <p className="text-sm text-muted-foreground">
-                                This password reset link is either invalid or has expired.
-                            </p>
-                            <p className="text-sm text-muted-foreground">
-                                Please request a new password reset link.
-                            </p>
+                            <p className="text-sm text-muted-foreground">{t('invalidInfo1')}</p>
+                            <p className="text-sm text-muted-foreground">{t('invalidInfo2')}</p>
                         </div>
                     </div>
                 </CardContent>
@@ -158,13 +156,13 @@ export default function ResetPasswordForm({ token: propToken }: ResetPasswordFor
                     <div className="flex flex-col w-full space-y-2">
                         <Button asChild className="w-full">
                             <Link href="/forgot-password">
-                                Request New Reset Link
+                                {t('requestNew')}
                             </Link>
                         </Button>
                         <Button asChild variant="ghost" className="w-full">
                             <Link href="/signin">
                                 <ArrowLeft className="w-4 h-4 mr-2" />
-                                Back to Sign In
+                                {t('backToSignIn')}
                             </Link>
                         </Button>
                     </div>
@@ -178,10 +176,10 @@ export default function ResetPasswordForm({ token: propToken }: ResetPasswordFor
             <Card className="z-50 rounded-md rounded-t-none max-w-md">
                 <CardHeader>
                     <CardTitle className="text-lg md:text-xl text-center">
-                        Password Reset Successfully
+                        {t('successTitle')}
                     </CardTitle>
                     <CardDescription className="text-xs md:text-sm text-center">
-                        Your password has been updated
+                        {t('successDesc')}
                     </CardDescription>
                 </CardHeader>
                 <CardContent>
@@ -190,19 +188,15 @@ export default function ResetPasswordForm({ token: propToken }: ResetPasswordFor
                             <CheckCircle className="w-8 h-8 text-green-600" />
                         </div>
                         <div className="space-y-2">
-                            <p className="text-sm text-muted-foreground">
-                                Your password has been successfully reset.
-                            </p>
-                            <p className="text-sm text-muted-foreground">
-                                You can now sign in with your new password.
-                            </p>
+                            <p className="text-sm text-muted-foreground">{t('successInfo1')}</p>
+                            <p className="text-sm text-muted-foreground">{t('successInfo2')}</p>
                         </div>
                     </div>
                 </CardContent>
                 <CardFooter>
                     <Button asChild className="w-full">
                         <Link href="/signin">
-                            Sign In with New Password
+                            {t('signInWithNew')}
                         </Link>
                     </Button>
                 </CardFooter>
@@ -213,15 +207,15 @@ export default function ResetPasswordForm({ token: propToken }: ResetPasswordFor
     return (
         <Card className="z-50 rounded-md rounded-t-none max-w-md">
             <CardHeader>
-                <CardTitle className="text-lg md:text-xl">Reset Password</CardTitle>
+                <CardTitle className="text-lg md:text-xl">{t('title')}</CardTitle>
                 <CardDescription className="text-xs md:text-sm">
-                    Enter your new password below
+                    {t('description')}
                 </CardDescription>
             </CardHeader>
             <CardContent>
                 <form onSubmit={handleSubmit(onSubmit)} className="grid gap-4">
                     <div className="grid gap-2">
-                        <Label htmlFor="password">New Password</Label>
+                        <Label htmlFor="password">{t('newPassword')}</Label>
                         <Input
                             id="password"
                             type="password"
@@ -233,7 +227,7 @@ export default function ResetPasswordForm({ token: propToken }: ResetPasswordFor
                         )}
                     </div>
                     <div className="grid gap-2">
-                        <Label htmlFor="confirmPassword">Confirm New Password</Label>
+                        <Label htmlFor="confirmPassword">{t('confirmNewPassword')}</Label>
                         <Input
                             id="confirmPassword"
                             type="password"
@@ -252,7 +246,7 @@ export default function ResetPasswordForm({ token: propToken }: ResetPasswordFor
                         {loading ? (
                             <Loader2 size={16} className="animate-spin" />
                         ) : (
-                            "Reset Password"
+                            t('submit')
                         )}
                     </Button>
                 </form>
@@ -262,7 +256,7 @@ export default function ResetPasswordForm({ token: propToken }: ResetPasswordFor
                     <Button asChild variant="ghost" className="text-sm">
                         <Link href="/signin">
                             <ArrowLeft className="w-4 h-4 mr-2" />
-                            Back to Sign In
+                            {t('backToSignIn')}
                         </Link>
                     </Button>
                 </div>

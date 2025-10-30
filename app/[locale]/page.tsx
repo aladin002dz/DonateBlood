@@ -20,7 +20,7 @@ export default function HomePage() {
             {t('title')}
           </h1>
           <p className="text-lg md:text-xl text-muted-foreground mb-8 text-balance">
-            One donation can save three lives ❤️
+            {t('subtitle')}
           </p>
         </div>
 
@@ -32,7 +32,7 @@ export default function HomePage() {
                 size="lg"
                 className="w-full h-24 text-lg font-semibold bg-primary hover:bg-primary/90 text-primary-foreground rounded-xl shadow-lg hover:shadow-xl transition-all duration-200"
               >
-                <UserPlus className="h-6 w-6 mr-3" />I want to donate
+                <UserPlus className="h-6 w-6 mr-3" />{t('ctaDonate')}
               </Button>
             </Link>
           )}
@@ -44,37 +44,35 @@ export default function HomePage() {
               className="w-full h-24 text-lg font-semibold border-2 border-primary text-primary hover:bg-primary hover:text-primary-foreground rounded-xl shadow-lg hover:shadow-xl transition-all duration-200 bg-transparent"
             >
               <Search className="h-6 w-6 mr-3" />
-              Search for a donor
+              {t('ctaSearch')}
             </Button>
           </Link>
         </div>
 
         {/* Info Section */}
         <div className="bg-card rounded-xl p-6 md:p-8 shadow-lg">
-          <h2 className="text-2xl font-bold text-foreground mb-4">Why donate blood?</h2>
+          <h2 className="text-2xl font-bold text-foreground mb-4">{t('whyTitle')}</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-left">
             <div className="text-center">
               <div className="bg-primary/10 rounded-full w-12 h-12 flex items-center justify-center mx-auto mb-3">
                 <Heart className="h-6 w-6 text-primary" />
               </div>
-              <h3 className="font-semibold mb-2">Save Lives</h3>
-              <p className="text-sm text-muted-foreground">
-                Every donation can help save up to three lives in emergency situations.
-              </p>
+              <h3 className="font-semibold mb-2">{t('benefit1Title')}</h3>
+              <p className="text-sm text-muted-foreground">{t('benefit1Desc')}</p>
             </div>
             <div className="text-center">
               <div className="bg-primary/10 rounded-full w-12 h-12 flex items-center justify-center mx-auto mb-3">
                 <UserPlus className="h-6 w-6 text-primary" />
               </div>
-              <h3 className="font-semibold mb-2">Help Your Community</h3>
-              <p className="text-sm text-muted-foreground">Support hospitals and medical centers across Algeria.</p>
+              <h3 className="font-semibold mb-2">{t('benefit2Title')}</h3>
+              <p className="text-sm text-muted-foreground">{t('benefit2Desc')}</p>
             </div>
             <div className="text-center">
               <div className="bg-primary/10 rounded-full w-12 h-12 flex items-center justify-center mx-auto mb-3">
                 <Search className="h-6 w-6 text-primary" />
               </div>
-              <h3 className="font-semibold mb-2">Quick & Easy</h3>
-              <p className="text-sm text-muted-foreground">Find donors or register to donate in just a few clicks.</p>
+              <h3 className="font-semibold mb-2">{t('benefit3Title')}</h3>
+              <p className="text-sm text-muted-foreground">{t('benefit3Desc')}</p>
             </div>
           </div>
         </div>

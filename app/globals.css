@@ -140,3 +140,7 @@
     transition: background-color 0.2s ease-in-out, border-color 0.2s ease-in-out, color 0.2s ease-in-out;
   }
 }
+
+/* Basic RTL margin flips for common utilities used */
+[dir='rtl'] .mr-3 { margin-right: 0; margin-left: 0.75rem; }
+[dir='rtl'] .ml-3 { margin-left: 0; margin-right: 0.75rem; }

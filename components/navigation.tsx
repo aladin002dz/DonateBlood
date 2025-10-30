@@ -53,6 +53,9 @@ export function Navigation() {
 
   const handleLanguageChange = (newLocale: string) => {
     const currentPath = pathname.replace(`/${locale}`, '') || '/'
+    try {
+      document.cookie = `NEXT_LOCALE=${newLocale}; Path=/; Max-Age=31536000; SameSite=Lax`;
+    } catch {}
     router.push(`/${newLocale}${currentPath}`)
   }
 
