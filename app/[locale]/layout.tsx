@@ -1,5 +1,6 @@
 import { routing } from '@/i18n/routing';
 import { NextIntlClientProvider, hasLocale } from 'next-intl';
+import { getMessages } from 'next-intl/server';
 import { notFound } from 'next/navigation';
 
 
@@ -11,14 +12,26 @@ import { ThemeToggle } from "@/components/theme-toggle";
 import { GeistMono } from "geist/font/mono";
 import { GeistSans } from "geist/font/sans";
 import type { Metadata } from "next";
+import { getTranslations } from 'next-intl/server';
 import type React from "react";
 import { Suspense } from "react";
 import { Toaster } from "sonner";
 
-export const metadata: Metadata = {
-  title: "Don de Sang DZ - Blood Donation Algeria",
-  description: "Connect blood donors and recipients in Algeria. One donation can save three lives.",
-  generator: "v0.app",
+export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: 'meta' });
+  return {
+    title: t('title'),
+    description: t('description'),
+    alternates: {
+      languages: {
+        en: '/en',
+        fr: '/fr',
+        ar: '/ar'
+      }
+    },
+    generator: 'v0.app'
+  };
 }
 
 export function generateStaticParams() {
@@ -36,9 +49,10 @@ export default async function RootLayout({
   if (!hasLocale(routing.locales, locale)) {
     notFound();
   }
+  const messages = await getMessages();
   return (
     <html lang={locale} dir={locale === 'ar' ? 'rtl' : 'ltr'} suppressHydrationWarning>
-      <NextIntlClientProvider locale={locale}>
+      <NextIntlClientProvider locale={locale} messages={messages}>
         <body className={`font-sans ${GeistSans.variable} ${GeistMono.variable}`}>
           <ThemeProvider
             attribute="class"

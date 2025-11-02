@@ -14,6 +14,7 @@ import { Separator } from "@/components/ui/separator"
 import { Switch } from "@/components/ui/switch"
 import { useSession } from "@/lib/auth-client"
 import { AlertTriangle, Heart, Loader2, Save, Trash2, User } from "lucide-react"
+import { useTranslations } from 'next-intl'
 import { useRouter } from "next/navigation"
 import { useEffect, useState } from "react"
 import { toast } from "sonner"
@@ -36,6 +37,7 @@ interface UserProfile {
 }
 
 export default function ProfilePage() {
+  const t = useTranslations('Profile')
   const { data: session, isPending: sessionLoading } = useSession()
   const router = useRouter()
   const [loading, setLoading] = useState(true)
@@ -70,14 +72,14 @@ export default function ProfilePage() {
         setIsAvailable(result.data.emergencyAvailable || false)
       } catch (error) {
         console.error('Error fetching profile:', error)
-        toast.error('Failed to load profile data')
+        toast.error(t('toastLoadError'))
       } finally {
         setLoading(false)
       }
     }
 
     fetchProfileData()
-  }, [session])
+  }, [session, t])
 
   const handleInputChange = (field: string, value: string | boolean) => {
     if (!profileData) return
@@ -115,10 +117,10 @@ export default function ProfilePage() {
         throw new Error(result.error || 'Failed to update profile')
       }
 
-      toast.success('Profile updated successfully!')
+      toast.success(t('toastUpdateSuccess'))
     } catch (error) {
       console.error('Error updating profile:', error)
-      toast.error('Failed to update profile')
+      toast.error(t('toastUpdateFail'))
     } finally {
       setUpdating(false)
     }
@@ -131,7 +133,7 @@ export default function ProfilePage() {
       <div className="min-h-screen flex items-center justify-center">
         <div className="flex flex-col items-center gap-4">
           <Loader2 className="h-8 w-8 animate-spin" />
-          <p className="text-muted-foreground">Loading profile...</p>
+          <p className="text-muted-foreground">{t('loading')}</p>
         </div>
       </div>
     )
@@ -150,8 +152,8 @@ export default function ProfilePage() {
           <div className="flex justify-center mb-4">
             <User className="h-12 w-12 text-primary" />
           </div>
-          <h1 className="text-2xl md:text-3xl font-bold text-primary mb-2">Donor Profile</h1>
-          <p className="text-muted-foreground">Manage your donor information and availability</p>
+          <h1 className="text-2xl md:text-3xl font-bold text-primary mb-2">{t('title')}</h1>
+          <p className="text-muted-foreground">{t('subtitle')}</p>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -161,13 +163,13 @@ export default function ProfilePage() {
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <Heart className="h-5 w-5 text-primary" />
-                  Availability Status
+                  {t('availabilityStatus')}
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="flex items-center justify-between">
                   <Label htmlFor="availability" className="text-sm font-medium">
-                    Available for donation
+                    {t('availableForDonation')}
                   </Label>
                   <Switch id="availability" checked={isAvailable} onCheckedChange={setIsAvailable} />
                 </div>
@@ -178,7 +180,7 @@ export default function ProfilePage() {
                     className={`text-sm px-4 py-2 ${isAvailable ? "bg-green-100 text-green-800" : "bg-gray-100 text-gray-600"
                       }`}
                   >
-                    {isAvailable ? "Available" : "Unavailable"}
+                    {isAvailable ? t('available') : t('unavailable')}
                   </Badge>
                 </div>
 
@@ -186,21 +188,21 @@ export default function ProfilePage() {
 
                 <div className="space-y-2 text-sm">
                   <div className="flex justify-between">
-                    <span className="text-muted-foreground">Blood Group:</span>
+                    <span className="text-muted-foreground">{t('bloodGroup')}</span>
                     <Badge variant="secondary" className="bg-primary text-primary-foreground">
-                      {profileData.bloodGroup || "Not specified"}
+                      {profileData.bloodGroup || t('notSpecified')}
                     </Badge>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-muted-foreground">Last Donation:</span>
-                    <span>{profileData.lastDonation ? new Date(profileData.lastDonation).toLocaleDateString() : "Not specified"}</span>
+                    <span className="text-muted-foreground">{t('lastDonation')}</span>
+                    <span>{profileData.lastDonation ? new Date(profileData.lastDonation).toLocaleDateString() : t('notSpecified')}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-muted-foreground">Location:</span>
+                    <span className="text-muted-foreground">{t('location')}</span>
                     <span className="text-right">
                       {profileData.commune && profileData.wilaya
                         ? `${profileData.commune}, ${profileData.wilaya}`
-                        : "Not specified"
+                        : t('notSpecified')
                       }
                     </span>
                   </div>
@@ -213,18 +215,18 @@ export default function ProfilePage() {
           <div className="lg:col-span-2">
             <Card className="shadow-lg">
               <CardHeader>
-                <CardTitle>Update Profile Information</CardTitle>
-                <CardDescription>Keep your information up to date to help others find you when needed</CardDescription>
+                <CardTitle>{t('updateProfileTitle')}</CardTitle>
+                <CardDescription>{t('updateProfileDesc')}</CardDescription>
               </CardHeader>
 
               <CardContent>
                 <form onSubmit={handleUpdate} className="space-y-6">
                   {/* Personal Information */}
                   <div className="space-y-4">
-                    <h3 className="text-lg font-semibold text-foreground border-b pb-2">Personal Information</h3>
+                    <h3 className="text-lg font-semibold text-foreground border-b pb-2">{t('personalInfo')}</h3>
 
                     <div className="space-y-2">
-                      <Label htmlFor="fullName">Full Name</Label>
+                      <Label htmlFor="fullName">{t('fullName')}</Label>
                       <Input
                         id="fullName"
                         type="text"
@@ -235,13 +237,13 @@ export default function ProfilePage() {
                     </div>
 
                     <div className="space-y-2">
-                      <Label htmlFor="bloodGroup">Blood Group</Label>
+                      <Label htmlFor="bloodGroup">{t('bloodGroupLabel')}</Label>
                       <Select
                         value={profileData.bloodGroup || ""}
                         onValueChange={(value) => handleInputChange("bloodGroup", value)}
                       >
                         <SelectTrigger className="rounded-lg">
-                          <SelectValue placeholder="Select blood group" />
+                          <SelectValue placeholder={t('selectBloodGroup')} />
                         </SelectTrigger>
                         <SelectContent>
                           {bloodGroups.map((group) => (
@@ -255,7 +257,7 @@ export default function ProfilePage() {
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       <div className="space-y-2">
-                        <Label htmlFor="email">Email</Label>
+                        <Label htmlFor="email">{t('email')}</Label>
                         <Input
                           id="email"
                           type="email"
@@ -266,7 +268,7 @@ export default function ProfilePage() {
                       </div>
 
                       <div className="space-y-2">
-                        <Label htmlFor="phone">Phone Number</Label>
+                        <Label htmlFor="phone">{t('phoneNumber')}</Label>
                         <Input
                           id="phone"
                           type="tel"
@@ -280,11 +282,11 @@ export default function ProfilePage() {
 
                   {/* Location Information */}
                   <div className="space-y-4">
-                    <h3 className="text-lg font-semibold text-foreground border-b pb-2">Location</h3>
+                    <h3 className="text-lg font-semibold text-foreground border-b pb-2">{t('locationInfo')}</h3>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       <div className="space-y-2">
-                        <Label htmlFor="wilaya">Wilaya (Province)</Label>
+                        <Label htmlFor="wilaya">{t('wilaya')}</Label>
                         <Input
                           id="wilaya"
                           type="text"
@@ -295,7 +297,7 @@ export default function ProfilePage() {
                       </div>
 
                       <div className="space-y-2">
-                        <Label htmlFor="commune">Commune (City)</Label>
+                        <Label htmlFor="commune">{t('commune')}</Label>
                         <Input
                           id="commune"
                           type="text"
@@ -309,11 +311,11 @@ export default function ProfilePage() {
 
                   {/* Donation Information */}
                   <div className="space-y-4">
-                    <h3 className="text-lg font-semibold text-foreground border-b pb-2">Donation Information</h3>
+                    <h3 className="text-lg font-semibold text-foreground border-b pb-2">{t('donationInfo')}</h3>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       <div className="space-y-2">
-                        <Label htmlFor="lastDonation">Date of Last Donation</Label>
+                        <Label htmlFor="lastDonation">{t('lastDonationLabel')}</Label>
                         <Input
                           id="lastDonation"
                           type="date"
@@ -324,13 +326,13 @@ export default function ProfilePage() {
                       </div>
 
                       <div className="space-y-2">
-                        <Label htmlFor="donationType">Donation Type</Label>
+                        <Label htmlFor="donationType">{t('donationType')}</Label>
                         <Select
                           value={profileData.donationType || ""}
                           onValueChange={(value) => handleInputChange("donationType", value)}
                         >
                           <SelectTrigger className="rounded-lg">
-                            <SelectValue placeholder="Select donation type" />
+                            <SelectValue placeholder={t('selectDonationType')} />
                           </SelectTrigger>
                           <SelectContent>
                             {donationTypes.map((type) => (
@@ -354,12 +356,12 @@ export default function ProfilePage() {
                       {updating ? (
                         <>
                           <Loader2 className="h-5 w-5 mr-2 animate-spin" />
-                          Updating...
+                          {t('updating')}
                         </>
                       ) : (
                         <>
                           <Save className="h-5 w-5 mr-2" />
-                          Update Profile
+                          {t('updateProfile')}
                         </>
                       )}
                     </Button>
@@ -371,7 +373,7 @@ export default function ProfilePage() {
                         className="flex-1 sm:flex-none rounded-lg h-12 font-semibold shadow-lg hover:shadow-xl transition-all duration-200"
                       >
                         <Trash2 className="h-5 w-5 mr-2" />
-                        Delete Account
+                        {t('deleteAccount')}
                       </Button>
                     </DeleteAccountDialog>
                   </div>
@@ -385,10 +387,9 @@ export default function ProfilePage() {
                 <div className="flex items-start gap-3">
                   <AlertTriangle className="h-5 w-5 text-orange-600 mt-0.5" />
                   <div className="text-sm">
-                    <p className="font-medium text-orange-800 mb-1">Important Reminder</p>
+                    <p className="font-medium text-orange-800 mb-1">{t('importantReminder')}</p>
                     <p className="text-orange-700">
-                      Please keep your information updated and accurate. This helps ensure that people can reach you
-                      when blood donations are urgently needed.
+                      {t('importantReminderText')}
                     </p>
                   </div>
                 </div>

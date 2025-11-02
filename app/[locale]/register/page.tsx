@@ -14,80 +14,84 @@ import { useState } from "react"
 import { useForm } from "react-hook-form"
 import { toast } from "sonner"
 import { z } from "zod"
+import { useTranslations } from 'next-intl'
 
-// Zod validation schema
-const registrationSchema = z.object({
-  fullName: z
-    .string()
-    .min(2, "Full name must be at least 2 characters")
-    .max(100, "Full name must be less than 100 characters")
-    .regex(/^[a-zA-Z\s]+$/, "Full name can only contain letters and spaces"),
-
-  bloodGroup: z
-    .string()
-    .min(1, "Blood group is required")
-    .refine((val) => ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"].includes(val), {
-      message: "Please select a valid blood group"
-    }),
-
-  email: z
-    .string()
-    .min(1, "Email is required")
-    .email("Please enter a valid email address"),
-
-  password: z
-    .string()
-    .min(8, "Password must be at least 8 characters")
-    .max(100, "Password must be less than 100 characters")
-    .regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/, "Password must contain at least one uppercase letter, one lowercase letter, and one number"),
-
-  confirmPassword: z.string(),
-
-  phone: z
-    .string()
-    .min(1, "Phone number is required")
-    .regex(/^(\+?[1-9]\d{1,14}|0\d{9,14})$/, "Please enter a valid phone number (e.g., +1234567890 or 0540109714)"),
-
-  wilaya: z
-    .string()
-    .min(2, "Wilaya must be at least 2 characters")
-    .max(50, "Wilaya must be less than 50 characters"),
-
-  commune: z
-    .string()
-    .min(2, "Commune must be at least 2 characters")
-    .max(50, "Commune must be less than 50 characters"),
-
-  lastDonation: z
-    .string()
-    .optional()
-    .refine((val) => {
-      if (!val) return true; // Optional field
-      const date = new Date(val);
-      const today = new Date();
-      return date <= today;
-    }, "Last donation date cannot be in the future"),
-
-  donationType: z
-    .string()
-    .min(1, "Donation type is required")
-    .refine((val) => ["Blood", "Blood & Platelets"].includes(val), {
-      message: "Please select a valid donation type"
-    }),
-
-  emergencyAvailable: z.boolean()
-}).refine((data) => data.password === data.confirmPassword, {
-  message: "Passwords do not match",
-  path: ["confirmPassword"]
-});
-
-type RegistrationFormData = z.infer<typeof registrationSchema>;
+// Schema will be defined inside component to use translations
 
 export default function RegisterPage() {
+  const t = useTranslations('Auth.Register')
+  const v = useTranslations('Validation')
   const [loading, setLoading] = useState(false)
 
   const bloodGroups = ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"]
   const donationTypes = ["Blood", "Blood & Platelets"]
+
+  const registrationSchema = z.object({
+    fullName: z
+      .string()
+      .min(2, v('minName2'))
+      .max(100, v('maxName100'))
+      .regex(/^[a-zA-Z\s]+$/, v('nameAlpha')),
+
+    bloodGroup: z
+      .string()
+      .min(1, v('bloodRequired'))
+      .refine((val) => ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"].includes(val), {
+        message: v('bloodInvalid')
+      }),
+
+    email: z
+      .string()
+      .min(1, v('emailRequired'))
+      .email(v('emailInvalid')),
+
+    password: z
+      .string()
+      .min(8, v('passwordMin8'))
+      .max(100, v('passwordMax100'))
+      .regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/, v('passwordComplex')),
+
+    confirmPassword: z.string(),
+
+    phone: z
+      .string()
+      .min(1, v('phoneRequired'))
+      .regex(/^(\+?[1-9]\d{1,14}|0\d{9,14})$/, v('phoneInvalid')),
+
+    wilaya: z
+      .string()
+      .min(2, v('wilayaMin2'))
+      .max(50, v('wilayaMax50')),
+
+    commune: z
+      .string()
+      .min(2, v('communeMin2'))
+      .max(50, v('communeMax50')),
+
+    lastDonation: z
+      .string()
+      .optional()
+      .refine((val) => {
+        if (!val) return true;
+        const date = new Date(val);
+        const today = new Date();
+        return date <= today;
+      }, v('lastDonationFuture')),
+
+    donationType: z
+      .string()
+      .min(1, v('donationTypeRequired'))
+      .refine((val) => ["Blood", "Blood & Platelets"].includes(val), {
+        message: v('donationTypeInvalid')
+      }),
+
+    emergencyAvailable: z.boolean()
+  }).refine((data) => data.password === data.confirmPassword, {
+    message: v('passwordsMismatch'),
+    path: ["confirmPassword"]
+  });
+
+  type RegistrationFormData = z.infer<typeof registrationSchema>;
 
   const {
     register,
@@ -128,9 +132,9 @@ export default function RegisterPage() {
       const result = await registerUser(formDataObj)
 
       if (result?.success === false) {
-        toast.error(result.error || 'Registration failed')
+        toast.error(result.error || t('toastFail'))
       } else if (result?.success === true) {
-        toast.success('Registration successful!')
+        toast.success(t('toastSuccess'))
         reset() // Reset form after successful submission
 
         // Handle redirect on client side
@@ -140,7 +144,7 @@ export default function RegisterPage() {
       }
     } catch (error) {
       console.error('Registration error:', error)
-      toast.error('An error occurred during registration')
+      toast.error(t('toastGeneric'))
     } finally {
       setLoading(false)
     }
@@ -154,9 +158,9 @@ export default function RegisterPage() {
             <div className="flex justify-center mb-4">
               <Heart className="h-12 w-12 text-primary fill-current" />
             </div>
-            <CardTitle className="text-2xl md:text-3xl text-primary">Donor Registration</CardTitle>
+            <CardTitle className="text-2xl md:text-3xl text-primary">{t('title')}</CardTitle>
             <CardDescription className="text-base">
-              Join our community of life-savers. Register to become a blood donor.
+              {t('description')}
             </CardDescription>
           </CardHeader>
 
@@ -164,14 +168,14 @@ export default function RegisterPage() {
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
               {/* Personal Information */}
               <div className="space-y-4">
-                <h3 className="text-lg font-semibold text-foreground border-b pb-2">Personal Information</h3>
+                <h3 className="text-lg font-semibold text-foreground border-b pb-2">{t('personalInfo')}</h3>
 
                 <div className="space-y-2">
-                  <Label htmlFor="fullName">Full Name *</Label>
+                  <Label htmlFor="fullName">{t('fullNameLabel')}</Label>
                   <Input
                     id="fullName"
                     type="text"
-                    placeholder="Enter your full name"
+                    placeholder={t('fullNamePlaceholder')}
                     {...register("fullName")}
                     className={`rounded-lg ${errors.fullName ? 'border-red-500' : ''}`}
                   />
@@ -181,13 +185,13 @@ export default function RegisterPage() {
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="bloodGroup">Blood Group *</Label>
+                  <Label htmlFor="bloodGroup">{t('bloodGroupLabel')}</Label>
                   <Select
                     value={watchedValues.bloodGroup}
                     onValueChange={(value) => setValue("bloodGroup", value)}
                   >
                     <SelectTrigger className={`rounded-lg ${errors.bloodGroup ? 'border-red-500' : ''}`}>
-                      <SelectValue placeholder="Select your blood group" />
+                      <SelectValue placeholder={t('bloodGroupPlaceholder')} />
                     </SelectTrigger>
                     <SelectContent>
                       {bloodGroups.map((group) => (
@@ -204,11 +208,11 @@ export default function RegisterPage() {
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="space-y-2">
-                    <Label htmlFor="email">Email *</Label>
+                    <Label htmlFor="email">{t('emailLabel')}</Label>
                     <Input
                       id="email"
                       type="email"
-                      placeholder="your.email@example.com"
+                      placeholder={t('emailPlaceholder')}
                       {...register("email")}
                       className={`rounded-lg ${errors.email ? 'border-red-500' : ''}`}
                     />
@@ -218,11 +222,11 @@ export default function RegisterPage() {
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="phone">Phone Number *</Label>
+                    <Label htmlFor="phone">{t('phoneLabel')}</Label>
                     <Input
                       id="phone"
                       type="tel"
-                      placeholder="0555 123 456"
+                      placeholder={t('phonePlaceholder')}
                       {...register("phone")}
                       className={`rounded-lg ${errors.phone ? 'border-red-500' : ''}`}
                     />
@@ -234,11 +238,11 @@ export default function RegisterPage() {
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="space-y-2">
-                    <Label htmlFor="password">Password *</Label>
+                    <Label htmlFor="password">{t('passwordLabel')}</Label>
                     <Input
                       id="password"
                       type="password"
-                      placeholder="Create a secure password"
+                      placeholder={t('passwordPlaceholder')}
                       {...register("password")}
                       className={`rounded-lg ${errors.password ? 'border-red-500' : ''}`}
                     />
@@ -248,11 +252,11 @@ export default function RegisterPage() {
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="confirmPassword">Confirm Password *</Label>
+                    <Label htmlFor="confirmPassword">{t('confirmPasswordLabel')}</Label>
                     <Input
                       id="confirmPassword"
                       type="password"
-                      placeholder="Confirm your password"
+                      placeholder={t('confirmPasswordPlaceholder')}
                       {...register("confirmPassword")}
                       className={`rounded-lg ${errors.confirmPassword ? 'border-red-500' : ''}`}
                     />
@@ -265,15 +269,15 @@ export default function RegisterPage() {
 
               {/* Location Information */}
               <div className="space-y-4">
-                <h3 className="text-lg font-semibold text-foreground border-b pb-2">Location</h3>
+                <h3 className="text-lg font-semibold text-foreground border-b pb-2">{t('location')}</h3>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="space-y-2">
-                    <Label htmlFor="wilaya">Wilaya (Province) *</Label>
+                    <Label htmlFor="wilaya">{t('wilayaLabel')}</Label>
                     <Input
                       id="wilaya"
                       type="text"
-                      placeholder="e.g., Algiers, Oran, Constantine"
+                      placeholder={t('wilayaPlaceholder')}
                       {...register("wilaya")}
                       className={`rounded-lg ${errors.wilaya ? 'border-red-500' : ''}`}
                     />
@@ -283,11 +287,11 @@ export default function RegisterPage() {
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="commune">Commune (City) *</Label>
+                    <Label htmlFor="commune">{t('communeLabel')}</Label>
                     <Input
                       id="commune"
                       type="text"
-                      placeholder="e.g., Bab Ezzouar, Bir Mourad Rais"
+                      placeholder={t('communePlaceholder')}
                       {...register("commune")}
                       className={`rounded-lg ${errors.commune ? 'border-red-500' : ''}`}
                     />
@@ -300,11 +304,11 @@ export default function RegisterPage() {
 
               {/* Donation Information */}
               <div className="space-y-4">
-                <h3 className="text-lg font-semibold text-foreground border-b pb-2">Donation Information</h3>
+                <h3 className="text-lg font-semibold text-foreground border-b pb-2">{t('donationInfo')}</h3>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="space-y-2">
-                    <Label htmlFor="lastDonation">Date of Last Donation</Label>
+                    <Label htmlFor="lastDonation">{t('lastDonationLabel')}</Label>
                     <Input
                       id="lastDonation"
                       type="date"
@@ -317,13 +321,13 @@ export default function RegisterPage() {
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="donationType">Donation Type *</Label>
+                    <Label htmlFor="donationType">{t('donationTypeLabel')}</Label>
                     <Select
                       value={watchedValues.donationType}
                       onValueChange={(value) => setValue("donationType", value)}
                     >
                       <SelectTrigger className={`rounded-lg ${errors.donationType ? 'border-red-500' : ''}`}>
-                        <SelectValue placeholder="Select donation type" />
+                        <SelectValue placeholder={t('donationTypePlaceholder')} />
                       </SelectTrigger>
                       <SelectContent>
                         {donationTypes.map((type) => (
@@ -349,7 +353,7 @@ export default function RegisterPage() {
                     htmlFor="emergencyAvailable"
                     className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
                   >
-                    Available for emergency donations
+                    {t('emergencyAvailable')}
                   </Label>
                 </div>
               </div>
@@ -363,12 +367,12 @@ export default function RegisterPage() {
                 {loading ? (
                   <>
                     <Loader2 className="h-5 w-5 mr-2 animate-spin" />
-                    Registering...
+                    {t('submitting')}
                   </>
                 ) : (
                   <>
                     <UserPlus className="h-5 w-5 mr-2" />
-                    Register as Donor
+                    {t('submit')}
                   </>
                 )}
               </Button>
