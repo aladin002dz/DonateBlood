@@ -169,20 +169,20 @@ export default function SearchPage() {
               </Label>
             </div>
 
-            <div className="flex gap-2">
+            <div className="flex gap-2 items-center">
               <Button onClick={clearFilters} variant="outline" className="rounded-lg bg-transparent">
                 {t('clearFilters')}
               </Button>
-              <div className="text-sm text-muted-foreground flex items-center">
-                {loading ? (
-                  <div className="flex items-center gap-2">
-                    <Loader2 className="h-4 w-4 animate-spin" />
-                    {t('loading')}
-                  </div>
-                ) : (
-                  `${t('found')} ${donors.length} ${donors.length !== 1 ? t('foundDonorsPlural') : t('foundDonors')}`
-                )}
-              </div>
+              {loading ? (
+                <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                  {t('loading')}
+                </div>
+              ) : (
+                <div className="text-lg font-bold text-primary">
+                  {t('found')} <span>{donors.length}</span> {donors.length !== 1 ? t('foundDonorsPlural') : t('foundDonors')}
+                </div>
+              )}
             </div>
           </CardContent>
         </Card>
