@@ -19,20 +19,23 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import * as z from "zod";
+import { useTranslations } from 'next-intl';
 
-// Zod validation schema
-const forgotPasswordSchema = z.object({
-    email: z
-        .string()
-        .min(1, "Email is required")
-        .email("Please enter a valid email address"),
-});
-
-type ForgotPasswordFormData = z.infer<typeof forgotPasswordSchema>;
+// Zod validation schema will use translations
 
 export default function ForgotPasswordForm() {
     const [loading, setLoading] = useState(false);
     const [emailSent, setEmailSent] = useState(false);
+    const t = useTranslations('Auth.Forgot');
+    const v = useTranslations('Validation');
+
+    const forgotPasswordSchema = z.object({
+        email: z
+            .string()
+            .min(1, v('emailRequired'))
+            .email(v('emailInvalid')),
+    });
+    type ForgotPasswordFormData = z.infer<typeof forgotPasswordSchema>;
 
     const {
         register,
@@ -57,7 +60,7 @@ export default function ForgotPasswordForm() {
             }
         } catch (error) {
             console.error('Password reset request error:', error);
-            toast.error('An error occurred. Please try again.');
+            toast.error(t('toastGeneric'));
         } finally {
             setLoading(false);
         }
@@ -66,14 +69,14 @@ export default function ForgotPasswordForm() {
     if (emailSent) {
         return (
             <Card className="z-50 rounded-md rounded-t-none max-w-md">
-                <CardHeader>
-                    <CardTitle className="text-lg md:text-xl text-center">
-                        Check Your Email
-                    </CardTitle>
-                    <CardDescription className="text-xs md:text-sm text-center">
-                        We&apos;ve sent you a password reset link
-                    </CardDescription>
-                </CardHeader>
+            <CardHeader>
+                <CardTitle className="text-lg md:text-xl text-center">
+                    {t('sentTitle')}
+                </CardTitle>
+                <CardDescription className="text-xs md:text-sm text-center">
+                    {t('sentDescription')}
+                </CardDescription>
+            </CardHeader>
                 <CardContent>
                     <div className="text-center space-y-4">
                         <div className="w-16 h-16 mx-auto bg-green-100 rounded-full flex items-center justify-center">
@@ -92,15 +95,9 @@ export default function ForgotPasswordForm() {
                             </svg>
                         </div>
                         <div className="space-y-2">
-                            <p className="text-sm text-muted-foreground">
-                                We&apos;ve sent a password reset link to your email address.
-                            </p>
-                            <p className="text-sm text-muted-foreground">
-                                Please check your inbox and follow the instructions to reset your password.
-                            </p>
-                            <p className="text-xs text-muted-foreground">
-                                The link will expire in 1 hour for security reasons.
-                            </p>
+                            <p className="text-sm text-muted-foreground">{t('sentInfo1')}</p>
+                            <p className="text-sm text-muted-foreground">{t('sentInfo2')}</p>
+                            <p className="text-xs text-muted-foreground">{t('sentInfo3')}</p>
                         </div>
                     </div>
                 </CardContent>
@@ -111,12 +108,12 @@ export default function ForgotPasswordForm() {
                             className="w-full"
                             onClick={() => setEmailSent(false)}
                         >
-                            Send Another Email
+                            {t('sendAnother')}
                         </Button>
                         <Button asChild variant="ghost" className="w-full">
                             <Link href="/signin">
                                 <ArrowLeft className="w-4 h-4 mr-2" />
-                                Back to Sign In
+                                {t('backToSignIn')}
                             </Link>
                         </Button>
                     </div>
@@ -128,19 +125,19 @@ export default function ForgotPasswordForm() {
     return (
         <Card className="z-50 rounded-md rounded-t-none max-w-md">
             <CardHeader>
-                <CardTitle className="text-lg md:text-xl">Forgot Password</CardTitle>
+                <CardTitle className="text-lg md:text-xl">{t('title')}</CardTitle>
                 <CardDescription className="text-xs md:text-sm">
-                    Enter your email address and we&apos;ll send you a link to reset your password
+                    {t('description')}
                 </CardDescription>
             </CardHeader>
             <CardContent>
                 <form onSubmit={handleSubmit(onSubmit)} className="grid gap-4">
                     <div className="grid gap-2">
-                        <Label htmlFor="email">Email Address</Label>
+                        <Label htmlFor="email">{t('emailLabel')}</Label>
                         <Input
                             id="email"
                             type="email"
-                            placeholder="Enter your email address"
+                            placeholder={t('emailPlaceholder')}
                             {...register("email")}
                         />
                         {errors.email && (
@@ -155,7 +152,7 @@ export default function ForgotPasswordForm() {
                         {loading ? (
                             <Loader2 size={16} className="animate-spin" />
                         ) : (
-                            "Send Reset Link"
+                            t('submit')
                         )}
                     </Button>
                 </form>
@@ -165,7 +162,7 @@ export default function ForgotPasswordForm() {
                     <Button asChild variant="ghost" className="text-sm">
                         <Link href="/signin">
                             <ArrowLeft className="w-4 h-4 mr-2" />
-                            Back to Sign In
+                            {t('backToSignIn')}
                         </Link>
                     </Button>
                 </div>

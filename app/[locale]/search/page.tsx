@@ -9,9 +9,11 @@ import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Switch } from "@/components/ui/switch"
 import { Clock, Heart, Loader2, MapPin, Phone, Search } from "lucide-react"
+import { useTranslations } from 'next-intl'
 import { useEffect, useState } from "react"
 
 export default function SearchPage() {
+  const t = useTranslations('Search')
   const [filters, setFilters] = useState<SearchFilters>({
     bloodGroup: "",
     wilaya: "",
@@ -81,8 +83,8 @@ export default function SearchPage() {
           <div className="flex justify-center mb-4">
             <Search className="h-12 w-12 text-primary" />
           </div>
-          <h1 className="text-2xl md:text-3xl font-bold text-primary mb-2">Find Blood Donors</h1>
-          <p className="text-muted-foreground">Search for available donors in your area</p>
+          <h1 className="text-2xl md:text-3xl font-bold text-primary mb-2">{t('title')}</h1>
+          <p className="text-muted-foreground">{t('subtitle')}</p>
         </div>
 
         {/* Search Filters */}
@@ -90,17 +92,17 @@ export default function SearchPage() {
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Search className="h-5 w-5" />
-              Search Filters
+              {t('searchFilters')}
             </CardTitle>
-            <CardDescription>Use the filters below to find donors that match your requirements</CardDescription>
+            <CardDescription>{t('searchFiltersDesc')}</CardDescription>
           </CardHeader>
           <CardContent>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
               <div className="space-y-2">
-                <Label htmlFor="bloodGroup">Blood Group</Label>
+                <Label htmlFor="bloodGroup">{t('bloodGroup')}</Label>
                 <Select value={filters.bloodGroup || ""} onValueChange={(value) => handleFilterChange("bloodGroup", value)}>
                   <SelectTrigger className="rounded-lg">
-                    <SelectValue placeholder="Any blood group" />
+                    <SelectValue placeholder={t('anyBloodGroup')} />
                   </SelectTrigger>
                   <SelectContent>
                     {bloodGroups.map((group) => (
@@ -113,11 +115,11 @@ export default function SearchPage() {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="wilaya">Wilaya</Label>
+                <Label htmlFor="wilaya">{t('wilaya')}</Label>
                 <Input
                   id="wilaya"
                   type="text"
-                  placeholder="Enter wilaya"
+                  placeholder={t('enterWilaya')}
                   value={filters.wilaya || ""}
                   onChange={(e) => handleFilterChange("wilaya", e.target.value)}
                   className="rounded-lg"
@@ -125,11 +127,11 @@ export default function SearchPage() {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="commune">Commune</Label>
+                <Label htmlFor="commune">{t('commune')}</Label>
                 <Input
                   id="commune"
                   type="text"
-                  placeholder="Enter commune"
+                  placeholder={t('enterCommune')}
                   value={filters.commune || ""}
                   onChange={(e) => handleFilterChange("commune", e.target.value)}
                   className="rounded-lg"
@@ -137,13 +139,13 @@ export default function SearchPage() {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="donationType">Donation Type</Label>
+                <Label htmlFor="donationType">{t('donationType')}</Label>
                 <Select
                   value={filters.donationType || ""}
                   onValueChange={(value) => handleFilterChange("donationType", value)}
                 >
                   <SelectTrigger className="rounded-lg">
-                    <SelectValue placeholder="Any type" />
+                    <SelectValue placeholder={t('anyType')} />
                   </SelectTrigger>
                   <SelectContent>
                     {donationTypes.map((type) => (
@@ -163,22 +165,22 @@ export default function SearchPage() {
                 onCheckedChange={(checked) => setFilters({ ...filters, emergencyOnly: checked })}
               />
               <Label htmlFor="emergencyOnly" className="text-sm font-medium">
-                Show only emergency available donors
+                {t('emergencyOnly')}
               </Label>
             </div>
 
             <div className="flex gap-2">
               <Button onClick={clearFilters} variant="outline" className="rounded-lg bg-transparent">
-                Clear Filters
+                {t('clearFilters')}
               </Button>
               <div className="text-sm text-muted-foreground flex items-center">
                 {loading ? (
                   <div className="flex items-center gap-2">
                     <Loader2 className="h-4 w-4 animate-spin" />
-                    Loading...
+                    {t('loading')}
                   </div>
                 ) : (
-                  `Found ${donors.length} donor${donors.length !== 1 ? "s" : ""}`
+                  `${t('found')} ${donors.length} ${donors.length !== 1 ? t('foundDonorsPlural') : t('foundDonors')}`
                 )}
               </div>
             </div>
@@ -188,9 +190,9 @@ export default function SearchPage() {
         {/* Results */}
         {error && (
           <div className="text-center py-8">
-            <div className="text-red-500 mb-2">Error: {error}</div>
+            <div className="text-red-500 mb-2">{t('error')} {error}</div>
             <Button onClick={() => window.location.reload()} variant="outline">
-              Try Again
+              {t('tryAgain')}
             </Button>
           </div>
         )}
@@ -198,8 +200,8 @@ export default function SearchPage() {
         {loading && (
           <div className="text-center py-12">
             <Loader2 className="h-16 w-16 text-muted-foreground mx-auto mb-4 animate-spin" />
-            <h3 className="text-lg font-semibold text-foreground mb-2">Loading donors...</h3>
-            <p className="text-muted-foreground">Please wait while we fetch the latest donor information.</p>
+            <h3 className="text-lg font-semibold text-foreground mb-2">{t('loadingDonors')}</h3>
+            <p className="text-muted-foreground">{t('loadingDonorsDesc')}</p>
           </div>
         )}
 
@@ -223,7 +225,7 @@ export default function SearchPage() {
                             variant={donor.emergencyAvailable ? "default" : "secondary"}
                             className={donor.emergencyAvailable ? "bg-green-100 text-green-800" : "bg-gray-100 text-gray-600"}
                           >
-                            {donor.emergencyAvailable ? "Available" : "Unavailable"}
+                            {donor.emergencyAvailable ? t('available') : t('unavailable')}
                           </Badge>
                         </div>
                       </div>
@@ -242,13 +244,13 @@ export default function SearchPage() {
                     {donor.lastDonation && (
                       <div className="flex items-center gap-2 text-sm text-muted-foreground">
                         <Clock className="h-4 w-4" />
-                        <span>Last donation: {new Date(donor.lastDonation).toLocaleDateString()}</span>
+                        <span>{t('lastDonation')} {new Date(donor.lastDonation).toLocaleDateString()}</span>
                       </div>
                     )}
 
                     {donor.donationType && (
                       <div className="text-sm">
-                        <span className="font-medium">Type:</span> {donor.donationType}
+                        <span className="font-medium">{t('type')}</span> {donor.donationType}
                       </div>
                     )}
 
@@ -258,7 +260,7 @@ export default function SearchPage() {
                       className="w-full bg-primary hover:bg-primary/90 text-primary-foreground rounded-lg mt-4 disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                       <Phone className="h-4 w-4 mr-2" />
-                      {donor.phone ? "Contact Donor" : "No Contact Info"}
+                      {donor.phone ? t('contactDonor') : t('noContactInfo')}
                     </Button>
                   </CardContent>
                 </Card>
@@ -268,8 +270,8 @@ export default function SearchPage() {
             {donors.length === 0 && (
               <div className="text-center py-12">
                 <Search className="h-16 w-16 text-muted-foreground mx-auto mb-4" />
-                <h3 className="text-lg font-semibold text-foreground mb-2">No donors found</h3>
-                <p className="text-muted-foreground">Try adjusting your search filters to find more donors in your area.</p>
+                <h3 className="text-lg font-semibold text-foreground mb-2">{t('noDonorsFound')}</h3>
+                <p className="text-muted-foreground">{t('noDonorsFoundDesc')}</p>
               </div>
             )}
           </>
