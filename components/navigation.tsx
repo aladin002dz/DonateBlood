@@ -55,7 +55,7 @@ export function Navigation() {
     const currentPath = pathname.replace(`/${locale}`, '') || '/'
     try {
       document.cookie = `NEXT_LOCALE=${newLocale}; Path=/; Max-Age=31536000; SameSite=Lax`;
-    } catch {}
+    } catch { }
     router.push(`/${newLocale}${currentPath}`)
   }
 
@@ -66,7 +66,7 @@ export function Navigation() {
           {/* Logo */}
           <Link href="/" className="flex items-center space-x-2">
             <Heart className="h-8 w-8 text-primary fill-current" />
-            <span className="text-xl font-bold text-primary">Don de Sang DZ</span>
+            <span className="text-xl font-bold text-primary">{t('brandName')}</span>
           </Link>
 
           {/* Desktop Navigation */}
