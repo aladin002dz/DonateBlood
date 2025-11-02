@@ -173,7 +173,7 @@ export function Navigation() {
                 )}
               </button>
             </SheetTrigger>
-            <SheetContent side="right" className="w-[300px] sm:w-[350px]">
+            <SheetContent side={locale === "ar" ? "left" : "right"} className="w-[300px] sm:w-[350px]">
               <div className="flex flex-col space-y-4 py-6">
                 {/* Mobile Logo in Menu */}
                 <Link
