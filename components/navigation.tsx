@@ -4,11 +4,18 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 import { signOut, useSession } from "@/lib/auth-client"
 import { cn } from "@/lib/utils"
-import { Globe, Heart, Home, LogIn, LogOut, Menu, Search, User, UserPlus } from "lucide-react"
+import { Globe, Heart, Home, LogIn, LogOut, Menu, Search, User, UserPlus, X } from "lucide-react"
 import { useLocale, useTranslations } from "next-intl"
 import Link from "next/link"
 import { usePathname, useRouter } from "next/navigation"
 import { useState } from "react"
+
+type NavItem = {
+  href: string
+  label: string
+  icon: React.ComponentType<{ className?: string }>
+  onClick?: () => void | Promise<void>
+}
 
 export function Navigation() {
   const t = useTranslations("Navigation")
@@ -28,7 +35,7 @@ export function Navigation() {
     })
   }
 
-  const navItems = [
+  const navItems: NavItem[] = [
     { href: "/", label: t("home"), icon: Home },
     ...(session
       ? [
@@ -63,157 +70,169 @@ export function Navigation() {
   }
 
   return (
-    <nav className="bg-background border-b border-border shadow-sm dark:bg-black">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-16">
-          {/* Logo */}
-          <Link href="/" className="flex items-center space-x-2">
-            <Heart className="h-8 w-8 text-primary fill-current" />
-            <span className="text-xl font-bold text-primary">{t("brandName")}</span>
-          </Link>
+    <nav className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+      <div className="container flex h-16 max-w-screen-2xl items-center">
+        {/* Logo */}
+        <Link href="/" className="mr-6 flex items-center space-x-2">
+          <Heart className="h-6 w-6 text-primary fill-current" />
+          <span className="hidden font-bold sm:inline-block text-primary">{t("brandName")}</span>
+        </Link>
 
-          {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-8">
-            {/* Language Selector */}
-            <div className="flex items-center space-x-2">
-              <Globe className="h-4 w-4 text-muted-foreground" />
-              <Select value={locale} onValueChange={handleLanguageChange}>
-                <SelectTrigger className="w-[140px] h-8">
-                  <SelectValue placeholder={t("selectLanguage")} />
-                </SelectTrigger>
-                <SelectContent>
-                  {languages.map((lang) => (
-                    <SelectItem key={lang.code} value={lang.code}>
-                      <div className="flex items-center space-x-2">
-                        <span>{lang.name}</span>
-                      </div>
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
+        {/* Desktop Navigation - Hidden on mobile */}
+        <div className="hidden md:flex md:flex-1 md:items-center md:justify-end md:space-x-6">
+          {/* Desktop Navigation Items */}
+          <nav className="flex items-center space-x-6">
+            {navItems.map((item) => {
+              const Icon = item.icon
+              const isActive = pathname === item.href
 
-            {/* Navigation Items */}
-            <div className="flex space-x-8">
-              {navItems.map((item) => {
-                const Icon = item.icon
-                const isSignOut = "onClick" in item
-
-                if (isSignOut) {
-                  return (
-                    <button
-                      key={item.label}
-                      onClick={item.onClick}
-                      className={cn(
-                        "flex items-center space-x-1 px-3 py-2 rounded-md text-sm font-medium transition-colors hover:bg-secondary",
-                        "text-muted-foreground hover:text-foreground",
-                      )}
-                    >
-                      <Icon className="h-4 w-4" />
-                      <span>{item.label}</span>
-                    </button>
-                  )
-                }
-
+              if (item.onClick) {
                 return (
-                  <Link
-                    key={item.href}
-                    href={item.href}
+                  <button
+                    key={item.label}
+                    onClick={item.onClick}
                     className={cn(
-                      "flex items-center space-x-1 px-3 py-2 rounded-md text-sm font-medium transition-colors hover:bg-secondary",
-                      pathname === item.href
-                        ? "text-primary bg-secondary"
-                        : "text-muted-foreground hover:text-foreground",
+                      "text-sm font-medium transition-colors hover:text-foreground/80",
+                      "text-muted-foreground hover:text-foreground",
+                      "flex items-center space-x-1.5",
                     )}
                   >
                     <Icon className="h-4 w-4" />
                     <span>{item.label}</span>
-                  </Link>
+                  </button>
                 )
-              })}
-            </div>
+              }
+
+              return (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className={cn(
+                    "text-sm font-medium transition-colors hover:text-foreground/80",
+                    "flex items-center space-x-1.5",
+                    isActive
+                      ? "text-foreground"
+                      : "text-muted-foreground hover:text-foreground",
+                  )}
+                >
+                  <Icon className="h-4 w-4" />
+                  <span>{item.label}</span>
+                </Link>
+              )
+            })}
+          </nav>
+
+          {/* Desktop Language Selector */}
+          <div className="flex items-center space-x-2 border-l border-border pl-6">
+            <Globe className="h-4 w-4 text-muted-foreground" />
+            <Select value={locale} onValueChange={handleLanguageChange}>
+              <SelectTrigger className="h-8 w-[140px] border-none shadow-none focus:ring-0">
+                <SelectValue placeholder={t("selectLanguage")} />
+              </SelectTrigger>
+              <SelectContent>
+                {languages.map((lang) => (
+                  <SelectItem key={lang.code} value={lang.code}>
+                    {lang.name}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+        </div>
+
+        {/* Mobile Menu Button - Only visible on mobile */}
+        <div className="flex flex-1 items-center justify-end space-x-2 md:hidden">
+          {/* Mobile Language Selector */}
+          <div className="flex items-center">
+            <Select value={locale} onValueChange={handleLanguageChange}>
+              <SelectTrigger className="h-8 w-[120px] border-none shadow-none focus:ring-0">
+                <SelectValue placeholder={t("selectLanguage")} />
+              </SelectTrigger>
+              <SelectContent>
+                {languages.map((lang) => (
+                  <SelectItem key={lang.code} value={lang.code}>
+                    {lang.name}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </div>
 
-          <div className="md:hidden">
-            <Sheet open={isOpen} onOpenChange={setIsOpen}>
-              <SheetTrigger asChild>
-                <button
-                  className="p-2 rounded-md transition-colors hover:bg-secondary text-muted-foreground hover:text-foreground"
-                  aria-label="Open menu"
+          {/* Mobile Menu Toggle */}
+          <Sheet open={isOpen} onOpenChange={setIsOpen}>
+            <SheetTrigger asChild>
+              <button
+                className="inline-flex items-center justify-center rounded-md p-2 text-muted-foreground transition-colors hover:bg-accent hover:text-accent-foreground focus:outline-none focus:ring-2 focus:ring-inset focus:ring-ring disabled:pointer-events-none disabled:opacity-50"
+                aria-label="Toggle menu"
+                aria-expanded={isOpen}
+              >
+                {isOpen ? (
+                  <X className="h-5 w-5" />
+                ) : (
+                  <Menu className="h-5 w-5" />
+                )}
+              </button>
+            </SheetTrigger>
+            <SheetContent side="right" className="w-[300px] sm:w-[350px]">
+              <div className="flex flex-col space-y-4 py-6">
+                {/* Mobile Logo in Menu */}
+                <Link
+                  href="/"
+                  onClick={() => setIsOpen(false)}
+                  className="flex items-center space-x-2 px-2 py-2"
                 >
-                  <Menu className="h-6 w-6" />
-                </button>
-              </SheetTrigger>
-              <SheetContent side="right" className="w-full sm:w-80">
-                <div className="flex flex-col space-y-4 mt-8">
-                  {/* Language Selector in Mobile Menu */}
-                  <div className="flex items-center space-x-2 px-2">
-                    <Globe className="h-4 w-4 text-muted-foreground" />
-                    <Select value={locale} onValueChange={handleLanguageChange}>
-                      <SelectTrigger className="w-[140px] h-8">
-                        <SelectValue placeholder={t("selectLanguage")} />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {languages.map((lang) => (
-                          <SelectItem key={lang.code} value={lang.code}>
-                            <div className="flex items-center space-x-2">
-                              <span>{lang.name}</span>
-                            </div>
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </div>
+                  <Heart className="h-6 w-6 text-primary fill-current" />
+                  <span className="font-bold text-primary">{t("brandName")}</span>
+                </Link>
 
-                  {/* Mobile Navigation Items */}
-                  <div className="space-y-2">
-                    {navItems.map((item) => {
-                      const Icon = item.icon
-                      const isSignOut = "onClick" in item
+                {/* Mobile Navigation Items */}
+                <nav className="flex flex-col space-y-1 px-2">
+                  {navItems.map((item) => {
+                    const Icon = item.icon
+                    const isActive = pathname === item.href
 
-                      if (isSignOut) {
-                        return (
-                          <button
-                            key={item.label}
-                            onClick={() => {
-                              if (item.onClick) {
-                                item.onClick()
-                              }
-                              setIsOpen(false)
-                            }}
-                            className={cn(
-                              "w-full flex items-center space-x-3 px-4 py-2 rounded-md text-sm font-medium transition-colors hover:bg-secondary",
-                              "text-muted-foreground hover:text-foreground",
-                            )}
-                          >
-                            <Icon className="h-5 w-5" />
-                            <span>{item.label}</span>
-                          </button>
-                        )
-                      }
-
+                    if (item.onClick) {
                       return (
-                        <Link
-                          key={item.href}
-                          href={item.href}
-                          onClick={() => setIsOpen(false)}
+                        <button
+                          key={item.label}
+                          onClick={async () => {
+                            setIsOpen(false)
+                            await item.onClick?.()
+                          }}
                           className={cn(
-                            "flex items-center space-x-3 px-4 py-2 rounded-md text-sm font-medium transition-colors hover:bg-secondary",
-                            pathname === item.href
-                              ? "text-primary bg-secondary"
-                              : "text-muted-foreground hover:text-foreground",
+                            "flex items-center space-x-3 rounded-md px-3 py-2 text-sm font-medium transition-colors",
+                            "text-muted-foreground hover:bg-accent hover:text-accent-foreground",
+                            "w-full text-left",
                           )}
                         >
                           <Icon className="h-5 w-5" />
                           <span>{item.label}</span>
-                        </Link>
+                        </button>
                       )
-                    })}
-                  </div>
-                </div>
-              </SheetContent>
-            </Sheet>
-          </div>
+                    }
+
+                    return (
+                      <Link
+                        key={item.href}
+                        href={item.href}
+                        onClick={() => setIsOpen(false)}
+                        className={cn(
+                          "flex items-center space-x-3 rounded-md px-3 py-2 text-sm font-medium transition-colors",
+                          "w-full",
+                          isActive
+                            ? "bg-accent text-accent-foreground"
+                            : "text-muted-foreground hover:bg-accent hover:text-accent-foreground",
+                        )}
+                      >
+                        <Icon className="h-5 w-5" />
+                        <span>{item.label}</span>
+                      </Link>
+                    )
+                  })}
+                </nav>
+              </div>
+            </SheetContent>
+          </Sheet>
         </div>
       </div>
     </nav>
