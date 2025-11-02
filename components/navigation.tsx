@@ -176,7 +176,9 @@ export function Navigation() {
                           <button
                             key={item.label}
                             onClick={() => {
-                              item.onClick?.()
+                              if (item.onClick) {
+                                item.onClick()
+                              }
                               setIsOpen(false)
                             }}
                             className={cn(
