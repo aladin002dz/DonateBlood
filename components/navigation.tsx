@@ -2,12 +2,11 @@
 
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
+import { Link, usePathname, useRouter } from "@/i18n/navigation"
 import { signOut, useSession } from "@/lib/auth-client"
 import { cn } from "@/lib/utils"
 import { Globe, Heart, Home, LogIn, LogOut, Menu, Search, User, UserPlus, X } from "lucide-react"
 import { useLocale, useTranslations } from "next-intl"
-import Link from "next/link"
-import { usePathname, useRouter } from "next/navigation"
 import { useState } from "react"
 
 type NavItem = {
@@ -62,11 +61,12 @@ export function Navigation() {
   ]
 
   const handleLanguageChange = (newLocale: string) => {
-    const currentPath = pathname.replace(`/${locale}`, "") || "/"
+    // Set cookie immediately for persistence across all pages
     try {
       document.cookie = `NEXT_LOCALE=${newLocale}; Path=/; Max-Age=31536000; SameSite=Lax`
     } catch { }
-    router.push(`/${newLocale}${currentPath}`)
+    // Use next-intl router to update the URL with the new locale
+    router.replace(pathname, { locale: newLocale })
   }
 
   return (
