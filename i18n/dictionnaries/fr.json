@@ -145,6 +145,8 @@
         "lastDonationLabel": "Date du dernier don",
         "donationType": "Type de don",
         "selectDonationType": "Sélectionnez le type de don",
+        "donationTypeBlood": "Sang",
+        "donationTypeBloodPlatelets": "Sang & Plaquettes",
         "updating": "Mise à jour...",
         "updateProfile": "Mettre à jour le profil",
         "deleteAccount": "Supprimer le compte",
@@ -185,6 +187,11 @@
         "noContactInfo": "Pas d'infos de contact",
         "noDonorsFound": "Aucun donneur trouvé",
         "noDonorsFoundDesc": "Essayez d'ajuster vos filtres de recherche pour trouver plus de donneurs dans votre région."
+    },
+    "Footer": {
+        "builtWith": "Construit avec",
+        "by": "par",
+        "sourceCode": "Code source"
     },
     "Validation": {
         "requiredIdentifier": "L'email ou le téléphone est requis",

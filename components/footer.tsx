@@ -1,15 +1,20 @@
+"use client"
+
 import { Github, Heart } from "lucide-react"
+import { useTranslations } from 'next-intl'
 import Link from "next/link"
 
 export function Footer() {
+    const t = useTranslations('Footer')
+
     return (
         <footer className="bg-background border-t border-border mt-auto">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
                 <div className="flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-0 sm:space-x-2 text-muted-foreground">
                     <div className="flex items-center space-x-2">
-                        <span>Built with</span>
+                        <span>{t('builtWith')}</span>
                         <Heart className="h-4 w-4 text-red-500 fill-current" />
-                        <span>by</span>
+                        <span>{t('by')}</span>
                         <Link
                             href="https://www.linkedin.com/in/mahfoudh-arous/"
                             target="_blank"
@@ -27,7 +32,7 @@ export function Footer() {
                         className="text-primary hover:text-primary/80 transition-colors font-medium flex items-center space-x-1"
                     >
                         <Github className="h-4 w-4" />
-                        <span>Source Code</span>
+                        <span>{t('sourceCode')}</span>
                     </Link>
                 </div>
             </div>

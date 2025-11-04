@@ -145,6 +145,8 @@
         "lastDonationLabel": "Date of Last Donation",
         "donationType": "Donation Type",
         "selectDonationType": "Select donation type",
+        "donationTypeBlood": "Blood",
+        "donationTypeBloodPlatelets": "Blood & Platelets",
         "updating": "Updating...",
         "updateProfile": "Update Profile",
         "deleteAccount": "Delete Account",
@@ -185,6 +187,11 @@
         "noContactInfo": "No Contact Info",
         "noDonorsFound": "No donors found",
         "noDonorsFoundDesc": "Try adjusting your search filters to find more donors in your area."
+    },
+    "Footer": {
+        "builtWith": "Built with",
+        "by": "by",
+        "sourceCode": "Source Code"
     },
     "Validation": {
         "requiredIdentifier": "Email or phone number is required",

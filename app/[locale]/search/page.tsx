@@ -14,6 +14,7 @@ import { useEffect, useState } from "react"
 
 export default function SearchPage() {
   const t = useTranslations('Search')
+  const tProfile = useTranslations('Profile')
   const [filters, setFilters] = useState<SearchFilters>({
     bloodGroup: "",
     wilaya: "",
@@ -28,6 +29,13 @@ export default function SearchPage() {
 
   const bloodGroups = ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"]
   const donationTypes = ["Blood", "Blood & Platelets"]
+
+  // Helper function to translate donation type
+  const getDonationTypeTranslation = (type: string | null): string => {
+    if (!type) return ""
+    const translationKey = type === "Blood" ? "donationTypeBlood" : "donationTypeBloodPlatelets"
+    return tProfile(translationKey)
+  }
 
   // Load initial data
   useEffect(() => {
@@ -150,7 +158,7 @@ export default function SearchPage() {
                   <SelectContent>
                     {donationTypes.map((type) => (
                       <SelectItem key={type} value={type}>
-                        {type}
+                        {getDonationTypeTranslation(type)}
                       </SelectItem>
                     ))}
                   </SelectContent>
@@ -250,7 +258,7 @@ export default function SearchPage() {
 
                     {donor.donationType && (
                       <div className="text-sm">
-                        <span className="font-medium">{t('type')}</span> {donor.donationType}
+                        <span className="font-medium">{t('type')}</span> {getDonationTypeTranslation(donor.donationType)}
                       </div>
                     )}
 
