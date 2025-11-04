@@ -26,8 +26,7 @@
         "logout": "تسجيل الخروج",
         "language": "اللغة",
         "selectLanguage": "اختر اللغة"
-    }
-    ,
+    },
     "Auth": {
         "SignIn": {
             "title": "تسجيل الدخول",
@@ -187,6 +186,11 @@
         "noContactInfo": "لا توجد معلومات اتصال",
         "noDonorsFound": "لم يتم العثور على متبرعين",
         "noDonorsFoundDesc": "حاول تعديل مرشحات البحث للعثور على المزيد من المتبرعين في منطقتك."
+    },
+    "Footer": {
+        "builtWith": "مبني بـ",
+        "by": "من قبلـ",
+        "sourceCode": "الكود المصدري للمشروع"
     },
     "Validation": {
         "requiredIdentifier": "البريد الإلكتروني أو الهاتف مطلوب",

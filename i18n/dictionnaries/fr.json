@@ -188,6 +188,11 @@
         "noDonorsFound": "Aucun donneur trouvé",
         "noDonorsFoundDesc": "Essayez d'ajuster vos filtres de recherche pour trouver plus de donneurs dans votre région."
     },
+    "Footer": {
+        "builtWith": "Construit avec",
+        "by": "par",
+        "sourceCode": "Code source"
+    },
     "Validation": {
         "requiredIdentifier": "L'email ou le téléphone est requis",
         "identifierInvalid": "Veuillez saisir un email ou un numéro de téléphone valide (ex.: +1234567890)",
