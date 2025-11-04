@@ -145,6 +145,8 @@
         "lastDonationLabel": "Date du dernier don",
         "donationType": "Type de don",
         "selectDonationType": "Sélectionnez le type de don",
+        "donationTypeBlood": "Sang",
+        "donationTypeBloodPlatelets": "Sang & Plaquettes",
         "updating": "Mise à jour...",
         "updateProfile": "Mettre à jour le profil",
         "deleteAccount": "Supprimer le compte",

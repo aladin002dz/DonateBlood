@@ -145,6 +145,8 @@
         "lastDonationLabel": "Date of Last Donation",
         "donationType": "Donation Type",
         "selectDonationType": "Select donation type",
+        "donationTypeBlood": "Blood",
+        "donationTypeBloodPlatelets": "Blood & Platelets",
         "updating": "Updating...",
         "updateProfile": "Update Profile",
         "deleteAccount": "Delete Account",

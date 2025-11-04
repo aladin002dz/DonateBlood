@@ -48,6 +48,13 @@ export default function ProfilePage() {
   const bloodGroups = ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"]
   const donationTypes = ["Blood", "Blood & Platelets"]
 
+  // Helper function to translate donation type
+  const getDonationTypeTranslation = (type: string | null): string => {
+    if (!type) return ""
+    const translationKey = type === "Blood" ? "donationTypeBlood" : "donationTypeBloodPlatelets"
+    return t(translationKey)
+  }
+
   // Redirect if not authenticated
   useEffect(() => {
     if (!sessionLoading && !session) {
@@ -337,7 +344,7 @@ export default function ProfilePage() {
                           <SelectContent>
                             {donationTypes.map((type) => (
                               <SelectItem key={type} value={type}>
-                                {type}
+                                {getDonationTypeTranslation(type)}
                               </SelectItem>
                             ))}
                           </SelectContent>
