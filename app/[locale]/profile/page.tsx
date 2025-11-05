@@ -14,10 +14,11 @@ import { Separator } from "@/components/ui/separator"
 import { Switch } from "@/components/ui/switch"
 import { useSession } from "@/lib/auth-client"
 import { AlertTriangle, Heart, Loader2, Save, Trash2, User } from "lucide-react"
-import { useTranslations } from 'next-intl'
+import { useLocale, useTranslations } from 'next-intl'
 import { useRouter } from "next/navigation"
-import { useEffect, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 import { toast } from "sonner"
+import { getWilayas, getDairas, getCommunes } from "@/lib/locations"
 
 interface UserProfile {
   id: string
@@ -38,6 +39,7 @@ interface UserProfile {
 }
 
 export default function ProfilePage() {
+  const locale = useLocale()
   const t = useTranslations('Profile')
   const { data: session, isPending: sessionLoading } = useSession()
   const router = useRouter()
@@ -48,6 +50,26 @@ export default function ProfilePage() {
 
   const bloodGroups = ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"]
   const donationTypes = ["Blood", "Blood & Platelets"]
+
+  // Get location data
+  const wilayas = useMemo(() => getWilayas(locale), [locale])
+  
+  // Get current wilaya code from name for filtering
+  const currentWilayaCode = useMemo(() => {
+    if (!profileData?.wilaya) return null
+    const wilaya = wilayas.find(w => w.name === profileData.wilaya || w.code === profileData.wilaya)
+    return wilaya?.code || null
+  }, [profileData?.wilaya, wilayas])
+
+  const availableDairas = useMemo(() => {
+    if (!currentWilayaCode) return []
+    return getDairas(locale, currentWilayaCode)
+  }, [locale, currentWilayaCode])
+
+  const availableCommunes = useMemo(() => {
+    if (!currentWilayaCode || !profileData?.daira) return []
+    return getCommunes(locale, currentWilayaCode, profileData.daira)
+  }, [locale, currentWilayaCode, profileData?.daira])
 
   // Helper function to translate donation type
   const getDonationTypeTranslation = (type: string | null): string => {
@@ -94,8 +116,23 @@ export default function ProfilePage() {
 
     setProfileData((prev) => {
       if (!prev) return prev
-      return { ...prev, [field]: value }
+      const updated = { ...prev, [field]: value }
+      
+      // Clear dependent fields when parent changes
+      if (field === 'wilaya') {
+        updated.daira = null
+        updated.commune = null
+      } else if (field === 'daira') {
+        updated.commune = null
+      }
+      
+      return updated
     })
+  }
+
+  const handleWilayaChange = (wilayaCode: string) => {
+    const wilaya = wilayas.find(w => w.code === wilayaCode)
+    handleInputChange('wilaya', wilaya?.name || wilayaCode)
   }
 
   const handleUpdate = async (e: React.FormEvent) => {
@@ -296,35 +333,63 @@ export default function ProfilePage() {
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                       <div className="space-y-2">
                         <Label htmlFor="wilaya">{t('wilaya')}</Label>
-                        <Input
-                          id="wilaya"
-                          type="text"
-                          value={profileData.wilaya || ""}
-                          onChange={(e) => handleInputChange("wilaya", e.target.value)}
-                          className="rounded-lg"
-                        />
+                        <Select
+                          value={currentWilayaCode || ""}
+                          onValueChange={handleWilayaChange}
+                        >
+                          <SelectTrigger className="rounded-lg">
+                            <SelectValue placeholder={t('wilaya') || 'Select wilaya'}>
+                              {currentWilayaCode ? wilayas.find(w => w.code === currentWilayaCode)?.display : ""}
+                            </SelectValue>
+                          </SelectTrigger>
+                          <SelectContent>
+                            {wilayas.map((wilaya) => (
+                              <SelectItem key={wilaya.code} value={wilaya.code}>
+                                {wilaya.display}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
                       </div>
 
                       <div className="space-y-2">
                         <Label htmlFor="daira">{t('daira')}</Label>
-                        <Input
-                          id="daira"
-                          type="text"
+                        <Select
                           value={profileData.daira || ""}
-                          onChange={(e) => handleInputChange("daira", e.target.value)}
-                          className="rounded-lg"
-                        />
+                          onValueChange={(value) => handleInputChange("daira", value)}
+                          disabled={!currentWilayaCode}
+                        >
+                          <SelectTrigger className="rounded-lg">
+                            <SelectValue placeholder={currentWilayaCode ? t('daira') || 'Select daira' : 'Select wilaya first'} />
+                          </SelectTrigger>
+                          <SelectContent>
+                            {availableDairas.map((daira) => (
+                              <SelectItem key={daira.name} value={daira.name}>
+                                {daira.name}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
                       </div>
 
                       <div className="space-y-2">
                         <Label htmlFor="commune">{t('commune')}</Label>
-                        <Input
-                          id="commune"
-                          type="text"
+                        <Select
                           value={profileData.commune || ""}
-                          onChange={(e) => handleInputChange("commune", e.target.value)}
-                          className="rounded-lg"
-                        />
+                          onValueChange={(value) => handleInputChange("commune", value)}
+                          disabled={!currentWilayaCode || !profileData.daira}
+                        >
+                          <SelectTrigger className="rounded-lg">
+                            <SelectValue placeholder={profileData.daira ? t('commune') || 'Select commune' : 'Select daira first'} />
+                          </SelectTrigger>
+                          <SelectContent>
+                            {availableCommunes.map((commune) => (
+                              <SelectItem key={commune} value={commune}>
+                                {commune}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
                       </div>
                     </div>
                   </div>

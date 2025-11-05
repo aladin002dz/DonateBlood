@@ -4,15 +4,16 @@ import { searchDonors, type DonorData, type SearchFilters } from "@/actions/sear
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Switch } from "@/components/ui/switch"
+import { getCommunes, getDairas, getWilayas } from "@/lib/locations"
 import { Clock, Heart, Loader2, MapPin, Phone, Search } from "lucide-react"
-import { useTranslations } from 'next-intl'
-import { useEffect, useState } from "react"
+import { useLocale, useTranslations } from 'next-intl'
+import { useEffect, useMemo, useState } from "react"
 
 export default function SearchPage() {
+  const locale = useLocale()
   const t = useTranslations('Search')
   const tProfile = useTranslations('Profile')
   const [filters, setFilters] = useState<SearchFilters>({
@@ -23,6 +24,26 @@ export default function SearchPage() {
     donationType: "",
     emergencyOnly: false,
   })
+
+  // Get location data
+  const wilayas = useMemo(() => getWilayas(locale), [locale])
+
+  // Get current wilaya code from name for filtering
+  const currentWilayaCode = useMemo(() => {
+    if (!filters.wilaya) return null
+    const wilaya = wilayas.find(w => w.name === filters.wilaya || w.code === filters.wilaya)
+    return wilaya?.code || null
+  }, [filters.wilaya, wilayas])
+
+  const availableDairas = useMemo(() => {
+    if (!currentWilayaCode) return []
+    return getDairas(locale, currentWilayaCode)
+  }, [locale, currentWilayaCode])
+
+  const availableCommunes = useMemo(() => {
+    if (!currentWilayaCode || !filters.daira) return []
+    return getCommunes(locale, currentWilayaCode, filters.daira)
+  }, [locale, currentWilayaCode, filters.daira])
 
   const [donors, setDonors] = useState<DonorData[]>([])
   const [loading, setLoading] = useState(true)
@@ -63,7 +84,21 @@ export default function SearchPage() {
 
   const handleFilterChange = (field: keyof SearchFilters, value: string) => {
     const newFilters = { ...filters, [field]: value }
+
+    // Clear dependent fields when parent changes
+    if (field === 'wilaya') {
+      newFilters.daira = ""
+      newFilters.commune = ""
+    } else if (field === 'daira') {
+      newFilters.commune = ""
+    }
+
     setFilters(newFilters)
+  }
+
+  const handleWilayaChange = (wilayaCode: string) => {
+    const wilaya = wilayas.find(w => w.code === wilayaCode)
+    handleFilterChange('wilaya', wilaya?.name || wilayaCode)
   }
 
   const clearFilters = () => {
@@ -126,38 +161,63 @@ export default function SearchPage() {
 
               <div className="space-y-2">
                 <Label htmlFor="wilaya">{t('wilaya')}</Label>
-                <Input
-                  id="wilaya"
-                  type="text"
-                  placeholder={t('enterWilaya')}
-                  value={filters.wilaya || ""}
-                  onChange={(e) => handleFilterChange("wilaya", e.target.value)}
-                  className="rounded-lg"
-                />
+                <Select
+                  value={currentWilayaCode || ""}
+                  onValueChange={handleWilayaChange}
+                >
+                  <SelectTrigger className="rounded-lg">
+                    <SelectValue placeholder={t('enterWilaya')}>
+                      {currentWilayaCode ? wilayas.find(w => w.code === currentWilayaCode)?.display : ""}
+                    </SelectValue>
+                  </SelectTrigger>
+                  <SelectContent>
+                    {wilayas.map((wilaya) => (
+                      <SelectItem key={wilaya.code} value={wilaya.code}>
+                        {wilaya.display}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
               </div>
 
               <div className="space-y-2">
                 <Label htmlFor="daira">{t('daira')}</Label>
-                <Input
-                  id="daira"
-                  type="text"
-                  placeholder={t('enterDaira')}
+                <Select
                   value={filters.daira || ""}
-                  onChange={(e) => handleFilterChange("daira", e.target.value)}
-                  className="rounded-lg"
-                />
+                  onValueChange={(value) => handleFilterChange("daira", value)}
+                  disabled={!currentWilayaCode}
+                >
+                  <SelectTrigger className="rounded-lg">
+                    <SelectValue placeholder={currentWilayaCode ? t('enterDaira') : t('selectWilayaFirst') || 'Select wilaya first'} />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {availableDairas.map((daira) => (
+                      <SelectItem key={daira.name} value={daira.name}>
+                        {daira.name}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
               </div>
 
               <div className="space-y-2">
                 <Label htmlFor="commune">{t('commune')}</Label>
-                <Input
-                  id="commune"
-                  type="text"
-                  placeholder={t('enterCommune')}
+                <Select
                   value={filters.commune || ""}
-                  onChange={(e) => handleFilterChange("commune", e.target.value)}
-                  className="rounded-lg"
-                />
+                  onValueChange={(value) => handleFilterChange("commune", value)}
+                  disabled={!currentWilayaCode || !filters.daira}
+                >
+                  <SelectTrigger className="rounded-lg">
+                    <SelectValue placeholder={filters.daira ? t('enterCommune') : t('selectDairaFirst') || 'Select daira first'} />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {availableCommunes.map((commune) => (
+                      <SelectItem key={commune} value={commune}>
+                        {commune}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
               </div>
 
               <div className="space-y-2">
