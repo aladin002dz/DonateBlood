@@ -10,21 +10,29 @@ import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Heart, Loader2, UserPlus } from "lucide-react"
+import { useTranslations } from 'next-intl'
 import { useState } from "react"
 import { useForm } from "react-hook-form"
 import { toast } from "sonner"
 import { z } from "zod"
-import { useTranslations } from 'next-intl'
 
 // Schema will be defined inside component to use translations
 
 export default function RegisterPage() {
   const t = useTranslations('Auth.Register')
+  const tProfile = useTranslations('Profile')
   const v = useTranslations('Validation')
   const [loading, setLoading] = useState(false)
 
   const bloodGroups = ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"]
   const donationTypes = ["Blood", "Blood & Platelets"]
+
+  // Helper function to translate donation type
+  const getDonationTypeTranslation = (type: string | null): string => {
+    if (!type) return ""
+    const translationKey = type === "Blood" ? "donationTypeBlood" : "donationTypeBloodPlatelets"
+    return tProfile(translationKey)
+  }
 
   const registrationSchema = z.object({
     fullName: z
@@ -113,7 +121,7 @@ export default function RegisterPage() {
       commune: "",
       lastDonation: "",
       donationType: "",
-      emergencyAvailable: false,
+      emergencyAvailable: true,
     }
   });
 
@@ -332,7 +340,7 @@ export default function RegisterPage() {
                       <SelectContent>
                         {donationTypes.map((type) => (
                           <SelectItem key={type} value={type}>
-                            {type}
+                            {getDonationTypeTranslation(type)}
                           </SelectItem>
                         ))}
                       </SelectContent>

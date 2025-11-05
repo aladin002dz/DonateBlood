@@ -74,7 +74,7 @@
             "lastDonationLabel": "Date du dernier don",
             "donationTypeLabel": "Type de don *",
             "donationTypePlaceholder": "Sélectionnez le type de don",
-            "emergencyAvailable": "Disponible pour les dons d'urgence",
+            "emergencyAvailable": "Disponible pour les dons",
             "submit": "S'inscrire comme donneur",
             "submitting": "Inscription...",
             "toastSuccess": "Inscription réussie !",

@@ -74,7 +74,7 @@
             "lastDonationLabel": "Date of Last Donation",
             "donationTypeLabel": "Donation Type *",
             "donationTypePlaceholder": "Select donation type",
-            "emergencyAvailable": "Available for emergency donations",
+            "emergencyAvailable": "Available for donations",
             "submit": "Register as Donor",
             "submitting": "Registering...",
             "toastSuccess": "Registration successful!",

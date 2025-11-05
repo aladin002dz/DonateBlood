@@ -73,7 +73,7 @@
             "lastDonationLabel": "تاريخ آخر تبرع",
             "donationTypeLabel": "نوع التبرع *",
             "donationTypePlaceholder": "اختر نوع التبرع",
-            "emergencyAvailable": "متاح للتبرعات الطارئة",
+            "emergencyAvailable": "متاح للتبرع",
             "submit": "التسجيل كمتبرع",
             "submitting": "جارٍ التسجيل...",
             "toastSuccess": "تم التسجيل بنجاح!",
