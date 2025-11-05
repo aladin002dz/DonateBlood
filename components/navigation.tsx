@@ -38,8 +38,8 @@ export function Navigation() {
     { href: "/", label: t("home"), icon: Home },
     ...(session
       ? [
-        { href: "/profile", label: t("profile"), icon: User },
         { href: "/search", label: t("search"), icon: Search },
+        { href: "/profile", label: t("profile"), icon: User },
         {
           href: "#",
           label: t("logout"),
@@ -71,7 +71,7 @@ export function Navigation() {
 
   return (
     <nav className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      <div className="container flex h-16 max-w-screen-2xl items-center">
+      <div className="container mx-auto flex h-16 max-w-screen-2xl items-center">
         {/* Logo */}
         <Link href="/" className="mr-6 flex items-center space-x-2">
           <Heart className="h-6 w-6 text-primary fill-current" />
