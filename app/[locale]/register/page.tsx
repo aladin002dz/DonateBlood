@@ -71,6 +71,11 @@ export default function RegisterPage() {
       .min(2, v('wilayaMin2'))
       .max(50, v('wilayaMax50')),
 
+    daira: z
+      .string()
+      .min(2, v('dairaMin2'))
+      .max(50, v('dairaMax50')),
+
     commune: z
       .string()
       .min(2, v('communeMin2'))
@@ -118,6 +123,7 @@ export default function RegisterPage() {
       confirmPassword: "",
       phone: "",
       wilaya: "",
+      daira: "",
       commune: "",
       lastDonation: "",
       donationType: "",
@@ -278,7 +284,7 @@ export default function RegisterPage() {
               <div className="space-y-4">
                 <h3 className="text-lg font-semibold text-foreground border-b pb-2">{t('location')}</h3>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                   <div className="space-y-2">
                     <Label htmlFor="wilaya">{t('wilayaLabel')}</Label>
                     <Input
@@ -290,6 +296,20 @@ export default function RegisterPage() {
                     />
                     {errors.wilaya && (
                       <p className="text-sm text-red-500">{errors.wilaya.message}</p>
+                    )}
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="daira">{t('dairaLabel')}</Label>
+                    <Input
+                      id="daira"
+                      type="text"
+                      placeholder={t('dairaPlaceholder')}
+                      {...register("daira")}
+                      className={`rounded-lg ${errors.daira ? 'border-red-500' : ''}`}
+                    />
+                    {errors.daira && (
+                      <p className="text-sm text-red-500">{errors.daira.message}</p>
                     )}
                   </div>
 

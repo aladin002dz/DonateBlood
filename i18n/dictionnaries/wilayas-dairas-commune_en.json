@@ -1,0 +1,2987 @@
+[
+  {
+    "code": "01",
+    "name": "Adrar",
+    "dairas": {
+      "Aoulef": [
+        "Timekten",
+        "Tit",
+        "Akabli",
+        "Aoulef"
+      ],
+      "Adrar": [
+        "Bouda",
+        "Ouled Ahmed Timmi",
+        "Adrar"
+      ],
+      "Fenoughil": [
+        "Fenoughil",
+        "Tamest",
+        "Tamantit"
+      ],
+      "Zaouiat Kounta": [
+        "In Zghmir",
+        "Zaouiet Kounta"
+      ],
+      "Reggane": [
+        "Reggane",
+        "Sali"
+      ],
+      "Tsabit": [
+        "Sebaa",
+        "Tsabit"
+      ]
+    }
+  },
+  {
+    "code": "02",
+    "name": "Chlef",
+    "dairas": {
+      "Abou El Hassane": [
+        "Talassa",
+        "Tadjena",
+        "Abou El Hassane"
+      ],
+      "Zeboudja": [
+        "Zeboudja",
+        "Bouzeghaia",
+        "Benairia"
+      ],
+      "Ouled Ben Abdelkader": [
+        "El Hadjadj",
+        "Ouled Ben Abdelkader"
+      ],
+      "Ain Merane": [
+        "Ain Merane",
+        "Herenfa"
+      ],
+      "Beni Haoua": [
+        "Breira",
+        "Beni Haoua",
+        "Oued Goussine"
+      ],
+      "Oued Fodda": [
+        "Ouled Abbes",
+        "Oued Fodda",
+        "Beni Rached"
+      ],
+      "El Marsa": [
+        "El Marsa",
+        "Moussadek"
+      ],
+      "Chlef": [
+        "Chlef",
+        "Oum Drou",
+        "Sendjas"
+      ],
+      "Tenes": [
+        "Sidi Abderrahmane",
+        "Sidi Akkacha",
+        "Tenes"
+      ],
+      "El Karimia": [
+        "Beni  Bouattab",
+        "El Karimia",
+        "Harchoun"
+      ],
+      "Taougrit": [
+        "Taougrit",
+        "Dahra"
+      ],
+      "Ouled Fares": [
+        "Chettia",
+        "Ouled Fares",
+        "Labiod Medjadja"
+      ],
+      "Boukadir": [
+        "Boukadir",
+        "Oued Sly",
+        "Sobha"
+      ]
+    }
+  },
+  {
+    "code": "03",
+    "name": "Laghouat",
+    "dairas": {
+      "Gueltat Sidi Saad": [
+        "El Beidha",
+        "Gueltat Sidi Saad",
+        "Ain Sidi Ali"
+      ],
+      "Brida": [
+        "Brida",
+        "Hadj Mechri",
+        "Taouiala"
+      ],
+      "Ain Madhi": [
+        "Tadjemout",
+        "Tadjrouna",
+        "Ain Madhi",
+        "El Haouaita",
+        "Kheneg"
+      ],
+      "El Ghicha": [
+        "El Ghicha"
+      ],
+      "Aflou": [
+        "Sebgag",
+        "Sidi Bouzid",
+        "Aflou"
+      ],
+      "Oued Morra": [
+        "Oued Morra",
+        "Oued M'zi"
+      ],
+      "Laghouat": [
+        "Laghouat"
+      ],
+      "Ksar El Hirane": [
+        "Ksar El Hirane",
+        "Benacer Benchohra"
+      ],
+      "Sidi Makhlouf": [
+        "El Assafia",
+        "Sidi Makhlouf"
+      ],
+      "Hassi R'mel": [
+        "Hassi Delaa",
+        "Hassi R'mel"
+      ]
+    }
+  },
+  {
+    "code": "04",
+    "name": "Oum El Bouaghi",
+    "dairas": {
+      "F'kirina": [
+        "Fkirina",
+        "Oued Nini"
+      ],
+      "Ain Fekroun": [
+        "El Fedjoudj Boughrara Sa",
+        "Ain Fekroun"
+      ],
+      "Meskiana": [
+        "Rahia",
+        "Meskiana",
+        "El Belala",
+        "Behir Chergui"
+      ],
+      "Ksar Sbahi": [
+        "Ksar Sbahi"
+      ],
+      "Souk Naamane": [
+        "Souk Naamane",
+        "Ouled Zouai",
+        "Bir Chouhada"
+      ],
+      "Oum El Bouaghi": [
+        "Oum El Bouaghi",
+        "Ain Zitoun"
+      ],
+      "Ain Babouche": [
+        "Ain Babouche",
+        "Ain Diss"
+      ],
+      "Ain Beida": [
+        "Ain Beida",
+        "Berriche",
+        "Zorg"
+      ],
+      "Ain M'lila": [
+        "Ain M'lila",
+        "Ouled Gacem",
+        "Ouled Hamla"
+      ],
+      "Sigus": [
+        "El Amiria",
+        "Sigus"
+      ],
+      "Dhalaa": [
+        "Dhalaa",
+        "El Djazia"
+      ],
+      "Ain Kercha": [
+        "Ain Kercha",
+        "El Harmilia",
+        "Hanchir Toumghani"
+      ]
+    }
+  },
+  {
+    "code": "05",
+    "name": "Batna",
+    "dairas": {
+      "Ain Touta": [
+        "Maafa",
+        "Ain Touta",
+        "Beni Foudhala El Hakania",
+        "Ouled Aouf"
+      ],
+      "Ras El Aioun": [
+        "Gosbat",
+        "Talkhamt",
+        "Ras El Aioun",
+        "Rahbat",
+        "Ouled Sellem",
+        "Guigba"
+      ],
+      "Timgad": [
+        "Timgad",
+        "Ouled Fadel"
+      ],
+      "Ouled Si Slimane": [
+        "Taxlent",
+        "Ouled Si Slimane",
+        "Lemcene"
+      ],
+      "Theniet El Abed": [
+        "Teniet El Abed",
+        "Chir",
+        "Oued Taga"
+      ],
+      "Batna": [
+        "Batna",
+        "Fesdis",
+        "Oued Chaaba"
+      ],
+      "Merouana": [
+        "Hidoussa",
+        "Ksar Bellezma",
+        "Merouana",
+        "Oued El Ma"
+      ],
+      "Seriana": [
+        "Lazrou",
+        "Seriana",
+        "Zanet El Beida"
+      ],
+      "Menaa": [
+        "Menaa",
+        "Tigharghar"
+      ],
+      "El Madher": [
+        "Ain Yagout",
+        "Boumia",
+        "Djerma",
+        "El Madher"
+      ],
+      "Tazoult": [
+        "Ouyoun El Assafir",
+        "Tazoult"
+      ],
+      "N'gaous": [
+        "Boumagueur",
+        "N Gaous",
+        "Sefiane"
+      ],
+      "Arris": [
+        "Arris",
+        "Tighanimine"
+      ],
+      "Ain Djasser": [
+        "Ain Djasser",
+        "El Hassi"
+      ],
+      "Seggana": [
+        "Seggana",
+        "Tilatou"
+      ],
+      "Ichemoul": [
+        "Foum Toub",
+        "Ichemoul",
+        "Inoughissen"
+      ],
+      "Bouzina": [
+        "Bouzina",
+        "Larbaa"
+      ],
+      "Chemora": [
+        "Boulhilat",
+        "Chemora"
+      ],
+      "Barika": [
+        "Barika",
+        "Bitam",
+        "M Doukal"
+      ],
+      "Djezzar": [
+        "Azil Abedelkader",
+        "Djezzar",
+        "Ouled Ammar"
+      ],
+      "Tkout": [
+        "Ghassira",
+        "Kimmel",
+        "T Kout"
+      ]
+    }
+  },
+  {
+    "code": "06",
+    "name": "Béjaïa",
+    "dairas": {
+      "Sidi Aich": [
+        "Sidi Ayad",
+        "Leflaye",
+        "Sidi-Aich",
+        "Tifra",
+        "Tinebdar"
+      ],
+      "Barbacha": [
+        "Barbacha",
+        "Kendira"
+      ],
+      "El Kseur": [
+        "El Kseur",
+        "Fenaia Il Maten",
+        "Toudja"
+      ],
+      "Kherrata": [
+        "Dra El Caid",
+        "Kherrata"
+      ],
+      "Bejaia": [
+        "Bejaia",
+        "Oued Ghir"
+      ],
+      "Beni Maouche": [
+        "Benimaouche"
+      ],
+      "Amizour": [
+        "Beni Djellil",
+        "Feraoun",
+        "Smaoun",
+        "Amizour"
+      ],
+      "Timezrit": [
+        "Timezrit"
+      ],
+      "Souk El Tenine": [
+        "Melbou",
+        "Souk El Tenine",
+        "Tamridjet"
+      ],
+      "Tichy": [
+        "Boukhelifa",
+        "Tala Hamza",
+        "Tichy"
+      ],
+      "Ighil Ali": [
+        "Ait R'zine",
+        "Ighil-Ali"
+      ],
+      "Darguina": [
+        "Ait-Smail",
+        "Darguina",
+        "Taskriout"
+      ],
+      "Aokas": [
+        "Aokas",
+        "Tizi-N'berber"
+      ],
+      "Adekar": [
+        "Adekar",
+        "Beni K'sila",
+        "Taourit Ighil"
+      ],
+      "Akbou": [
+        "Akbou",
+        "Chellata",
+        "Ighram",
+        "Tamokra"
+      ],
+      "Seddouk": [
+        "Amalou",
+        "Bouhamza",
+        "M'cisna",
+        "Seddouk"
+      ],
+      "Tazmalt": [
+        "Beni-Mallikeche",
+        "Boudjellil",
+        "Tazmalt"
+      ],
+      "Chemini": [
+        "Akfadou",
+        "Chemini",
+        "Souk Oufella",
+        "Tibane"
+      ],
+      "Ifri Ouzellaguene": [
+        "Ouzellaguen"
+      ]
+    }
+  },
+  {
+    "code": "07",
+    "name": "Biskra",
+    "dairas": {
+      "Zeribet El Oued": [
+        "El Feidh",
+        "Khenguet Sidi Nadji",
+        "Zeribet El Oued",
+        "Meziraa"
+      ],
+      "Tolga": [
+        "Lichana",
+        "Bouchakroun",
+        "Bordj Ben Azzouz",
+        "Tolga"
+      ],
+      "Ourlal": [
+        "Mekhadma",
+        "M'lili",
+        "Ourlal",
+        "Oumache",
+        "Lioua"
+      ],
+      "Djemorah": [
+        "Djemorah",
+        "Branis"
+      ],
+      "El Outaya": [
+        "El Outaya"
+      ],
+      "El Kantara": [
+        "El Kantara",
+        "Ain Zaatout"
+      ],
+      "Biskra": [
+        "Biskra",
+        "El Hadjab"
+      ],
+      "Foughala": [
+        "Foughala",
+        "El Ghrous"
+      ],
+      "Sidi Okba": [
+        "Ain Naga",
+        "Chetma",
+        "El Haouch",
+        "Sidi Okba"
+      ],
+      "Mechouneche": [
+        "M'chouneche"
+      ]
+    }
+  },
+  {
+    "code": "08",
+    "name": "Béchar",
+    "dairas": {
+      "Bechar": [
+        "Bechar"
+      ],
+      "Lahmar": [
+        "Boukais",
+        "Lahmar",
+        "Mogheul"
+      ],
+      "Kenadsa": [
+        "Meridja",
+        "Kenadsa"
+      ],
+      "Taghit": [
+        "Taghit"
+      ],
+      "Abadla": [
+        "Abadla",
+        "Erg-Ferradj",
+        "Machraa-Houari-Boumediene"
+      ],
+      "Beni Ounif": [
+        "Beni-Ounif"
+      ],
+      "Tabelbala": [
+        "Tabelbala"
+      ]
+    }
+  },
+  {
+    "code": "09",
+    "name": "Blida",
+    "dairas": {
+      "Ouled Yaich": [
+        "Beni Mered",
+        "Ouled Yaich",
+        "Chrea"
+      ],
+      "Bougara": [
+        "Ouled Slama",
+        "Hammam Elouane",
+        "Bougara"
+      ],
+      "Mouzaia": [
+        "Mouzaia",
+        "Chiffa",
+        "Ain Romana"
+      ],
+      "Larbaa": [
+        "Souhane",
+        "Larbaa"
+      ],
+      "Boufarik": [
+        "Soumaa",
+        "Guerrouaou",
+        "Boufarik"
+      ],
+      "Meftah": [
+        "Meftah",
+        "Djebabra"
+      ],
+      "El Affroun": [
+        "Oued  Djer",
+        "El-Affroun"
+      ],
+      "Oued El Alleug": [
+        "Oued El Alleug",
+        "Benkhelil",
+        "Beni-Tamou"
+      ],
+      "Bouinan": [
+        "Chebli",
+        "Bouinan"
+      ],
+      "Blida": [
+        "Bouarfa",
+        "Blida"
+      ]
+    }
+  },
+  {
+    "code": "10",
+    "name": "Bouira",
+    "dairas": {
+      "Ain Bessem": [
+        "Ain Laloui",
+        "Ain El Hadjar",
+        "Ain-Bessem"
+      ],
+      "Bordj Okhriss": [
+        "Hadjera Zerga",
+        "Mezdour",
+        "Taguedite",
+        "Bordj Okhriss"
+      ],
+      "Sour El Ghozlane": [
+        "Ridane",
+        "Maamora",
+        "El-Hakimia",
+        "Dirah",
+        "Dechmia",
+        "Sour El Ghozlane"
+      ],
+      "Bechloul": [
+        "Ahl El Ksar",
+        "Bechloul",
+        "El Adjiba",
+        "El Asnam",
+        "Ouled Rached"
+      ],
+      "M'chedallah": [
+        "Ath Mansour",
+        "Saharidj",
+        "M Chedallah",
+        "Hanif",
+        "Chorfa",
+        "Aghbalou"
+      ],
+      "Bir Ghbalou": [
+        "Raouraoua",
+        "El Khabouzia",
+        "Bir Ghbalou"
+      ],
+      "Bouira": [
+        "Bouira",
+        "Ain Turk",
+        "Ait Laaziz"
+      ],
+      "Souk El Khemis": [
+        "El-Mokrani",
+        "Souk El Khemis"
+      ],
+      "Kadiria": [
+        "Aomar",
+        "Djebahia",
+        "Kadiria"
+      ],
+      "El Hachimia": [
+        "El Hachimia",
+        "Oued El Berdi"
+      ],
+      "Haizer": [
+        "Haizer",
+        "Taghzout"
+      ],
+      "Lakhdaria": [
+        "Bouderbala",
+        "Boukram",
+        "Guerrouma",
+        "Lakhdaria",
+        "Maala",
+        "Z'barbar (El Isseri )"
+      ]
+    }
+  },
+  {
+    "code": "11",
+    "name": "Tamanrasset",
+    "dairas": {
+      "Tazrouk": [
+        "Tazrouk",
+        "Idles"
+      ],
+      "Silet": [
+        "Abelsa"
+      ],
+      "Tamanrasset": [
+        "Tamanrasset",
+        "Ain Amguel"
+      ]
+    }
+  },
+  {
+    "code": "12",
+    "name": "Tébessa",
+    "dairas": {
+      "El Malabiod": [
+        "El-Houidjbet",
+        "El Malabiod"
+      ],
+      "El Aouinet": [
+        "El-Aouinet",
+        "Boukhadra"
+      ],
+      "Negrine": [
+        "Ferkane",
+        "Negrine"
+      ],
+      "Bir Mokadem": [
+        "Bir Mokkadem",
+        "Guorriguer",
+        "Hammamet"
+      ],
+      "Morsott": [
+        "Bir Dheheb",
+        "Morsott"
+      ],
+      "Oum Ali": [
+        "Saf Saf El Ouesra",
+        "Oum Ali"
+      ],
+      "El Kouif": [
+        "Bekkaria",
+        "Boulhaf Dyr",
+        "El Kouif"
+      ],
+      "Ouenza": [
+        "Ouenza",
+        "El Meridj",
+        "Ain Zerga"
+      ],
+      "El Ogla": [
+        "Stah Guentis",
+        "El Ogla",
+        "El Mezeraa",
+        "Bedjene"
+      ],
+      "Cheria": [
+        "Telidjen",
+        "Cheria"
+      ],
+      "Bir El Ater": [
+        "El Ogla El Malha",
+        "Bir-El-Ater"
+      ],
+      "Tebessa": [
+        "Tebessa"
+      ]
+    }
+  },
+  {
+    "code": "13",
+    "name": "Tlemcen",
+    "dairas": {
+      "Bab El Assa": [
+        "Bab El Assa",
+        "Souk Tleta",
+        "Souani"
+      ],
+      "Mansourah": [
+        "Terny Beni Hediel",
+        "Mansourah",
+        "Beni Mester",
+        "Ain Ghoraba"
+      ],
+      "Chetouane": [
+        "Chetouane",
+        "Amieur",
+        "Ain Fezza"
+      ],
+      "Honnaine": [
+        "Honnaine",
+        "Beni Khellad"
+      ],
+      "Sidi Djillali": [
+        "Sidi Djillali",
+        "Bouihi"
+      ],
+      "Nedroma": [
+        "Nedroma",
+        "Djebala"
+      ],
+      "Marsa Ben Mehdi": [
+        "M'sirda Fouaga",
+        "Marsa Ben M'hidi"
+      ],
+      "Beni Boussaid": [
+        "Sidi Medjahed",
+        "Beni Boussaid"
+      ],
+      "Sebdou": [
+        "Sebdou",
+        "El Gor",
+        "El Aricha"
+      ],
+      "Sabra": [
+        "Bouhlou",
+        "Sabra"
+      ],
+      "Maghnia": [
+        "Maghnia",
+        "Hammam Boughrara"
+      ],
+      "Hennaya": [
+        "Zenata",
+        "Ouled Riyah",
+        "Hennaya"
+      ],
+      "Bensekrane": [
+        "Sidi Abdelli",
+        "Bensekrane"
+      ],
+      "Fellaoucene": [
+        "Fellaoucene",
+        "Ain Kebira",
+        "Ain Fetah"
+      ],
+      "Tlemcen": [
+        "Tlemcen"
+      ],
+      "Ain Tellout": [
+        "Ain Nehala",
+        "Ain Tellout"
+      ],
+      "Remchi": [
+        "Ain Youcef",
+        "Beni Ouarsous",
+        "El Fehoul",
+        "Remchi",
+        "Sebbaa Chioukh"
+      ],
+      "Ghazaouet": [
+        "Dar Yaghmoracen",
+        "Ghazaouet",
+        "Souahlia",
+        "Tianet"
+      ],
+      "Ouled Mimoun": [
+        "Beni Smiel",
+        "Oued Lakhdar",
+        "Ouled Mimoun"
+      ],
+      "Beni Snous": [
+        "Beni Bahdel",
+        "Beni Snous",
+        "Azail"
+      ]
+    }
+  },
+  {
+    "code": "14",
+    "name": "Tiaret",
+    "dairas": {
+      "Mahdia": [
+        "Mahdia",
+        "Ain Dzarit",
+        "Sebaine",
+        "Nadorah"
+      ],
+      "Sougueur": [
+        "Faidja",
+        "Si Abdelghani",
+        "Sougueur",
+        "Tousnina"
+      ],
+      "Meghila": [
+        "Meghila",
+        "Sebt",
+        "Sidi Hosni"
+      ],
+      "Frenda": [
+        "Ain El Hadid",
+        "Frenda",
+        "Takhemaret"
+      ],
+      "Ain Kermes": [
+        "Ain Kermes",
+        "Djebilet Rosfa",
+        "Madna",
+        "Medrissa",
+        "Sidi Abderrahmane"
+      ],
+      "Ksar Chellala": [
+        "Ksar Chellala",
+        "Serghine",
+        "Zmalet El Emir Abdelkade"
+      ],
+      "Rahouia": [
+        "Guertoufa",
+        "Rahouia"
+      ],
+      "Oued Lili": [
+        "Oued Lilli",
+        "Sidi Ali Mellal",
+        "Tidda"
+      ],
+      "Mechraa Sfa": [
+        "Djillali Ben Amar",
+        "Mechraa Safa",
+        "Tagdempt"
+      ],
+      "Hamadia": [
+        "Bougara",
+        "Hamadia",
+        "Rechaiga"
+      ],
+      "Tiaret": [
+        "Tiaret"
+      ],
+      "Medroussa": [
+        "Medroussa",
+        "Mellakou",
+        "Sidi Bakhti"
+      ],
+      "Ain Deheb": [
+        "Ain Deheb",
+        "Chehaima",
+        "Naima"
+      ],
+      "Dahmouni": [
+        "Ain Bouchekif",
+        "Dahmouni"
+      ]
+    }
+  },
+  {
+    "code": "15",
+    "name": "Tizi Ouzou",
+    "dairas": {
+      "Tigzirt": [
+        "Mizrana",
+        "Iflissen",
+        "Tigzirt"
+      ],
+      "Bouzeguene": [
+        "Idjeur",
+        "Beni-Zikki",
+        "Illoula Oumalou",
+        "Bouzeguene"
+      ],
+      "Beni Douala": [
+        "Beni-Douala",
+        "Beni-Aissi",
+        "Ait-Mahmoud",
+        "Beni Zmenzer"
+      ],
+      "Ouadhias": [
+        "Agouni-Gueghrane",
+        "Ait Bouaddou",
+        "Ouadhias",
+        "Tizi N'tleta"
+      ],
+      "Azeffoun": [
+        "Aghribs",
+        "Ait-Chafaa",
+        "Akerrou",
+        "Azeffoun"
+      ],
+      "Boghni": [
+        "Assi-Youcef",
+        "Boghni",
+        "Bounouh",
+        "Mechtras"
+      ],
+      "Draa Ben Khedda": [
+        "Draa-Ben-Khedda",
+        "Sidi Namane",
+        "Tadmait",
+        "Tirmitine"
+      ],
+      "Ouacif": [
+        "Ait Boumahdi",
+        "Ait-Toudert",
+        "Ouacif"
+      ],
+      "Mekla": [
+        "Ait Khellili",
+        "Mekla",
+        "Souama"
+      ],
+      "Benni Yenni": [
+        "Beni-Yenni",
+        "Iboudrarene",
+        "Yatafene"
+      ],
+      "Tizi Ouzou": [
+        "Tizi-Ouzou"
+      ],
+      "Ain El Hammam": [
+        "Abi-Youcef",
+        "Ain-El-Hammam",
+        "Ait-Yahia",
+        "Akbil"
+      ],
+      "Makouda": [
+        "Boudjima",
+        "Makouda"
+      ],
+      "Draa El Mizan": [
+        "Ain-Zaouia",
+        "Ait Yahia Moussa",
+        "Draa-El-Mizan",
+        "Frikat"
+      ],
+      "Tizi-Ghenif": [
+        "M'kira",
+        "Tizi-Gheniff"
+      ],
+      "Iferhounene": [
+        "Illilten",
+        "Imsouhal",
+        "Iferhounene"
+      ],
+      "Azazga": [
+        "Azazga",
+        "Freha",
+        "Ifigha",
+        "Yakourene",
+        "Zekri"
+      ],
+      "Larbaa Nath Iraten": [
+        "Ait Aggouacha",
+        "Irdjen",
+        "Larbaa Nath Irathen"
+      ],
+      "Tizi Rached": [
+        "Ait-Oumalou",
+        "Tizi-Rached"
+      ],
+      "Ouaguenoun": [
+        "Ait-Aissa-Mimoun",
+        "Ouaguenoun",
+        "Timizart"
+      ],
+      "Maatkas": [
+        "Maatkas",
+        "Souk-El-Tenine"
+      ]
+    }
+  },
+  {
+    "code": "16",
+    "name": "Alger",
+    "dairas": {
+      "Hussein Dey": [
+        "Hussein Dey",
+        "Kouba",
+        "Mohamed Belouzdad",
+        "El Magharia"
+      ],
+      "Baraki": [
+        "Les Eucalyptus",
+        "Sidi Moussa",
+        "Baraki"
+      ],
+      "Dar El Beida": [
+        "Ain Taya",
+        "Bab Ezzouar",
+        "Bordj El Kiffan",
+        "Dar El Beida",
+        "El Marsa",
+        "Mohammadia",
+        "Bordj El Bahri"
+      ],
+      "Birtouta": [
+        "Bir Touta",
+        "Ouled Chebel",
+        "Tessala El Merdja"
+      ],
+      "Rouiba": [
+        "Herraoua",
+        "Reghaia",
+        "Rouiba"
+      ],
+      "Zeralda": [
+        "Maalma",
+        "Rahmania",
+        "Souidania",
+        "Staoueli",
+        "Zeralda"
+      ],
+      "Draria": [
+        "Baba Hassen",
+        "Douira",
+        "Draria",
+        "El Achour",
+        "Khraissia"
+      ],
+      "Cheraga": [
+        "Ain Benian",
+        "Cheraga",
+        "Dely Ibrahim",
+        "Hammamet",
+        "Ouled Fayet"
+      ],
+      "Sidi M'hamed": [
+        "Alger Centre",
+        "El Madania",
+        "El Mouradia",
+        "Sidi M'hamed"
+      ],
+      "Bir Mourad Rais": [
+        "Sehaoula",
+        "Bir Mourad Rais",
+        "Birkhadem",
+        "Djasr Kasentina",
+        "Hydra"
+      ],
+      "Bab El Oued": [
+        "Bologhine Ibnou Ziri",
+        "Casbah",
+        "Oued Koriche",
+        "Rais Hamidou",
+        "Bab El Oued"
+      ],
+      "Bouzareah": [
+        "Ben Aknoun",
+        "Beni Messous",
+        "Bouzareah",
+        "El Biar"
+      ],
+      "El Harrach": [
+        "Bachedjerah",
+        "Bourouba",
+        "El Harrach",
+        "Oued Smar"
+      ]
+    }
+  },
+  {
+    "code": "17",
+    "name": "Djelfa",
+    "dairas": {
+      "Hassi Bahbah": [
+        "Hassi El Euch",
+        "Zaafrane",
+        "Ain Maabed",
+        "Hassi Bahbah"
+      ],
+      "Ain El Ibel": [
+        "Ain El Ibel",
+        "Taadmit",
+        "Zaccar",
+        "Moudjebara"
+      ],
+      "Charef": [
+        "El Guedid",
+        "Charef",
+        "Benyagoub"
+      ],
+      "Dar Chioukh": [
+        "Sidi Baizid",
+        "M'liliha",
+        "Dar Chioukh"
+      ],
+      "Had Sahary": [
+        "Had Sahary",
+        "Bouira Lahdab",
+        "Ain Fekka"
+      ],
+      "Sidi Laadjel": [
+        "Sidi Laadjel",
+        "Hassi Fedoul",
+        "El Khemis"
+      ],
+      "Messaad": [
+        "Selmana",
+        "Sed Rahal",
+        "Messaad",
+        "Guettara",
+        "Deldoul"
+      ],
+      "El Idrissia": [
+        "Douis",
+        "El Idrissia",
+        "Ain Chouhada"
+      ],
+      "Djelfa": [
+        "Djelfa"
+      ],
+      "Birine": [
+        "Birine",
+        "Benhar"
+      ],
+      "Faidh El Botma": [
+        "Oum Laadham",
+        "Faidh El Botma",
+        "Amourah"
+      ],
+      "Ain Oussera": [
+        "Guernini",
+        "Ain Oussera"
+      ]
+    }
+  },
+  {
+    "code": "18",
+    "name": "Jijel",
+    "dairas": {
+      "Jijel": [
+        "Jijel"
+      ],
+      "El Aouana": [
+        "El Aouana",
+        "Selma Benziada"
+      ],
+      "Ziamah Mansouriah": [
+        "Erraguene Souissi",
+        "Ziama Mansouriah"
+      ],
+      "Taher": [
+        "Boussif Ouled Askeur",
+        "Chahna",
+        "Emir Abdelkader",
+        "Oudjana",
+        "Taher"
+      ],
+      "Chekfa": [
+        "Chekfa",
+        "El Kennar Nouchfi",
+        "Sidi Abdelaziz",
+        "Bordj T'har"
+      ],
+      "El Milia": [
+        "El Milia",
+        "Ouled Yahia Khadrouch"
+      ],
+      "Sidi Marouf": [
+        "Ouled Rabah",
+        "Sidi Marouf"
+      ],
+      "Settara": [
+        "Ghebala",
+        "Settara"
+      ],
+      "El Ancer": [
+        "Bouraoui Belhadef",
+        "El Ancer",
+        "Khiri Oued Adjoul",
+        "Djemaa Beni Habibi"
+      ],
+      "Djimla": [
+        "Djimla",
+        "Boudria Beniyadjis"
+      ],
+      "Texenna": [
+        "Kaous",
+        "Texenna"
+      ]
+    }
+  },
+  {
+    "code": "19",
+    "name": "Sétif",
+    "dairas": {
+      "Salah Bey": [
+        "Rosfa",
+        "Boutaleb",
+        "Hamma",
+        "Ouled Tebben",
+        "Salah Bey"
+      ],
+      "Amoucha": [
+        "Oued El Bared",
+        "Tizi N'bechar",
+        "Amoucha"
+      ],
+      "Ain Arnat": [
+        "Mezloug",
+        "El Ouricia",
+        "Ain Abessa",
+        "Ain Arnat"
+      ],
+      "Ain Oulmene": [
+        "Guellal",
+        "Kasr El Abtal",
+        "Ouled Si Ahmed",
+        "Ain Oulmene"
+      ],
+      "Bouandas": [
+        "Ait Naoual Mezada",
+        "Ait-Tizi",
+        "Bouandas",
+        "Bousselam"
+      ],
+      "Hammam Sokhna": [
+        "Hamam Soukhna",
+        "Taya",
+        "Tella"
+      ],
+      "Ain Azel": [
+        "Ain Azel",
+        "Ain Lahdjar",
+        "Beidha Bordj",
+        "Bir Haddada"
+      ],
+      "Guenzet": [
+        "Guenzet",
+        "Harbil"
+      ],
+      "Bougaa": [
+        "Ain-Roua",
+        "Beni Oussine",
+        "Bougaa"
+      ],
+      "Hammam Guergour": [
+        "Draa-Kebila",
+        "Hammam Guergour"
+      ],
+      "Setif": [
+        "Setif"
+      ],
+      "Ain El Kebira": [
+        "Ain El Kebira",
+        "Dehamcha",
+        "Ouled Addouane"
+      ],
+      "Beni Aziz": [
+        "Ain-Sebt",
+        "Beni-Aziz",
+        "Maaouia"
+      ],
+      "Bir El Arch": [
+        "Bellaa",
+        "Bir-El-Arch",
+        "El-Ouldja",
+        "Tachouda"
+      ],
+      "Maoklane": [
+        "Tala-Ifacene",
+        "Maouaklane"
+      ],
+      "Babor": [
+        "Serdj-El-Ghoul",
+        "Babor"
+      ],
+      "Guidjel": [
+        "Guidjel",
+        "Ouled Sabor"
+      ],
+      "El Eulma": [
+        "Bazer-Sakra",
+        "El Eulma",
+        "Guelta Zerka"
+      ],
+      "Djemila": [
+        "Beni Fouda",
+        "Djemila"
+      ],
+      "Beni Ourtilane": [
+        "Ain-Legradj",
+        "Beni Chebana",
+        "Beni Ourtilane",
+        "Beni-Mouhli"
+      ]
+    }
+  },
+  {
+    "code": "20",
+    "name": "Saïda",
+    "dairas": {
+      "Saida": [
+        "Saida"
+      ],
+      "Ouled Brahim": [
+        "Tircine",
+        "Ouled Brahim",
+        "Ain Soltane"
+      ],
+      "El Hassasna": [
+        "Maamora",
+        "El Hassasna",
+        "Ain Sekhouna"
+      ],
+      "Sidi Boubekeur": [
+        "Sidi Boubekeur",
+        "Ouled Khaled",
+        "Hounet",
+        "Sidi Amar"
+      ],
+      "Youb": [
+        "Youb",
+        "Doui Thabet"
+      ],
+      "Ain El Hadjar": [
+        "Sidi Ahmed",
+        "Moulay Larbi",
+        "Ain El Hadjar"
+      ]
+    }
+  },
+  {
+    "code": "21",
+    "name": "Skikda",
+    "dairas": {
+      "Sidi Mezghiche": [
+        "Ain Bouziane",
+        "Beni Oulbane",
+        "Sidi Mezghiche"
+      ],
+      "El Harrouch": [
+        "Salah Bouchaour",
+        "Zerdezas",
+        "Ouled Habbaba",
+        "Emjez Edchich",
+        "El Arrouch"
+      ],
+      "El Hadaiek": [
+        "El Hadaiek",
+        "Bouchetata",
+        "Ain Zouit"
+      ],
+      "Ramdane Djamel": [
+        "Beni Bechir",
+        "Ramdane Djamel"
+      ],
+      "Tamalous": [
+        "Bin El Ouiden",
+        "Tamalous",
+        "Kerkara"
+      ],
+      "Ain Kechra": [
+        "Ain Kechra",
+        "Ouldja Boulbalout"
+      ],
+      "Oum Toub": [
+        "Oum Toub"
+      ],
+      "Azzaba": [
+        "El Ghedir",
+        "Es Sebt",
+        "Ain Charchar",
+        "Azzaba",
+        "Djendel Saadi Mohamed"
+      ],
+      "Zitouna": [
+        "Zitouna",
+        "Kanoua"
+      ],
+      "Ouled Attia": [
+        "Ouled Attia",
+        "Oued Zhour",
+        "Khenag Maoune"
+      ],
+      "Collo": [
+        "Collo",
+        "Cheraia",
+        "Beni Zid"
+      ],
+      "Ben Azzouz": [
+        "El Marsa",
+        "Ben Azzouz",
+        "Bekkouche Lakhdar"
+      ],
+      "Skikda": [
+        "Filfila",
+        "Hammadi Krouma",
+        "Skikda"
+      ]
+    }
+  },
+  {
+    "code": "22",
+    "name": "Sidi Bel Abbès",
+    "dairas": {
+      "Sidi Ali Ben Youb": [
+        "Sidi Ali Benyoub",
+        "Tabia",
+        "Boukhanefis"
+      ],
+      "Moulay Slissen": [
+        "Moulay Slissen",
+        "El Hacaiba",
+        "Ain Tindamine"
+      ],
+      "Tenira": [
+        "Tenira",
+        "Oued Sefioun",
+        "Hassi Dahou",
+        "Benachiba Chelia"
+      ],
+      "Merine": [
+        "Oued Taourira",
+        "Merine",
+        "Tefessour",
+        "Taoudmout"
+      ],
+      "Sidi Lahcene": [
+        "Sidi Yacoub",
+        "Sidi Lahcene",
+        "Sidi Khaled",
+        "Amarnas"
+      ],
+      "Ain El Berd": [
+        "Sidi Brahim",
+        "Sidi Hamadouche",
+        "Makedra",
+        "Ain El Berd"
+      ],
+      "Ben Badis": [
+        "Hassi Zahana",
+        "Chetouane Belaila",
+        "Ben Badis",
+        "Bedrabine El Mokrani"
+      ],
+      "Sfisef": [
+        "Sfisef",
+        "M'cid",
+        "Boudjebaa El Bordj",
+        "Ain- Adden"
+      ],
+      "Marhoum": [
+        "Sidi Chaib",
+        "Marhoum",
+        "Bir El Hammam"
+      ],
+      "Ras El Ma": [
+        "Redjem Demouche",
+        "Ras El Ma",
+        "Oued Sebaa"
+      ],
+      "Sidi Bel Abbes": [
+        "Sidi Bel-Abbes"
+      ],
+      "Tessala": [
+        "Ain Thrid",
+        "Sehala Thaoura",
+        "Tessala"
+      ],
+      "Mostefa  Ben Brahim": [
+        "Belarbi",
+        "Mostefa  Ben Brahim",
+        "Tilmouni",
+        "Zerouala"
+      ],
+      "Telagh": [
+        "Dhaya",
+        "Mezaourou",
+        "Teghalimet",
+        "Telagh"
+      ],
+      "Sidi Ali Boussidi": [
+        "Ain Kada",
+        "Lamtar",
+        "Sidi Ali Boussidi",
+        "Sidi Dahou Zairs"
+      ]
+    }
+  },
+  {
+    "code": "23",
+    "name": "Annaba",
+    "dairas": {
+      "Annaba": [
+        "Annaba",
+        "Seraidi"
+      ],
+      "Berrahal": [
+        "Berrahal",
+        "Oued El Aneb",
+        "Treat"
+      ],
+      "El Hadjar": [
+        "El Hadjar",
+        "Sidi Amar"
+      ],
+      "El Bouni": [
+        "El Bouni"
+      ],
+      "Ain El Berda": [
+        "Ain El Berda",
+        "Cheurfa",
+        "El Eulma"
+      ],
+      "Chetaibi": [
+        "Chetaibi"
+      ]
+    }
+  },
+  {
+    "code": "24",
+    "name": "Guelma",
+    "dairas": {
+      "Guelaat Bousbaa": [
+        "Nechmaya",
+        "Boumahra Ahmed",
+        "Djeballah Khemissi",
+        "Belkheir",
+        "Beni Mezline",
+        "Guelaat Bou Sbaa"
+      ],
+      "Hammam Debagh": [
+        "Bou Hamdane",
+        "Hammam Debagh",
+        "Roknia"
+      ],
+      "Hammam N'bails": [
+        "Dahouara",
+        "Hammam N'bail",
+        "Oued Cheham"
+      ],
+      "Guelma": [
+        "Guelma",
+        "Bendjarah"
+      ],
+      "Bouchegouf": [
+        "Ain Ben Beida",
+        "Bouchegouf",
+        "Medjez Sfa",
+        "Oued Ferragha"
+      ],
+      "Heliopolis": [
+        "Bouati Mahmoud",
+        "El Fedjoudj",
+        "Heliopolis"
+      ],
+      "Ain Hessainia": [
+        "Medjez Amar",
+        "Houari Boumedienne",
+        "Ras El Agba",
+        "Sellaoua Announa"
+      ],
+      "Oued Zenati": [
+        "Bordj Sabath",
+        "Oued Zenati",
+        "Ain Regada"
+      ],
+      "Ain Makhlouf": [
+        "Ain Larbi",
+        "Ain Makhlouf",
+        "Tamlouka"
+      ],
+      "Khezaras": [
+        "Ain Sandel",
+        "Bou Hachana",
+        "Khezaras"
+      ]
+    }
+  },
+  {
+    "code": "25",
+    "name": "Constantine",
+    "dairas": {
+      "Hamma Bouziane": [
+        "Didouche Mourad",
+        "Hamma Bouziane"
+      ],
+      "Zighoud Youcef": [
+        "Beni Hamidane",
+        "Zighoud Youcef"
+      ],
+      "El Khroub": [
+        "Ain Smara",
+        "El Khroub",
+        "Ouled Rahmoun"
+      ],
+      "Ain Abid": [
+        "Ain Abid",
+        "Ben Badis"
+      ],
+      "Ibn Ziad": [
+        "Ibn Ziad",
+        "Messaoud Boudjeriou"
+      ],
+      "Constantine": [
+        "Constantine"
+      ]
+    }
+  },
+  {
+    "code": "26",
+    "name": "Médéa",
+    "dairas": {
+      "Ouled Antar": [
+        "Ouled Hellal",
+        "Boghar",
+        "Ouled Antar"
+      ],
+      "Souaghi": [
+        "Souagui",
+        "Djouab",
+        "Sidi Zahar",
+        "Sidi Ziane"
+      ],
+      "Ksar El Boukhari": [
+        "Ksar El Boukhari",
+        "M'fatha",
+        "Saneg"
+      ],
+      "El Azizia": [
+        "El Azizia",
+        "Maghraoua",
+        "Mihoub"
+      ],
+      "Chahbounia": [
+        "Bouaiche",
+        "Boughzoul",
+        "Chabounia"
+      ],
+      "Ouamri": [
+        "Hannacha",
+        "Ouamri",
+        "Oued Harbil"
+      ],
+      "Beni Slimane": [
+        "Beni Slimane",
+        "Bouskene",
+        "Sidi Rabie"
+      ],
+      "Si Mahdjoub": [
+        "Bouaichoune",
+        "Ouled Bouachra",
+        "Si Mahdjoub"
+      ],
+      "Berrouaghia": [
+        "Berrouaghia",
+        "Ouled Deid",
+        "Rebaia"
+      ],
+      "Seghouane": [
+        "Medjebar",
+        "Tletat Ed Douair",
+        "Zoubiria",
+        "Seghouane"
+      ],
+      "Tablat": [
+        "Aissaouia",
+        "El Haoudane",
+        "Mezerana",
+        "Tablat"
+      ],
+      "Medea": [
+        "Draa Esmar",
+        "Medea",
+        "Tamesguida"
+      ],
+      "Ouzera": [
+        "Ben Chicao",
+        "El Hamdania",
+        "Ouzera",
+        "Tizi Mahdi"
+      ],
+      "Ain Boucif": [
+        "Ain Boucif",
+        "El Ouinet",
+        "Kef Lakhdar",
+        "Ouled Emaaraf",
+        "Sidi Demed"
+      ],
+      "El Omaria": [
+        "Baata",
+        "El Omaria",
+        "Ouled Brahim"
+      ],
+      "Guelb El Kebir": [
+        "Bir Ben Laabed",
+        "El Guelbelkebir",
+        "Sedraya"
+      ],
+      "Chellalat El Adhaoura": [
+        "Ain Ouksir",
+        "Chelalet El Adhaoura",
+        "Cheniguel",
+        "Tafraout"
+      ],
+      "Sidi Naamane": [
+        "Bouchrahil",
+        "Khams Djouamaa",
+        "Sidi Naamane"
+      ],
+      "Aziz": [
+        "Aziz",
+        "Derrag",
+        "Oum El Djellil"
+      ]
+    }
+  },
+  {
+    "code": "27",
+    "name": "Mostaganem",
+    "dairas": {
+      "Ain Nouicy": [
+        "Fornaka",
+        "Hassiane",
+        "Ain-Nouissy"
+      ],
+      "Ain Tedeles": [
+        "Oued El Kheir",
+        "Ain-Tedles",
+        "Sidi Belaattar",
+        "Sour"
+      ],
+      "Hassi Mameche": [
+        "Hassi Mameche",
+        "Mazagran",
+        "Stidia"
+      ],
+      "Kheir Eddine": [
+        "Ain-Boudinar",
+        "Kheir-Eddine",
+        "Sayada"
+      ],
+      "Sidi Ali": [
+        "Sidi Ali",
+        "Tazgait",
+        "Ouled-Maalah"
+      ],
+      "Sidi Lakhdar": [
+        "Benabdelmalek Ramdane",
+        "Hadjadj",
+        "Sidi-Lakhdar"
+      ],
+      "Mostaganem": [
+        "Mostaganem"
+      ],
+      "Achaacha": [
+        "Achaacha",
+        "Khadra",
+        "Nekmaria",
+        "Ouled Boughalem"
+      ],
+      "Bouguirat": [
+        "Bouguirat",
+        "Safsaf",
+        "Sirat",
+        "Souaflia"
+      ],
+      "Mesra": [
+        "Ain-Sidi Cherif",
+        "Mansourah",
+        "Mesra",
+        "Touahria"
+      ]
+    }
+  },
+  {
+    "code": "28",
+    "name": "M'Sila",
+    "dairas": {
+      "Chellal": [
+        "Chellal",
+        "Ouled Madhi",
+        "Khettouti Sed-El-Jir",
+        "Maarif"
+      ],
+      "Magra": [
+        "Belaiba",
+        "Berhoum",
+        "Dehahna",
+        "Magra",
+        "Ain Khadra"
+      ],
+      "Sidi Aissa": [
+        "Beni Ilmane",
+        "Bouti Sayeh",
+        "Sidi Aissa"
+      ],
+      "Ain El Hadjel": [
+        "Ain El Hadjel",
+        "Sidi Hadjeres"
+      ],
+      "Bousaada": [
+        "Bou Saada",
+        "El Hamel",
+        "Oulteme"
+      ],
+      "Ouled Sidi Brahim": [
+        "Benzouh",
+        "Ouled Sidi Brahim"
+      ],
+      "Sidi Ameur": [
+        "Sidi Ameur",
+        "Tamsa"
+      ],
+      "Ben Srour": [
+        "Ben Srour",
+        "Mohamed Boudiaf",
+        "Ouled Slimane",
+        "Zarzour"
+      ],
+      "Ain El Melh": [
+        "Ain El Melh",
+        "Ain Fares",
+        "Ain Rich",
+        "Bir Foda",
+        "Sidi M'hamed"
+      ],
+      "Medjedel": [
+        "Medjedel",
+        "Menaa"
+      ],
+      "Djebel Messaad": [
+        "Djebel Messaad",
+        "Slim"
+      ],
+      "M'sila": [
+        "M'sila"
+      ],
+      "Hammam Dalaa": [
+        "Hammam Dalaa",
+        "Ouanougha",
+        "Ouled Mansour",
+        "Tarmount"
+      ],
+      "Ouled Derradj": [
+        "Maadid",
+        "M'tarfa",
+        "Ouled Derradj",
+        "Souamaa",
+        "Ouled Addi Guebala"
+      ],
+      "Khoubana": [
+        "El Houamed",
+        "Khoubana",
+        "M'cif"
+      ]
+    }
+  },
+  {
+    "code": "29",
+    "name": "Mascara",
+    "dairas": {
+      "Oued El Abtal": [
+        "Oued El Abtal",
+        "Sidi Abdeldjebar",
+        "Ain Ferah"
+      ],
+      "Mohammadia": [
+        "Sidi Abdelmoumene",
+        "Sedjerara",
+        "Mohammadia",
+        "Mocta-Douz",
+        "Ferraguig",
+        "El Ghomri"
+      ],
+      "Tighennif": [
+        "Tighennif",
+        "Sidi Kada",
+        "Sehailia"
+      ],
+      "Zahana": [
+        "Zahana",
+        "El Gaada"
+      ],
+      "Oggaz": [
+        "Ras El Ain Amirouche",
+        "Oggaz",
+        "Alaimia"
+      ],
+      "Sig": [
+        "Sig",
+        "Chorfa",
+        "Bou Henni"
+      ],
+      "Ain Fares": [
+        "El Mamounia",
+        "Ain Fares"
+      ],
+      "Bouhanifia": [
+        "El Gueitena",
+        "Bouhanifia",
+        "Hacine"
+      ],
+      "Aouf": [
+        "Gharrous",
+        "Benian",
+        "Aouf"
+      ],
+      "Oued Taria": [
+        "Guerdjoum",
+        "Oued Taria"
+      ],
+      "Ain Fekan": [
+        "Ain Frass",
+        "Ain Fekan"
+      ],
+      "El Bordj": [
+        "Khalouia",
+        "El Menaouer",
+        "El Bordj"
+      ],
+      "Ghriss": [
+        "Sidi Boussaid",
+        "Matemore",
+        "Makhda",
+        "Ghriss",
+        "Maoussa"
+      ],
+      "Mascara": [
+        "Mascara"
+      ],
+      "Tizi": [
+        "El Keurt",
+        "Froha",
+        "Tizi"
+      ],
+      "Hachem": [
+        "El Hachem",
+        "Nesmot",
+        "Zelamta"
+      ]
+    }
+  },
+  {
+    "code": "30",
+    "name": "Ouargla",
+    "dairas": {
+      "Ouargla": [
+        "Ouargla",
+        "Rouissat"
+      ],
+      "Hassi Messaoud": [
+        "Hassi Messaoud"
+      ],
+      "Sidi Khouiled": [
+        "Ain Beida",
+        "Hassi Ben Abdellah",
+        "Sidi Khouiled"
+      ],
+      "El Borma": [
+        "El Borma"
+      ],
+      "N'goussa": [
+        "N'goussa"
+      ]
+    }
+  },
+  {
+    "code": "31",
+    "name": "Oran",
+    "dairas": {
+      "Es Senia": [
+        "Sidi Chami",
+        "El Kerma",
+        "Es Senia"
+      ],
+      "Gdyel": [
+        "Hassi Mefsoukh",
+        "Gdyel",
+        "Ben Freha"
+      ],
+      "Bir El Djir": [
+        "Bir El Djir",
+        "Hassi Ben Okba",
+        "Hassi Bounif"
+      ],
+      "Arzew": [
+        "Arzew",
+        "Sidi Ben Yebka"
+      ],
+      "Bethioua": [
+        "Ain Biya",
+        "Bethioua",
+        "Marsat El Hadjadj"
+      ],
+      "Ain Turk": [
+        "Ain Turk",
+        "El Ancor",
+        "Mers El Kebir",
+        "Bousfer"
+      ],
+      "Oran": [
+        "Oran"
+      ],
+      "Oued Tlelat": [
+        "Boufatis",
+        "El Braya",
+        "Oued Tlelat",
+        "Tafraoui"
+      ],
+      "Boutlelis": [
+        "Ain Kerma",
+        "Boutlelis",
+        "Messerghin"
+      ]
+    }
+  },
+  {
+    "code": "32",
+    "name": "El Bayadh",
+    "dairas": {
+      "Labiodh Sidi Cheikh": [
+        "Ain El Orak",
+        "El Bnoud",
+        "Labiodh Sidi Cheikh",
+        "Arbaouat"
+      ],
+      "Brezina": [
+        "Krakda",
+        "Brezina",
+        "Ghassoul"
+      ],
+      "Boualem": [
+        "Sidi Slimane",
+        "Sidi Ameur",
+        "Boualem",
+        "Sidi Tiffour",
+        "Stitten"
+      ],
+      "Bougtoub": [
+        "Bougtoub",
+        "El Kheiter",
+        "Tousmouline"
+      ],
+      "El Bayadh": [
+        "El Bayadh"
+      ],
+      "Rogassa": [
+        "Rogassa",
+        "Kef El Ahmar",
+        "Cheguig"
+      ],
+      "Chellala": [
+        "El Mehara",
+        "Chellala"
+      ],
+      "Boussemghoun": [
+        "Boussemghoun"
+      ]
+    }
+  },
+  {
+    "code": "33",
+    "name": "Illizi",
+    "dairas": {
+      "In Amenas": [
+        "Bordj Omar Driss",
+        "Debdeb",
+        "In Amenas"
+      ],
+      "Illizi": [
+        "Illizi"
+      ]
+    }
+  },
+  {
+    "code": "34",
+    "name": "Bordj Bou Arreridj",
+    "dairas": {
+      "El Hamadia": [
+        "Elhammadia",
+        "El Euch",
+        "Ksour",
+        "Rabta"
+      ],
+      "Mansourah": [
+        "Ouled Sidi-Brahim",
+        "El M'hir",
+        "Mansoura",
+        "Haraza",
+        "Ben Daoud"
+      ],
+      "Ain Taghrout": [
+        "Ain Taghrout",
+        "Tixter"
+      ],
+      "Bordj Ghedir": [
+        "Belimour",
+        "El Annasseur",
+        "Ghailasa",
+        "Taglait",
+        "Bordj Ghedir"
+      ],
+      "Bir Kasdali": [
+        "Sidi-Embarek",
+        "Khelil",
+        "Bir Kasdali"
+      ],
+      "Djaafra": [
+        "Tefreg",
+        "El Main",
+        "Djaafra",
+        "Colla"
+      ],
+      "Medjana": [
+        "Teniet En Nasr",
+        "El Achir",
+        "Hasnaoua",
+        "Medjana"
+      ],
+      "Ras El Oued": [
+        "Ain Tesra",
+        "Ouled Brahem",
+        "Ras El Oued"
+      ],
+      "Bordj Zemmoura": [
+        "Bordj Zemmoura",
+        "Ouled Dahmane",
+        "Tassamert"
+      ],
+      "Bordj Bou Arreridj": [
+        "B. B. Arreridj"
+      ]
+    }
+  },
+  {
+    "code": "35",
+    "name": "Boumerdès",
+    "dairas": {
+      "Boudouaou": [
+        "El Kharrouba",
+        "Bouzegza Keddara",
+        "Ouled Hedadj",
+        "Boudouaou",
+        "Boudouaou El Bahri"
+      ],
+      "Dellys": [
+        "Dellys",
+        "Ben Choud",
+        "Afir"
+      ],
+      "Thenia": [
+        "Thenia",
+        "Beni Amrane",
+        "Ammal",
+        "Souk El Had"
+      ],
+      "Khemis El Khechna": [
+        "Khemis El Khechna",
+        "Larbatache",
+        "Ouled Moussa",
+        "Hammedi"
+      ],
+      "Isser": [
+        "Timezrit",
+        "Isser",
+        "Chabet El Ameur",
+        "Si Mustapha"
+      ],
+      "Bordj Menaiel": [
+        "Zemmouri",
+        "Leghata",
+        "Djinet",
+        "Bordj Menaiel"
+      ],
+      "Naciria": [
+        "Ouled Aissa",
+        "Naciria"
+      ],
+      "Baghlia": [
+        "Sidi Daoud",
+        "Baghlia",
+        "Taourga"
+      ],
+      "Boumerdes": [
+        "Tidjelabine",
+        "Boumerdes",
+        "Corso"
+      ]
+    }
+  },
+  {
+    "code": "36",
+    "name": "El Tarf",
+    "dairas": {
+      "El Tarf": [
+        "Ain El Assel",
+        "Bougous",
+        "El Tarf",
+        "Zitouna"
+      ],
+      "Besbes": [
+        "Besbes",
+        "Zerizer",
+        "Asfour"
+      ],
+      "Bouhadjar": [
+        "Ain Kerma",
+        "Bouhadjar",
+        "Hammam Beni Salah",
+        "Oued Zitoun"
+      ],
+      "Ben M'hidi": [
+        "Ben M Hidi",
+        "Berrihane",
+        "Echatt"
+      ],
+      "Drean": [
+        "Chebaita Mokhtar",
+        "Chihani",
+        "Drean"
+      ],
+      "El Kala": [
+        "El Aioun",
+        "El Kala",
+        "Souarekh",
+        "Raml Souk"
+      ],
+      "Bouteldja": [
+        "Bouteldja",
+        "Chefia",
+        "Lac Des Oiseaux"
+      ]
+    }
+  },
+  {
+    "code": "37",
+    "name": "Tindouf",
+    "dairas": {
+      "Tindouf": [
+        "Tindouf",
+        "Oum El Assel"
+      ]
+    }
+  },
+  {
+    "code": "38",
+    "name": "Tissemsilt",
+    "dairas": {
+      "Khemisti": [
+        "Khemisti",
+        "Layoune"
+      ],
+      "Theniet El Had": [
+        "Theniet El Had",
+        "Sidi Boutouchent"
+      ],
+      "Tissemsilt": [
+        "Ouled Bessam",
+        "Tissemsilt"
+      ],
+      "Lardjem": [
+        "Sidi Lantri",
+        "Lardjem",
+        "Melaab",
+        "Tamellahet"
+      ],
+      "Bordj Bounaama": [
+        "Beni Chaib",
+        "Beni Lahcene",
+        "Sidi Slimane",
+        "Bordj Bounaama"
+      ],
+      "Ammari": [
+        "Sidi Abed",
+        "Ammari",
+        "Maacem"
+      ],
+      "Lazharia": [
+        "Boucaid",
+        "Larbaa",
+        "Lazharia"
+      ],
+      "Bordj Emir Abdelkader": [
+        "Youssoufia",
+        "Bordj El Emir Abdelkader"
+      ]
+    }
+  },
+  {
+    "code": "39",
+    "name": "El Oued",
+    "dairas": {
+      "Taleb Larbi": [
+        "Douar El Maa",
+        "Ben Guecha",
+        "Taleb Larbi"
+      ],
+      "Robbah": [
+        "El Ogla",
+        "Nakhla",
+        "Robbah"
+      ],
+      "Magrane": [
+        "Magrane",
+        "Sidi Aoun"
+      ],
+      "Mih Ouensa": [
+        "Mih Ouansa",
+        "Oued El Alenda"
+      ],
+      "El Oued": [
+        "Kouinine",
+        "El-Oued"
+      ],
+      "Bayadha": [
+        "Bayadha"
+      ],
+      "Guemar": [
+        "Guemar",
+        "Ourmes",
+        "Taghzout"
+      ],
+      "Reguiba": [
+        "Hamraia",
+        "Reguiba"
+      ],
+      "Debila": [
+        "Debila",
+        "Hassani Abdelkrim"
+      ],
+      "Hassi Khalifa": [
+        "Hassi Khalifa",
+        "Trifaoui"
+      ]
+    }
+  },
+  {
+    "code": "40",
+    "name": "Khenchela",
+    "dairas": {
+      "Chechar": [
+        "Khirane",
+        "Djellal",
+        "El Oueldja",
+        "Chechar"
+      ],
+      "Babar": [
+        "Babar"
+      ],
+      "Ouled Rechache": [
+        "El Mahmal",
+        "Ouled Rechache"
+      ],
+      "Bouhmama": [
+        "Yabous",
+        "Chelia",
+        "Bouhmama",
+        "M'sara"
+      ],
+      "Khenchela": [
+        "Khenchela"
+      ],
+      "Kais": [
+        "Kais",
+        "Remila",
+        "Taouzianat"
+      ],
+      "El Hamma": [
+        "Baghai",
+        "El Hamma",
+        "Ensigha",
+        "Tamza"
+      ],
+      "Ain Touila": [
+        "Ain Touila",
+        "M'toussa"
+      ]
+    }
+  },
+  {
+    "code": "41",
+    "name": "Souk Ahras",
+    "dairas": {
+      "Souk Ahras": [
+        "Souk Ahras"
+      ],
+      "Sedrata": [
+        "Ain Soltane",
+        "Sedrata",
+        "Khemissa"
+      ],
+      "Mechroha": [
+        "Hanencha",
+        "Machroha"
+      ],
+      "Ouled Driss": [
+        "Ain Zana",
+        "Ouled Driss"
+      ],
+      "Oum El Adhaim": [
+        "Terraguelt",
+        "Oum El Adhaim",
+        "Oued Kebrit"
+      ],
+      "M'daourouche": [
+        "Tiffech",
+        "Ragouba",
+        "M'daourouche"
+      ],
+      "Taoura": [
+        "Drea",
+        "Taoura",
+        "Zaarouria"
+      ],
+      "Haddada": [
+        "Haddada",
+        "Khedara",
+        "Ouled Moumen"
+      ],
+      "Merahna": [
+        "Merahna",
+        "Ouillen",
+        "Sidi Fredj"
+      ],
+      "Bir Bouhouche": [
+        "Bir Bouhouche",
+        "Safel El Ouiden",
+        "Zouabi"
+      ]
+    }
+  },
+  {
+    "code": "42",
+    "name": "Tipaza",
+    "dairas": {
+      "Hadjout": [
+        "Hadjout",
+        "Merad"
+      ],
+      "Sidi Amar": [
+        "Menaceur",
+        "Nador",
+        "Sidi-Amar"
+      ],
+      "Gouraya": [
+        "Aghbal",
+        "Gouraya",
+        "Messelmoun"
+      ],
+      "Cherchell": [
+        "Cherchell",
+        "Hadjret Ennous",
+        "Sidi Ghiles",
+        "Sidi Semiane"
+      ],
+      "Damous": [
+        "Damous",
+        "Larhat",
+        "Beni Mileuk"
+      ],
+      "Fouka": [
+        "Fouka",
+        "Douaouda"
+      ],
+      "Bou Ismail": [
+        "Ain Tagourait",
+        "Bou Haroun",
+        "Bou Ismail",
+        "Khemisti"
+      ],
+      "Ahmar El Ain": [
+        "Ahmer El Ain",
+        "Bourkika",
+        "Sidi Rached"
+      ],
+      "Kolea": [
+        "Attatba",
+        "Chaiba",
+        "Kolea"
+      ],
+      "Tipaza": [
+        "Tipaza"
+      ]
+    }
+  },
+  {
+    "code": "43",
+    "name": "Mila",
+    "dairas": {
+      "Teleghma": [
+        "El Mechira",
+        "Teleghma",
+        "Oued Seguen"
+      ],
+      "Ain Beida Harriche": [
+        "El Ayadi Barbes",
+        "Ain Beida Harriche"
+      ],
+      "Terrai Bainen": [
+        "Tassala Lematai",
+        "Terrai Bainen",
+        "Amira Arres"
+      ],
+      "Tassadane Haddada": [
+        "Tassadane Haddada",
+        "Minar Zarza"
+      ],
+      "Sidi Merouane": [
+        "Sidi Merouane",
+        "Chigara"
+      ],
+      "Grarem Gouga": [
+        "Hamala",
+        "Grarem Gouga"
+      ],
+      "Rouached": [
+        "Tiberguent",
+        "Rouached"
+      ],
+      "Bouhatem": [
+        "Derrahi Bousselah",
+        "Bouhatem"
+      ],
+      "Oued Endja": [
+        "Zeghaia",
+        "Oued Endja",
+        "Ahmed Rachedi"
+      ],
+      "Tadjenanet": [
+        "Tadjenanet",
+        "Ouled Khalouf",
+        "Benyahia Abderrahmane"
+      ],
+      "Chelghoum Laid": [
+        "Ain Mellouk",
+        "Oued Athmenia",
+        "Chelghoum Laid"
+      ],
+      "Mila": [
+        "Ain Tine",
+        "Sidi Khelifa",
+        "Mila"
+      ],
+      "Ferdjioua": [
+        "Yahia Beniguecha",
+        "Ferdjioua"
+      ]
+    }
+  },
+  {
+    "code": "44",
+    "name": "Aïn Defla",
+    "dairas": {
+      "Khemis": [
+        "Khemis-Miliana",
+        "Sidi-Lakhdar"
+      ],
+      "Hammam Righa": [
+        "Ain-Benian",
+        "Ain-Torki",
+        "Hammam-Righa"
+      ],
+      "Djelida": [
+        "Bourached",
+        "Djelida",
+        "Djemaa Ouled Cheikh"
+      ],
+      "Boumedfaa": [
+        "Hoceinia",
+        "Boumedfaa"
+      ],
+      "El Amra": [
+        "Arib",
+        "El-Amra",
+        "Mekhatria"
+      ],
+      "El Attaf": [
+        "El-Attaf",
+        "Tiberkanine"
+      ],
+      "El Abadia": [
+        "Ain-Bouyahia",
+        "El-Abadia",
+        "Tacheta Zegagha"
+      ],
+      "Djendel": [
+        "Birbouche",
+        "Djendel",
+        "Oued Chorfa"
+      ],
+      "Miliana": [
+        "Ben Allal",
+        "Miliana"
+      ],
+      "Ain Lechiakh": [
+        "Ain-Lechiakh",
+        "Ain-Soltane",
+        "Oued Djemaa"
+      ],
+      "Rouina": [
+        "El-Maine",
+        "Rouina",
+        "Zeddine"
+      ],
+      "Bordj El Emir Khaled": [
+        "Bir-Ould-Khelifa",
+        "Bordj-Emir-Khaled",
+        "Tarik-Ibn-Ziad"
+      ],
+      "Bathia": [
+        "Bathia",
+        "Belaas",
+        "Hassania"
+      ],
+      "Ain Defla": [
+        "Ain-Defla"
+      ]
+    }
+  },
+  {
+    "code": "45",
+    "name": "Naâma",
+    "dairas": {
+      "Ain Sefra": [
+        "Tiout",
+        "Ain Sefra"
+      ],
+      "Moghrar": [
+        "Moghrar",
+        "Djenienne Bourezg"
+      ],
+      "Asla": [
+        "Asla"
+      ],
+      "Mekmen Ben Amar": [
+        "Kasdir",
+        "Makmen Ben Amar"
+      ],
+      "Mecheria": [
+        "Mecheria",
+        "El Biodh",
+        "Ain Ben Khelil"
+      ],
+      "Naama": [
+        "Naama"
+      ],
+      "Sfissifa": [
+        "Sfissifa"
+      ]
+    }
+  },
+  {
+    "code": "46",
+    "name": "Aïn Témouchent",
+    "dairas": {
+      "Ain Larbaa": [
+        "Sidi Boumediene",
+        "Tamzoura",
+        "Oued Sebbah",
+        "Ain El Arbaa"
+      ],
+      "El Maleh": [
+        "Chaabat El Ham",
+        "El Maleh",
+        "Ouled Kihal",
+        "Terga"
+      ],
+      "Hammam Bou Hadjar": [
+        "Chentouf",
+        "Hassasna",
+        "Oued Berkeche",
+        "Hammam Bou Hadjar"
+      ],
+      "El Amria": [
+        "El Amria",
+        "Hassi El Ghella",
+        "Ouled Boudjemaa",
+        "El Messaid",
+        "Bouzedjar"
+      ],
+      "Ain Kihel": [
+        "Aghlal",
+        "Ain Kihal",
+        "Ain Tolba",
+        "Aoubellil"
+      ],
+      "Beni Saf": [
+        "Beni Saf",
+        "Emir Abdelkader",
+        "Sidi Safi"
+      ],
+      "Oulhassa Gheraba": [
+        "Oulhaca El Gheraba",
+        "Sidi Ouriache"
+      ],
+      "Ain Temouchent": [
+        "Sidi Ben Adda",
+        "Ain Temouchent"
+      ]
+    }
+  },
+  {
+    "code": "47",
+    "name": "Ghardaïa",
+    "dairas": {
+      "Dhayet Ben Dhahoua": [
+        "Dhayet Bendhahoua"
+      ],
+      "Mansourah": [
+        "Mansoura"
+      ],
+      "Bounoura": [
+        "El Atteuf",
+        "Bounoura"
+      ],
+      "Zelfana": [
+        "Zelfana"
+      ],
+      "El Guerrara": [
+        "El Guerrara"
+      ],
+      "Metlili": [
+        "Sebseb",
+        "Metlili"
+      ],
+      "Berriane": [
+        "Berriane"
+      ],
+      "Ghardaia": [
+        "Ghardaia"
+      ]
+    }
+  },
+  {
+    "code": "48",
+    "name": "Relizane",
+    "dairas": {
+      "Mazouna": [
+        "El-Guettar",
+        "Mazouna"
+      ],
+      "Ammi Moussa": [
+        "Ouled Aiche",
+        "El Ouldja",
+        "Ammi Moussa",
+        "El Hassi"
+      ],
+      "Zemmoura": [
+        "Beni Dergoun",
+        "Dar Ben Abdelah",
+        "Zemmoura"
+      ],
+      "Djidiouia": [
+        "Djidiouia",
+        "Hamri",
+        "Ouled Sidi Mihoub"
+      ],
+      "El Matmar": [
+        "Belaassel Bouzagza",
+        "El-Matmar",
+        "Sidi Khettab",
+        "Sidi M'hamed Benaouda"
+      ],
+      "Ain Tarek": [
+        "Ain-Tarek",
+        "Had Echkalla"
+      ],
+      "Yellel": [
+        "Ain Rahma",
+        "Kalaa",
+        "Sidi Saada",
+        "Yellel"
+      ],
+      "Ramka": [
+        "Souk El Had",
+        "Ramka"
+      ],
+      "Mendes": [
+        "Mendes",
+        "Oued Essalem",
+        "Sidi Lazreg"
+      ],
+      "Oued Rhiou": [
+        "Ouarizane",
+        "Merdja Sidi Abed",
+        "Oued-Rhiou",
+        "Lahlef"
+      ],
+      "Relizane": [
+        "Bendaoud",
+        "Relizane"
+      ],
+      "Sidi M'hamed Ben Ali": [
+        "Sidi M'hamed Benali",
+        "Mediouna",
+        "Beni Zentis"
+      ],
+      "El H'madna": [
+        "Oued El Djemaa",
+        "El H'madna"
+      ]
+    }
+  },
+  {
+    "code": "49",
+    "name": "Timimoun",
+    "dairas": {
+      "Tinerkouk": [
+        "Tinerkouk",
+        "Ksar Kaddour"
+      ],
+      "Timimoun": [
+        "Timimoun",
+        "Ouled Said"
+      ],
+      "Aougrout": [
+        "Metarfa",
+        "Aougrout",
+        "Deldoul"
+      ],
+      "Charouine": [
+        "Talmine",
+        "Ouled Aissa",
+        "Charouine"
+      ]
+    }
+  },
+  {
+    "code": "50",
+    "name": "Bordj Badji Mokhtar",
+    "dairas": {
+      "Bordj Badji Mokhtar": [
+        "Timiaouine",
+        "Bordj Badji Mokhtar"
+      ]
+    }
+  },
+  {
+    "code": "51",
+    "name": "Ouled Djellal",
+    "dairas": {
+      "Sidi Khaled": [
+        "Ras El Miad",
+        "Besbes",
+        "Sidi Khaled"
+      ],
+      "Ouled Djellal": [
+        "Doucen",
+        "Chaiba",
+        "Ouled Djellal"
+      ]
+    }
+  },
+  {
+    "code": "52",
+    "name": "Béni Abbès",
+    "dairas": {
+      "Beni Abbes": [
+        "Beni-Abbes",
+        "Tamtert"
+      ],
+      "Igli": [
+        "Igli"
+      ],
+      "El Ouata": [
+        "El Ouata"
+      ],
+      "Ouled Khodeir": [
+        "Ouled-Khodeir",
+        "Ksabi"
+      ],
+      "Kerzaz": [
+        "Kerzaz",
+        "Timoudi",
+        "Beni-Ikhlef"
+      ]
+    }
+  },
+  {
+    "code": "53",
+    "name": "In Salah",
+    "dairas": {
+      "In Ghar": [
+        "Inghar"
+      ],
+      "In Salah": [
+        "Ain Salah",
+        "Foggaret Ezzoua"
+      ]
+    }
+  },
+  {
+    "code": "54",
+    "name": "In Guezzam",
+    "dairas": {
+      "Tin Zouatine": [
+        "Tin Zouatine"
+      ],
+      "In Guezzam": [
+        "Ain Guezzam"
+      ]
+    }
+  },
+  {
+    "code": "55",
+    "name": "Touggourt",
+    "dairas": {
+      "Temacine": [
+        "Temacine",
+        "Blidet Amor"
+      ],
+      "Megarine": [
+        "Sidi Slimane",
+        "Megarine"
+      ],
+      "Touggourt": [
+        "Nezla",
+        "Tebesbest",
+        "Touggourt",
+        "Zaouia El Abidia"
+      ],
+      "Taibet": [
+        "Taibet",
+        "Benaceur",
+        "M'naguer"
+      ],
+      "El-Hadjira": [
+        "El Alia",
+        "El-Hadjira"
+      ]
+    }
+  },
+  {
+    "code": "56",
+    "name": "Djanet",
+    "dairas": {
+      "Djanet": [
+        "Djanet",
+        "Bordj El Haouass"
+      ]
+    }
+  },
+  {
+    "code": "57",
+    "name": "El Meghaier",
+    "dairas": {
+      "El Meghaier": [
+        "Oum Touyour",
+        "El-M'ghaier",
+        "Still",
+        "Sidi Khelil"
+      ],
+      "Djamaa": [
+        "Sidi Amrane",
+        "M'rara",
+        "Djamaa",
+        "Tenedla"
+      ]
+    }
+  },
+  {
+    "code": "58",
+    "name": "El Menia",
+    "dairas": {
+      "El Menia": [
+        "El Meniaa",
+        "Hassi Gara"
+      ],
+      "Mansourah": [
+        "Hassi Fehal"
+      ]
+    }
+  }
+]

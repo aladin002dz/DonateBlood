@@ -28,6 +28,7 @@ interface UserProfile {
   phoneVerified: boolean
   bloodGroup: string | null
   wilaya: string | null
+  daira: string | null
   commune: string | null
   lastDonation: string | null
   donationType: string | null
@@ -111,6 +112,7 @@ export default function ProfilePage() {
       formData.append('email', profileData.email || '')
       formData.append('bloodGroup', profileData.bloodGroup || '')
       formData.append('wilaya', profileData.wilaya || '')
+      formData.append('daira', profileData.daira || '')
       formData.append('commune', profileData.commune || '')
       formData.append('lastDonation', profileData.lastDonation || '')
       formData.append('donationType', profileData.donationType || '')
@@ -207,8 +209,8 @@ export default function ProfilePage() {
                   <div className="flex justify-between">
                     <span className="text-muted-foreground">{t('location')}</span>
                     <span className="text-right">
-                      {profileData.commune && profileData.wilaya
-                        ? `${profileData.commune}, ${profileData.wilaya}`
+                      {[profileData.commune, profileData.daira, profileData.wilaya].filter(Boolean).length > 0
+                        ? [profileData.commune, profileData.daira, profileData.wilaya].filter(Boolean).join(', ')
                         : t('notSpecified')
                       }
                     </span>
@@ -291,7 +293,7 @@ export default function ProfilePage() {
                   <div className="space-y-4">
                     <h3 className="text-lg font-semibold text-foreground border-b pb-2">{t('locationInfo')}</h3>
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                       <div className="space-y-2">
                         <Label htmlFor="wilaya">{t('wilaya')}</Label>
                         <Input
@@ -299,6 +301,17 @@ export default function ProfilePage() {
                           type="text"
                           value={profileData.wilaya || ""}
                           onChange={(e) => handleInputChange("wilaya", e.target.value)}
+                          className="rounded-lg"
+                        />
+                      </div>
+
+                      <div className="space-y-2">
+                        <Label htmlFor="daira">{t('daira')}</Label>
+                        <Input
+                          id="daira"
+                          type="text"
+                          value={profileData.daira || ""}
+                          onChange={(e) => handleInputChange("daira", e.target.value)}
                           className="rounded-lg"
                         />
                       </div>

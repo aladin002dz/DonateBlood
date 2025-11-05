@@ -18,6 +18,7 @@ export default function SearchPage() {
   const [filters, setFilters] = useState<SearchFilters>({
     bloodGroup: "",
     wilaya: "",
+    daira: "",
     commune: "",
     donationType: "",
     emergencyOnly: false,
@@ -69,6 +70,7 @@ export default function SearchPage() {
     setFilters({
       bloodGroup: "",
       wilaya: "",
+      daira: "",
       commune: "",
       donationType: "",
       emergencyOnly: false,
@@ -105,7 +107,7 @@ export default function SearchPage() {
             <CardDescription>{t('searchFiltersDesc')}</CardDescription>
           </CardHeader>
           <CardContent>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 mb-4">
               <div className="space-y-2">
                 <Label htmlFor="bloodGroup">{t('bloodGroup')}</Label>
                 <Select value={filters.bloodGroup || ""} onValueChange={(value) => handleFilterChange("bloodGroup", value)}>
@@ -130,6 +132,18 @@ export default function SearchPage() {
                   placeholder={t('enterWilaya')}
                   value={filters.wilaya || ""}
                   onChange={(e) => handleFilterChange("wilaya", e.target.value)}
+                  className="rounded-lg"
+                />
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="daira">{t('daira')}</Label>
+                <Input
+                  id="daira"
+                  type="text"
+                  placeholder={t('enterDaira')}
+                  value={filters.daira || ""}
+                  onChange={(e) => handleFilterChange("daira", e.target.value)}
                   className="rounded-lg"
                 />
               </div>
@@ -245,7 +259,7 @@ export default function SearchPage() {
                     <div className="flex items-center gap-2 text-sm text-muted-foreground">
                       <MapPin className="h-4 w-4" />
                       <span>
-                        {donor.commune}, {donor.wilaya}
+                        {[donor.commune, donor.daira, donor.wilaya].filter(Boolean).join(', ')}
                       </span>
                     </div>
 

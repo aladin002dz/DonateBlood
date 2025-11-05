@@ -12,6 +12,7 @@ const updateProfileSchema = z.object({
     email: z.string().email('Invalid email address').optional(),
     bloodGroup: z.string().min(1, 'Blood group is required').optional(),
     wilaya: z.string().min(1, 'Wilaya is required').optional(),
+    daira: z.string().min(1, 'Daira is required').optional(),
     commune: z.string().min(1, 'Commune is required').optional(),
     lastDonation: z.string().optional(),
     donationType: z.string().min(1, 'Donation type is required').optional(),
@@ -63,6 +64,7 @@ export async function getProfile() {
                 phoneVerified: profile.phoneVerified,
                 bloodGroup: profile.bloodGroup,
                 wilaya: profile.wilaya,
+                daira: profile.daira,
                 commune: profile.commune,
                 lastDonation: profile.lastDonation,
                 donationType: profile.donationType,
@@ -100,6 +102,7 @@ export async function updateProfile(formData: FormData) {
             email: formData.get('email') as string,
             bloodGroup: formData.get('bloodGroup') as string,
             wilaya: formData.get('wilaya') as string,
+            daira: formData.get('daira') as string,
             commune: formData.get('commune') as string,
             lastDonation: formData.get('lastDonation') as string,
             donationType: formData.get('donationType') as string,
@@ -160,6 +163,7 @@ export async function updateProfile(formData: FormData) {
         if (validatedData.email !== undefined) updateData.email = validatedData.email;
         if (validatedData.bloodGroup !== undefined) updateData.bloodGroup = validatedData.bloodGroup;
         if (validatedData.wilaya !== undefined) updateData.wilaya = validatedData.wilaya;
+        if (validatedData.daira !== undefined) updateData.daira = validatedData.daira;
         if (validatedData.commune !== undefined) updateData.commune = validatedData.commune;
         if (validatedData.lastDonation !== undefined) updateData.lastDonation = validatedData.lastDonation;
         if (validatedData.donationType !== undefined) updateData.donationType = validatedData.donationType;

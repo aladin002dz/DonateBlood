@@ -7,6 +7,7 @@ import { and, desc, eq, ilike, isNotNull } from 'drizzle-orm';
 export interface SearchFilters {
     bloodGroup?: string;
     wilaya?: string;
+    daira?: string;
     commune?: string;
     donationType?: string;
     emergencyOnly?: boolean;
@@ -17,6 +18,7 @@ export interface DonorData {
     name: string;
     bloodGroup: string | null;
     wilaya: string | null;
+    daira: string | null;
     commune: string | null;
     donationType: string | null;
     phone: string | null;
@@ -46,6 +48,10 @@ export async function searchDonors(filters: SearchFilters = {}) {
             conditions.push(ilike(user.wilaya, `%${filters.wilaya}%`));
         }
 
+        if (filters.daira && filters.daira.trim() !== '') {
+            conditions.push(ilike(user.daira, `%${filters.daira}%`));
+        }
+
         if (filters.commune && filters.commune.trim() !== '') {
             conditions.push(ilike(user.commune, `%${filters.commune}%`));
         }
@@ -66,6 +72,7 @@ export async function searchDonors(filters: SearchFilters = {}) {
                 name: user.name,
                 bloodGroup: user.bloodGroup,
                 wilaya: user.wilaya,
+                daira: user.daira,
                 commune: user.commune,
                 donationType: user.donationType,
                 phone: user.phone,
