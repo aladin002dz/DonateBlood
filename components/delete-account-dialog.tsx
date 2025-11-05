@@ -16,7 +16,6 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { AlertTriangle, Loader2, Trash2 } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 
@@ -29,7 +28,6 @@ export function DeleteAccountDialog({ children }: DeleteAccountDialogProps) {
     const [open, setOpen] = useState(false);
     const [confirmText, setConfirmText] = useState("");
     const [isDeleting, setIsDeleting] = useState(false);
-    const router = useRouter();
 
     const expectedText = t("confirmText");
     const isConfirmValid = confirmText === expectedText;

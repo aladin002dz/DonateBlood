@@ -46,7 +46,7 @@ export async function registerUser(formData: FormData) {
             emergencyAvailable: (() => {
                 const value = formData.get('emergencyAvailable');
                 if (value === null || value === undefined) return true; // Default to true if not provided
-                return value === 'on' || value === 'true' || value === true;
+                return value === 'on' || value === 'true';
             })(),
         };
 

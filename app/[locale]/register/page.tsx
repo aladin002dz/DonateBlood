@@ -128,7 +128,6 @@ export default function RegisterPage() {
   const watchedValues = watch();
 
   const onSubmit = async (data: RegistrationFormData) => {
-    console.log("onSubmit======================================")
     setLoading(true)
 
     try {
