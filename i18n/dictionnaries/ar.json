@@ -218,5 +218,25 @@
         "lastDonationFuture": "لا يمكن أن يكون تاريخ آخر تبرع في المستقبل",
         "donationTypeRequired": "نوع التبرع مطلوب",
         "donationTypeInvalid": "يرجى اختيار نوع تبرع صالح"
+    },
+    "DeleteAccount": {
+        "title": "حذف الحساب",
+        "description": "لا يمكن التراجع عن هذا الإجراء. سيتم حذف حسابك بشكل دائم وإزالة جميع بياناتك من خوادمنا.",
+        "whatWillBeDeleted": "ما سيتم حذفه:",
+        "profileInfo": "معلومات ملفك الشخصي",
+        "donationHistory": "تاريخ تبرعاتك بالدم",
+        "availabilityStatus": "حالة توفرك",
+        "associatedSessions": "جميع الجلسات المرتبطة",
+        "confirmLabel": "للتحقق، اكتب",
+        "confirmLabelInBox": "في المربع أدناه:",
+        "confirmText": "حذف",
+        "confirmPlaceholder": "اكتب حذف للتحقق",
+        "cancel": "إلغاء",
+        "deleteButton": "حذف الحساب",
+        "deleting": "جارٍ الحذف...",
+        "toastConfirmRequired": "يرجى كتابة 'حذف' للتحقق",
+        "toastSuccess": "تم حذف الحساب بنجاح",
+        "toastError": "فشل حذف الحساب",
+        "toastGenericError": "حدث خطأ أثناء حذف حسابك"
     }
 }

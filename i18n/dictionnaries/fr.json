@@ -219,5 +219,25 @@
         "lastDonationFuture": "La date du dernier don ne peut pas être dans le futur",
         "donationTypeRequired": "Le type de don est requis",
         "donationTypeInvalid": "Veuillez sélectionner un type de don valide"
+    },
+    "DeleteAccount": {
+        "title": "Supprimer le compte",
+        "description": "Cette action ne peut pas être annulée. Cela supprimera définitivement votre compte et toutes vos données de nos serveurs.",
+        "whatWillBeDeleted": "Ce qui sera supprimé :",
+        "profileInfo": "Vos informations de profil",
+        "donationHistory": "Votre historique de don de sang",
+        "availabilityStatus": "Votre statut de disponibilité",
+        "associatedSessions": "Toutes les sessions associées",
+        "confirmLabel": "Pour confirmer, tapez",
+        "confirmLabelInBox": "dans la case ci-dessous :",
+        "confirmText": "SUPPRIMER",
+        "confirmPlaceholder": "Tapez SUPPRIMER pour confirmer",
+        "cancel": "Annuler",
+        "deleteButton": "Supprimer le compte",
+        "deleting": "Suppression...",
+        "toastConfirmRequired": "Veuillez taper 'SUPPRIMER' pour confirmer",
+        "toastSuccess": "Compte supprimé avec succès",
+        "toastError": "Échec de la suppression du compte",
+        "toastGenericError": "Une erreur s'est produite lors de la suppression de votre compte"
     }
 }

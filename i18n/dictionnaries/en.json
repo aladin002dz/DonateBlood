@@ -219,5 +219,25 @@
         "lastDonationFuture": "Last donation date cannot be in the future",
         "donationTypeRequired": "Donation type is required",
         "donationTypeInvalid": "Please select a valid donation type"
+    },
+    "DeleteAccount": {
+        "title": "Delete Account",
+        "description": "This action cannot be undone. This will permanently delete your account and remove all your data from our servers.",
+        "whatWillBeDeleted": "What will be deleted:",
+        "profileInfo": "Your profile information",
+        "donationHistory": "Your blood donation history",
+        "availabilityStatus": "Your availability status",
+        "associatedSessions": "All associated sessions",
+        "confirmLabel": "To confirm, type",
+        "confirmLabelInBox": "in the box below:",
+        "confirmText": "DELETE",
+        "confirmPlaceholder": "Type DELETE to confirm",
+        "cancel": "Cancel",
+        "deleteButton": "Delete Account",
+        "deleting": "Deleting...",
+        "toastConfirmRequired": "Please type 'DELETE' to confirm",
+        "toastSuccess": "Account deleted successfully",
+        "toastError": "Failed to delete account",
+        "toastGenericError": "An error occurred while deleting your account"
     }
 }

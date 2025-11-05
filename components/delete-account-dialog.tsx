@@ -15,8 +15,9 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { AlertTriangle, Loader2, Trash2 } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "sonner";
 
 interface DeleteAccountDialogProps {
@@ -24,17 +25,25 @@ interface DeleteAccountDialogProps {
 }
 
 export function DeleteAccountDialog({ children }: DeleteAccountDialogProps) {
+    const t = useTranslations("DeleteAccount");
     const [open, setOpen] = useState(false);
     const [confirmText, setConfirmText] = useState("");
     const [isDeleting, setIsDeleting] = useState(false);
     const router = useRouter();
 
-    const expectedText = "DELETE";
+    const expectedText = t("confirmText");
     const isConfirmValid = confirmText === expectedText;
+
+    // Reset confirm text when dialog closes
+    useEffect(() => {
+        if (!open) {
+            setConfirmText("");
+        }
+    }, [open]);
 
     const handleDelete = async () => {
         if (!isConfirmValid) {
-            toast.error("Please type 'DELETE' to confirm");
+            toast.error(t("toastConfirmRequired"));
             return;
         }
 
@@ -43,16 +52,17 @@ export function DeleteAccountDialog({ children }: DeleteAccountDialogProps) {
             const result = await deleteAccount();
 
             if (result.success) {
-                toast.success("Account deleted successfully");
+                toast.success(t("toastSuccess"));
                 setOpen(false);
-                // Redirect to home page after successful deletion
-                router.push("/");
+                // Refresh the page to clear session state and redirect to home
+                // The server already signs out the user, so we just need to refresh
+                window.location.href = "/";
             } else {
-                toast.error(result.error || "Failed to delete account");
+                toast.error(result.error || t("toastError"));
             }
         } catch (error) {
             console.error("Error deleting account:", error);
-            toast.error("An error occurred while deleting your account");
+            toast.error(t("toastGenericError"));
         } finally {
             setIsDeleting(false);
         }
@@ -67,32 +77,32 @@ export function DeleteAccountDialog({ children }: DeleteAccountDialogProps) {
                 <AlertDialogHeader>
                     <AlertDialogTitle className="flex items-center gap-2 text-destructive">
                         <AlertTriangle className="h-5 w-5" />
-                        Delete Account
+                        {t("title")}
                     </AlertDialogTitle>
                     <AlertDialogDescription className="space-y-3">
                         <p>
-                            This action cannot be undone. This will permanently delete your account and remove all your data from our servers.
+                            {t("description")}
                         </p>
                         <div className="bg-destructive/10 border border-destructive/20 rounded-lg p-3">
                             <p className="text-sm font-medium text-destructive mb-2">
-                                What will be deleted:
+                                {t("whatWillBeDeleted")}
                             </p>
                             <ul className="text-sm text-destructive/80 space-y-1">
-                                <li>• Your profile information</li>
-                                <li>• Your blood donation history</li>
-                                <li>• Your availability status</li>
-                                <li>• All associated sessions</li>
+                                <li>• {t("profileInfo")}</li>
+                                <li>• {t("donationHistory")}</li>
+                                <li>• {t("availabilityStatus")}</li>
+                                <li>• {t("associatedSessions")}</li>
                             </ul>
                         </div>
                         <div className="space-y-2">
                             <Label htmlFor="confirm-delete" className="text-sm font-medium">
-                                To confirm, type <span className="font-mono bg-muted px-1 rounded">DELETE</span> in the box below:
+                                {t("confirmLabel")} <span className="font-mono bg-muted px-1 rounded">{t("confirmText")}</span> {t("confirmLabelInBox")}
                             </Label>
                             <Input
                                 id="confirm-delete"
                                 value={confirmText}
                                 onChange={(e) => setConfirmText(e.target.value)}
-                                placeholder="Type DELETE to confirm"
+                                placeholder={t("confirmPlaceholder")}
                                 className="font-mono"
                                 disabled={isDeleting}
                             />
@@ -101,7 +111,7 @@ export function DeleteAccountDialog({ children }: DeleteAccountDialogProps) {
                 </AlertDialogHeader>
                 <AlertDialogFooter>
                     <AlertDialogCancel disabled={isDeleting}>
-                        Cancel
+                        {t("cancel")}
                     </AlertDialogCancel>
                     <AlertDialogAction
                         onClick={handleDelete}
@@ -111,12 +121,12 @@ export function DeleteAccountDialog({ children }: DeleteAccountDialogProps) {
                         {isDeleting ? (
                             <>
                                 <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-                                Deleting...
+                                {t("deleting")}
                             </>
                         ) : (
                             <>
                                 <Trash2 className="h-4 w-4 mr-2" />
-                                Delete Account
+                                {t("deleteButton")}
                             </>
                         )}
                     </AlertDialogAction>
