@@ -13,7 +13,7 @@ export const user = pgTable("user", {
     commune: text("commune"),
     lastDonation: text("last_donation"),
     donationType: text("donation_type"),
-    emergencyAvailable: boolean("emergency_available").default(false),
+    emergencyAvailable: boolean("emergency_available").default(true),
     createdAt: timestamp("created_at").defaultNow().notNull(),
     updatedAt: timestamp("updated_at")
         .defaultNow()

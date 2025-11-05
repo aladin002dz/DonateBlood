@@ -17,7 +17,7 @@ const registerSchema = z.object({
     commune: z.string().min(1, 'Commune is required'),
     lastDonation: z.string().optional(),
     donationType: z.string().min(1, 'Donation type is required'),
-    emergencyAvailable: z.boolean().default(false),
+    emergencyAvailable: z.boolean().default(true),
 }).refine((data) => data.password === data.confirmPassword, {
     message: "Passwords don't match",
     path: ["confirmPassword"],
@@ -43,7 +43,11 @@ export async function registerUser(formData: FormData) {
             commune: formData.get('commune') as string,
             lastDonation: formData.get('lastDonation') as string,
             donationType: formData.get('donationType') as string,
-            emergencyAvailable: formData.get('emergencyAvailable') === 'on',
+            emergencyAvailable: (() => {
+                const value = formData.get('emergencyAvailable');
+                if (value === null || value === undefined) return true; // Default to true if not provided
+                return value === 'on' || value === 'true';
+            })(),
         };
 
         // Validate phone number
