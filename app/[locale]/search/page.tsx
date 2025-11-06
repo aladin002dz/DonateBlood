@@ -150,6 +150,7 @@ export default function SearchPage() {
                 <Select
                   value={filters.bloodGroup || ""}
                   onValueChange={(value) => handleFilterChange("bloodGroup", value)}
+                  dir={locale === 'ar' ? 'rtl' : 'ltr'}
                 >
                   <SelectTrigger id="bloodGroup" className="w-full rounded-lg">
                     <SelectValue placeholder={t('anyBloodGroup')} />
@@ -188,6 +189,7 @@ export default function SearchPage() {
                   value={filters.daira || ""}
                   onValueChange={(value) => handleFilterChange("daira", value)}
                   disabled={!currentWilayaCode}
+                  dir={locale === 'ar' ? 'rtl' : 'ltr'}
                 >
                   <SelectTrigger id="daira" className="w-full rounded-lg">
                     <SelectValue placeholder={currentWilayaCode ? t('enterDaira') : t('selectWilayaFirst')} />
@@ -207,6 +209,7 @@ export default function SearchPage() {
                   value={filters.commune || ""}
                   onValueChange={(value) => handleFilterChange("commune", value)}
                   disabled={!currentWilayaCode || !filters.daira}
+                  dir={locale === 'ar' ? 'rtl' : 'ltr'}
                 >
                   <SelectTrigger id="commune" className="w-full rounded-lg">
                     <SelectValue placeholder={filters.daira ? t('enterCommune') : t('selectDairaFirst')} />
@@ -225,6 +228,7 @@ export default function SearchPage() {
                 <Select
                   value={filters.donationType || ""}
                   onValueChange={(value) => handleFilterChange("donationType", value)}
+                  dir={locale === 'ar' ? 'rtl' : 'ltr'}
                 >
                   <SelectTrigger id="donationType" className="w-full rounded-lg">
                     <SelectValue placeholder={t('anyType')} />
