@@ -25,9 +25,9 @@ export type DairaOption = {
  */
 export function getLocationData(locale: string): LocationData[] {
   if (locale === 'ar') {
-    return wilayasDataAr as LocationData[];
+    return wilayasDataAr as unknown as LocationData[];
   }
-  return wilayasDataEn as LocationData[];
+  return wilayasDataEn as unknown as LocationData[];
 }
 
 /**

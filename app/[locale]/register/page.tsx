@@ -8,6 +8,7 @@ import { Checkbox } from "@/components/ui/checkbox"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { getCommunes, getDairas, getWilayas } from "@/lib/locations"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Heart, Loader2, UserPlus } from "lucide-react"
 import { useLocale, useTranslations } from 'next-intl'
@@ -15,7 +16,6 @@ import { useMemo, useState } from "react"
 import { useForm } from "react-hook-form"
 import { toast } from "sonner"
 import { z } from "zod"
-import { getWilayas, getDairas, getCommunes } from "@/lib/locations"
 
 // Schema will be defined inside component to use translations
 
@@ -137,18 +137,17 @@ export default function RegisterPage() {
   });
 
   const watchedValues = watch();
-  
+
   // Get current wilaya code from name for filtering
   const currentWilayaCode = useMemo(() => {
     if (!watchedValues.wilaya) return null
     const wilaya = wilayas.find(w => w.name === watchedValues.wilaya || w.code === watchedValues.wilaya)
     return wilaya?.code || null
   }, [watchedValues.wilaya, wilayas])
-  
+
   // Get available dairas and communes based on selected wilaya/daira
-  const selectedWilaya = watchedValues.wilaya
   const selectedDaira = watchedValues.daira
-  
+
   const availableDairas = useMemo(() => {
     if (!currentWilayaCode) return []
     return getDairas(locale, currentWilayaCode)
@@ -322,21 +321,26 @@ export default function RegisterPage() {
 
               {/* Location Information */}
               <div className="space-y-4">
-                <h3 className="text-lg font-semibold text-foreground border-b pb-2">{t('location')}</h3>
+                <h3 className="text-lg font-semibold text-foreground border-b pb-2">
+                  {t("location")}
+                </h3>
 
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="wilaya">{t('wilayaLabel')}</Label>
-                    <Select
-                      value={currentWilayaCode || ""}
-                      onValueChange={handleWilayaChange}
-                    >
-                      <SelectTrigger className={`rounded-lg ${errors.wilaya ? 'border-red-500' : ''}`}>
-                        <SelectValue placeholder={t('wilayaPlaceholder')}>
-                          {currentWilayaCode ? wilayas.find(w => w.code === currentWilayaCode)?.display : ""}
+                {/* min-w-0 prevents children from overflowing the grid tracks */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 min-w-0">
+                  {/* Field 1 */}
+                  <div className="space-y-2 min-w-0">
+                    <Label htmlFor="wilaya">{t("wilayaLabel")}</Label>
+                    <Select value={currentWilayaCode || ""} onValueChange={handleWilayaChange}>
+                      <SelectTrigger
+                        id="wilaya"
+                        className={`w-full rounded-lg ${errors.wilaya ? "border-red-500" : ""}`}
+                      >
+                        <SelectValue placeholder={t("wilayaPlaceholder")}>
+                          {currentWilayaCode ? wilayas.find((w) => w.code === currentWilayaCode)?.display : ""}
                         </SelectValue>
                       </SelectTrigger>
-                      <SelectContent>
+                      {/* z-50 ensures it floats above neighbors; position="popper" keeps it anchored nicely */}
+                      <SelectContent className="z-50" position="popper">
                         {wilayas.map((wilaya) => (
                           <SelectItem key={wilaya.code} value={wilaya.code}>
                             {wilaya.display}
@@ -344,22 +348,28 @@ export default function RegisterPage() {
                         ))}
                       </SelectContent>
                     </Select>
-                    {errors.wilaya && (
-                      <p className="text-sm text-red-500">{errors.wilaya.message}</p>
-                    )}
+                    {errors.wilaya && <p className="text-sm text-red-500">{errors.wilaya.message}</p>}
                   </div>
 
-                  <div className="space-y-2">
-                    <Label htmlFor="daira">{t('dairaLabel')}</Label>
+                  {/* Field 2 */}
+                  <div className="space-y-2 min-w-0">
+                    <Label htmlFor="daira">{t("dairaLabel")}</Label>
                     <Select
                       value={watchedValues.daira}
                       onValueChange={handleDairaChange}
                       disabled={!currentWilayaCode}
                     >
-                      <SelectTrigger className={`rounded-lg ${errors.daira ? 'border-red-500' : ''}`}>
-                        <SelectValue placeholder={currentWilayaCode ? t('dairaPlaceholder') : t('selectWilayaFirst') || 'Select wilaya first'} />
+                      <SelectTrigger
+                        id="daira"
+                        className={`w-full rounded-lg ${errors.daira ? "border-red-500" : ""}`}
+                      >
+                        <SelectValue
+                          placeholder={
+                            currentWilayaCode ? t("dairaPlaceholder") : t("selectWilayaFirst") || "Select wilaya first"
+                          }
+                        />
                       </SelectTrigger>
-                      <SelectContent>
+                      <SelectContent className="z-50" position="popper">
                         {availableDairas.map((daira) => (
                           <SelectItem key={daira.name} value={daira.name}>
                             {daira.name}
@@ -367,22 +377,28 @@ export default function RegisterPage() {
                         ))}
                       </SelectContent>
                     </Select>
-                    {errors.daira && (
-                      <p className="text-sm text-red-500">{errors.daira.message}</p>
-                    )}
+                    {errors.daira && <p className="text-sm text-red-500">{errors.daira.message}</p>}
                   </div>
 
-                  <div className="space-y-2">
-                    <Label htmlFor="commune">{t('communeLabel')}</Label>
+                  {/* Field 3 */}
+                  <div className="space-y-2 min-w-0">
+                    <Label htmlFor="commune">{t("communeLabel")}</Label>
                     <Select
                       value={watchedValues.commune}
                       onValueChange={(value) => setValue("commune", value)}
                       disabled={!currentWilayaCode || !selectedDaira}
                     >
-                      <SelectTrigger className={`rounded-lg ${errors.commune ? 'border-red-500' : ''}`}>
-                        <SelectValue placeholder={selectedDaira ? t('communePlaceholder') : t('selectDairaFirst') || 'Select daira first'} />
+                      <SelectTrigger
+                        id="commune"
+                        className={`w-full rounded-lg ${errors.commune ? "border-red-500" : ""}`}
+                      >
+                        <SelectValue
+                          placeholder={
+                            selectedDaira ? t("communePlaceholder") : t("selectDairaFirst") || "Select daira first"
+                          }
+                        />
                       </SelectTrigger>
-                      <SelectContent>
+                      <SelectContent className="z-50" position="popper">
                         {availableCommunes.map((commune) => (
                           <SelectItem key={commune} value={commune}>
                             {commune}
@@ -390,12 +406,11 @@ export default function RegisterPage() {
                         ))}
                       </SelectContent>
                     </Select>
-                    {errors.commune && (
-                      <p className="text-sm text-red-500">{errors.commune.message}</p>
-                    )}
+                    {errors.commune && <p className="text-sm text-red-500">{errors.commune.message}</p>}
                   </div>
                 </div>
               </div>
+
 
               {/* Donation Information */}
               <div className="space-y-4">
