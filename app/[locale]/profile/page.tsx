@@ -13,12 +13,12 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Separator } from "@/components/ui/separator"
 import { Switch } from "@/components/ui/switch"
 import { useSession } from "@/lib/auth-client"
+import { getCommunes, getDairas, getWilayas } from "@/lib/locations"
 import { AlertTriangle, Heart, Loader2, Save, Trash2, User } from "lucide-react"
 import { useLocale, useTranslations } from 'next-intl'
 import { useRouter } from "next/navigation"
 import { useEffect, useMemo, useState } from "react"
 import { toast } from "sonner"
-import { getWilayas, getDairas, getCommunes } from "@/lib/locations"
 
 interface UserProfile {
   id: string
@@ -53,7 +53,7 @@ export default function ProfilePage() {
 
   // Get location data
   const wilayas = useMemo(() => getWilayas(locale), [locale])
-  
+
   // Get current wilaya code from name for filtering
   const currentWilayaCode = useMemo(() => {
     if (!profileData?.wilaya) return null
@@ -117,7 +117,7 @@ export default function ProfilePage() {
     setProfileData((prev) => {
       if (!prev) return prev
       const updated = { ...prev, [field]: value }
-      
+
       // Clear dependent fields when parent changes
       if (field === 'wilaya') {
         updated.daira = null
@@ -125,7 +125,7 @@ export default function ProfilePage() {
       } else if (field === 'daira') {
         updated.commune = null
       }
-      
+
       return updated
     })
   }
@@ -244,10 +244,14 @@ export default function ProfilePage() {
                     <span>{profileData.lastDonation ? new Date(profileData.lastDonation).toLocaleDateString() : t('notSpecified')}</span>
                   </div>
                   <div className="flex justify-between">
+                    <span className="text-muted-foreground">{t('daira')}</span>
+                    <span>{profileData.daira || t('notSpecified')}</span>
+                  </div>
+                  <div className="flex justify-between">
                     <span className="text-muted-foreground">{t('location')}</span>
                     <span className="text-right">
-                      {[profileData.commune, profileData.daira, profileData.wilaya].filter(Boolean).length > 0
-                        ? [profileData.commune, profileData.daira, profileData.wilaya].filter(Boolean).join(', ')
+                      {[profileData.commune, profileData.wilaya].filter(Boolean).length > 0
+                        ? [profileData.commune, profileData.wilaya].filter(Boolean).join(', ')
                         : t('notSpecified')
                       }
                     </span>
