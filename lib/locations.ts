@@ -1,5 +1,5 @@
-import wilayasDataEn from '@/i18n/dictionnaries/wilayas-dairas-commune_en.json';
 import wilayasDataAr from '@/i18n/dictionnaries/wilayas-dairas-commune_ar.json';
+import wilayasDataEn from '@/i18n/dictionnaries/wilayas-dairas-commune_en.json';
 
 export type LocationData = {
   code: string;
@@ -50,7 +50,7 @@ export function getWilayas(locale: string): WilayaOption[] {
 export function getDairas(locale: string, wilayaCode: string): DairaOption[] {
   const data = getLocationData(locale);
   const wilaya = data.find((w) => w.code === wilayaCode);
-  
+
   if (!wilaya) {
     return [];
   }
@@ -71,7 +71,7 @@ export function getCommunes(
 ): string[] {
   const dairas = getDairas(locale, wilayaCode);
   const daira = dairas.find((d) => d.name === dairaName);
-  
+
   if (!daira) {
     return [];
   }

@@ -165,15 +165,17 @@ export default function SearchPage() {
               {/* Wilaya */}
               <div className="space-y-2 min-w-0">
                 <Label htmlFor="wilaya">{t('wilaya')}</Label>
-                <Select value={currentWilayaCode || ""} onValueChange={handleWilayaChange}>
+                <Select value={currentWilayaCode || ""} onValueChange={handleWilayaChange} dir={locale === 'ar' ? 'rtl' : 'ltr'}>
                   <SelectTrigger id="wilaya" className="w-full rounded-lg">
                     <SelectValue placeholder={t('enterWilaya')}>
                       {currentWilayaCode ? wilayas.find(w => w.code === currentWilayaCode)?.display : ""}
                     </SelectValue>
                   </SelectTrigger>
-                  <SelectContent className="z-50" position="popper" sideOffset={4}>
+                  <SelectContent className="z-50" position="popper" sideOffset={4} >
                     {wilayas.map((wilaya) => (
-                      <SelectItem key={wilaya.code} value={wilaya.code}>{wilaya.display}</SelectItem>
+                      <SelectItem key={wilaya.code} value={wilaya.code} >
+                        {wilaya.display}
+                      </SelectItem>
                     ))}
                   </SelectContent>
                 </Select>
