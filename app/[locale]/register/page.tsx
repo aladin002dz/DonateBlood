@@ -8,10 +8,11 @@ import { Checkbox } from "@/components/ui/checkbox"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { getCommunes, getDairas, getWilayas } from "@/lib/locations"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Heart, Loader2, UserPlus } from "lucide-react"
-import { useTranslations } from 'next-intl'
-import { useState } from "react"
+import { useLocale, useTranslations } from 'next-intl'
+import { useMemo, useState } from "react"
 import { useForm } from "react-hook-form"
 import { toast } from "sonner"
 import { z } from "zod"
@@ -19,10 +20,14 @@ import { z } from "zod"
 // Schema will be defined inside component to use translations
 
 export default function RegisterPage() {
+  const locale = useLocale()
   const t = useTranslations('Auth.Register')
   const tProfile = useTranslations('Profile')
   const v = useTranslations('Validation')
   const [loading, setLoading] = useState(false)
+
+  // Get location data
+  const wilayas = useMemo(() => getWilayas(locale), [locale])
 
   const bloodGroups = ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"]
   const donationTypes = ["Blood", "Blood & Platelets"]
@@ -71,6 +76,11 @@ export default function RegisterPage() {
       .min(2, v('wilayaMin2'))
       .max(50, v('wilayaMax50')),
 
+    daira: z
+      .string()
+      .min(2, v('dairaMin2'))
+      .max(50, v('dairaMax50')),
+
     commune: z
       .string()
       .min(2, v('communeMin2'))
@@ -118,6 +128,7 @@ export default function RegisterPage() {
       confirmPassword: "",
       phone: "",
       wilaya: "",
+      daira: "",
       commune: "",
       lastDonation: "",
       donationType: "",
@@ -126,6 +137,40 @@ export default function RegisterPage() {
   });
 
   const watchedValues = watch();
+
+  // Get current wilaya code from name for filtering
+  const currentWilayaCode = useMemo(() => {
+    if (!watchedValues.wilaya) return null
+    const wilaya = wilayas.find(w => w.name === watchedValues.wilaya || w.code === watchedValues.wilaya)
+    return wilaya?.code || null
+  }, [watchedValues.wilaya, wilayas])
+
+  // Get available dairas and communes based on selected wilaya/daira
+  const selectedDaira = watchedValues.daira
+
+  const availableDairas = useMemo(() => {
+    if (!currentWilayaCode) return []
+    return getDairas(locale, currentWilayaCode)
+  }, [locale, currentWilayaCode])
+
+  const availableCommunes = useMemo(() => {
+    if (!currentWilayaCode || !selectedDaira) return []
+    return getCommunes(locale, currentWilayaCode, selectedDaira)
+  }, [locale, currentWilayaCode, selectedDaira])
+
+  // Handle wilaya change - clear daira and commune
+  const handleWilayaChange = (wilayaCode: string) => {
+    const wilaya = wilayas.find(w => w.code === wilayaCode)
+    setValue("wilaya", wilaya?.name || wilayaCode)
+    setValue("daira", "")
+    setValue("commune", "")
+  }
+
+  // Handle daira change - clear commune
+  const handleDairaChange = (dairaName: string) => {
+    setValue("daira", dairaName)
+    setValue("commune", "")
+  }
 
   const onSubmit = async (data: RegistrationFormData) => {
     setLoading(true)
@@ -276,38 +321,96 @@ export default function RegisterPage() {
 
               {/* Location Information */}
               <div className="space-y-4">
-                <h3 className="text-lg font-semibold text-foreground border-b pb-2">{t('location')}</h3>
+                <h3 className="text-lg font-semibold text-foreground border-b pb-2">
+                  {t("location")}
+                </h3>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="wilaya">{t('wilayaLabel')}</Label>
-                    <Input
-                      id="wilaya"
-                      type="text"
-                      placeholder={t('wilayaPlaceholder')}
-                      {...register("wilaya")}
-                      className={`rounded-lg ${errors.wilaya ? 'border-red-500' : ''}`}
-                    />
-                    {errors.wilaya && (
-                      <p className="text-sm text-red-500">{errors.wilaya.message}</p>
-                    )}
+                {/* min-w-0 prevents children from overflowing the grid tracks */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 min-w-0">
+                  {/* Field 1 */}
+                  <div className="space-y-2 min-w-0">
+                    <Label htmlFor="wilaya">{t("wilayaLabel")}</Label>
+                    <Select value={currentWilayaCode || ""} onValueChange={handleWilayaChange}>
+                      <SelectTrigger
+                        id="wilaya"
+                        className={`w-full rounded-lg ${errors.wilaya ? "border-red-500" : ""}`}
+                      >
+                        <SelectValue placeholder={t("wilayaPlaceholder")}>
+                          {currentWilayaCode ? wilayas.find((w) => w.code === currentWilayaCode)?.display : ""}
+                        </SelectValue>
+                      </SelectTrigger>
+                      {/* z-50 ensures it floats above neighbors; position="popper" keeps it anchored nicely */}
+                      <SelectContent className="z-50" position="popper">
+                        {wilayas.map((wilaya) => (
+                          <SelectItem key={wilaya.code} value={wilaya.code}>
+                            {wilaya.display}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    {errors.wilaya && <p className="text-sm text-red-500">{errors.wilaya.message}</p>}
                   </div>
 
-                  <div className="space-y-2">
-                    <Label htmlFor="commune">{t('communeLabel')}</Label>
-                    <Input
-                      id="commune"
-                      type="text"
-                      placeholder={t('communePlaceholder')}
-                      {...register("commune")}
-                      className={`rounded-lg ${errors.commune ? 'border-red-500' : ''}`}
-                    />
-                    {errors.commune && (
-                      <p className="text-sm text-red-500">{errors.commune.message}</p>
-                    )}
+                  {/* Field 2 */}
+                  <div className="space-y-2 min-w-0">
+                    <Label htmlFor="daira">{t("dairaLabel")}</Label>
+                    <Select
+                      value={watchedValues.daira}
+                      onValueChange={handleDairaChange}
+                      disabled={!currentWilayaCode}
+                    >
+                      <SelectTrigger
+                        id="daira"
+                        className={`w-full rounded-lg ${errors.daira ? "border-red-500" : ""}`}
+                      >
+                        <SelectValue
+                          placeholder={
+                            currentWilayaCode ? t("dairaPlaceholder") : t("selectWilayaFirst") || "Select wilaya first"
+                          }
+                        />
+                      </SelectTrigger>
+                      <SelectContent className="z-50" position="popper">
+                        {availableDairas.map((daira) => (
+                          <SelectItem key={daira.name} value={daira.name}>
+                            {daira.name}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    {errors.daira && <p className="text-sm text-red-500">{errors.daira.message}</p>}
+                  </div>
+
+                  {/* Field 3 */}
+                  <div className="space-y-2 min-w-0">
+                    <Label htmlFor="commune">{t("communeLabel")}</Label>
+                    <Select
+                      value={watchedValues.commune}
+                      onValueChange={(value) => setValue("commune", value)}
+                      disabled={!currentWilayaCode || !selectedDaira}
+                    >
+                      <SelectTrigger
+                        id="commune"
+                        className={`w-full rounded-lg ${errors.commune ? "border-red-500" : ""}`}
+                      >
+                        <SelectValue
+                          placeholder={
+                            selectedDaira ? t("communePlaceholder") : t("selectDairaFirst") || "Select daira first"
+                          }
+                        />
+                      </SelectTrigger>
+                      <SelectContent className="z-50" position="popper">
+                        {availableCommunes.map((commune) => (
+                          <SelectItem key={commune} value={commune}>
+                            {commune}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    {errors.commune && <p className="text-sm text-red-500">{errors.commune.message}</p>}
                   </div>
                 </div>
               </div>
+
 
               {/* Donation Information */}
               <div className="space-y-4">

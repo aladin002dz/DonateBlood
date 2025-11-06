@@ -4,24 +4,46 @@ import { searchDonors, type DonorData, type SearchFilters } from "@/actions/sear
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Switch } from "@/components/ui/switch"
+import { getCommunes, getDairas, getWilayas } from "@/lib/locations"
 import { Clock, Heart, Loader2, MapPin, Phone, Search } from "lucide-react"
-import { useTranslations } from 'next-intl'
-import { useEffect, useState } from "react"
+import { useLocale, useTranslations } from 'next-intl'
+import { useEffect, useMemo, useState } from "react"
 
 export default function SearchPage() {
+  const locale = useLocale()
   const t = useTranslations('Search')
   const tProfile = useTranslations('Profile')
   const [filters, setFilters] = useState<SearchFilters>({
     bloodGroup: "",
     wilaya: "",
+    daira: "",
     commune: "",
     donationType: "",
     emergencyOnly: false,
   })
+
+  // Get location data
+  const wilayas = useMemo(() => getWilayas(locale), [locale])
+
+  // Get current wilaya code from name for filtering
+  const currentWilayaCode = useMemo(() => {
+    if (!filters.wilaya) return null
+    const wilaya = wilayas.find(w => w.name === filters.wilaya || w.code === filters.wilaya)
+    return wilaya?.code || null
+  }, [filters.wilaya, wilayas])
+
+  const availableDairas = useMemo(() => {
+    if (!currentWilayaCode) return []
+    return getDairas(locale, currentWilayaCode)
+  }, [locale, currentWilayaCode])
+
+  const availableCommunes = useMemo(() => {
+    if (!currentWilayaCode || !filters.daira) return []
+    return getCommunes(locale, currentWilayaCode, filters.daira)
+  }, [locale, currentWilayaCode, filters.daira])
 
   const [donors, setDonors] = useState<DonorData[]>([])
   const [loading, setLoading] = useState(true)
@@ -62,13 +84,28 @@ export default function SearchPage() {
 
   const handleFilterChange = (field: keyof SearchFilters, value: string) => {
     const newFilters = { ...filters, [field]: value }
+
+    // Clear dependent fields when parent changes
+    if (field === 'wilaya') {
+      newFilters.daira = ""
+      newFilters.commune = ""
+    } else if (field === 'daira') {
+      newFilters.commune = ""
+    }
+
     setFilters(newFilters)
+  }
+
+  const handleWilayaChange = (wilayaCode: string) => {
+    const wilaya = wilayas.find(w => w.code === wilayaCode)
+    handleFilterChange('wilaya', wilaya?.name || wilayaCode)
   }
 
   const clearFilters = () => {
     setFilters({
       bloodGroup: "",
       wilaya: "",
+      daira: "",
       commune: "",
       donationType: "",
       emergencyOnly: false,
@@ -105,66 +142,106 @@ export default function SearchPage() {
             <CardDescription>{t('searchFiltersDesc')}</CardDescription>
           </CardHeader>
           <CardContent>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
-              <div className="space-y-2">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 mb-4 min-w-0
+  lg:[grid-template-columns:repeat(5,minmax(12rem,1fr))]">
+              {/* Blood group */}
+              <div className="space-y-2 min-w-0">
                 <Label htmlFor="bloodGroup">{t('bloodGroup')}</Label>
-                <Select value={filters.bloodGroup || ""} onValueChange={(value) => handleFilterChange("bloodGroup", value)}>
-                  <SelectTrigger className="rounded-lg">
+                <Select
+                  value={filters.bloodGroup || ""}
+                  onValueChange={(value) => handleFilterChange("bloodGroup", value)}
+                  dir={locale === 'ar' ? 'rtl' : 'ltr'}
+                >
+                  <SelectTrigger id="bloodGroup" className="w-full rounded-lg">
                     <SelectValue placeholder={t('anyBloodGroup')} />
                   </SelectTrigger>
-                  <SelectContent>
+                  <SelectContent className="z-50" position="popper" sideOffset={4}>
                     {bloodGroups.map((group) => (
-                      <SelectItem key={group} value={group}>
-                        {group}
+                      <SelectItem key={group} value={group}>{group}</SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+
+              {/* Wilaya */}
+              <div className="space-y-2 min-w-0">
+                <Label htmlFor="wilaya">{t('wilaya')}</Label>
+                <Select value={currentWilayaCode || ""} onValueChange={handleWilayaChange} dir={locale === 'ar' ? 'rtl' : 'ltr'}>
+                  <SelectTrigger id="wilaya" className="w-full rounded-lg">
+                    <SelectValue placeholder={t('enterWilaya')}>
+                      {currentWilayaCode ? wilayas.find(w => w.code === currentWilayaCode)?.display : ""}
+                    </SelectValue>
+                  </SelectTrigger>
+                  <SelectContent className="z-50" position="popper" sideOffset={4} >
+                    {wilayas.map((wilaya) => (
+                      <SelectItem key={wilaya.code} value={wilaya.code} >
+                        {wilaya.display}
                       </SelectItem>
                     ))}
                   </SelectContent>
                 </Select>
               </div>
 
-              <div className="space-y-2">
-                <Label htmlFor="wilaya">{t('wilaya')}</Label>
-                <Input
-                  id="wilaya"
-                  type="text"
-                  placeholder={t('enterWilaya')}
-                  value={filters.wilaya || ""}
-                  onChange={(e) => handleFilterChange("wilaya", e.target.value)}
-                  className="rounded-lg"
-                />
+              {/* Daira */}
+              <div className="space-y-2 min-w-0">
+                <Label htmlFor="daira">{t('daira')}</Label>
+                <Select
+                  value={filters.daira || ""}
+                  onValueChange={(value) => handleFilterChange("daira", value)}
+                  disabled={!currentWilayaCode}
+                  dir={locale === 'ar' ? 'rtl' : 'ltr'}
+                >
+                  <SelectTrigger id="daira" className="w-full rounded-lg">
+                    <SelectValue placeholder={currentWilayaCode ? t('enterDaira') : t('selectWilayaFirst')} />
+                  </SelectTrigger>
+                  <SelectContent className="z-50" position="popper" sideOffset={4}>
+                    {availableDairas.map((daira) => (
+                      <SelectItem key={daira.name} value={daira.name}>{daira.name}</SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
               </div>
 
-              <div className="space-y-2">
+              {/* Commune */}
+              <div className="space-y-2 min-w-0">
                 <Label htmlFor="commune">{t('commune')}</Label>
-                <Input
-                  id="commune"
-                  type="text"
-                  placeholder={t('enterCommune')}
+                <Select
                   value={filters.commune || ""}
-                  onChange={(e) => handleFilterChange("commune", e.target.value)}
-                  className="rounded-lg"
-                />
+                  onValueChange={(value) => handleFilterChange("commune", value)}
+                  disabled={!currentWilayaCode || !filters.daira}
+                  dir={locale === 'ar' ? 'rtl' : 'ltr'}
+                >
+                  <SelectTrigger id="commune" className="w-full rounded-lg">
+                    <SelectValue placeholder={filters.daira ? t('enterCommune') : t('selectDairaFirst')} />
+                  </SelectTrigger>
+                  <SelectContent className="z-50" position="popper" sideOffset={4}>
+                    {availableCommunes.map((commune) => (
+                      <SelectItem key={commune} value={commune}>{commune}</SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
               </div>
 
-              <div className="space-y-2">
+              {/* Donation Type */}
+              <div className="space-y-2 min-w-0">
                 <Label htmlFor="donationType">{t('donationType')}</Label>
                 <Select
                   value={filters.donationType || ""}
                   onValueChange={(value) => handleFilterChange("donationType", value)}
+                  dir={locale === 'ar' ? 'rtl' : 'ltr'}
                 >
-                  <SelectTrigger className="rounded-lg">
+                  <SelectTrigger id="donationType" className="w-full rounded-lg">
                     <SelectValue placeholder={t('anyType')} />
                   </SelectTrigger>
-                  <SelectContent>
+                  <SelectContent className="z-50" position="popper" sideOffset={4}>
                     {donationTypes.map((type) => (
-                      <SelectItem key={type} value={type}>
-                        {getDonationTypeTranslation(type)}
-                      </SelectItem>
+                      <SelectItem key={type} value={type}>{getDonationTypeTranslation(type)}</SelectItem>
                     ))}
                   </SelectContent>
                 </Select>
               </div>
             </div>
+
 
             <div className="flex items-center space-x-2 mb-4">
               <Switch
@@ -245,7 +322,7 @@ export default function SearchPage() {
                     <div className="flex items-center gap-2 text-sm text-muted-foreground">
                       <MapPin className="h-4 w-4" />
                       <span>
-                        {donor.commune}, {donor.wilaya}
+                        {[donor.commune, donor.daira, donor.wilaya].filter(Boolean).join(', ')}
                       </span>
                     </div>
 

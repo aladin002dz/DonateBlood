@@ -96,7 +96,7 @@ Add the following to the `.gitignore` file
 - [x] **Profile Management** - Upload profile images and manage user information
 - [x] **Session Management** - Secure session handling with automatic redirects
 - [x] **Protected Routes** - Dashboard access requires authentication
-- [ ] **Password Reset** - Forgot password functionality
+- [x] **Password Reset** - Forgot password functionality
 - [ ] **Account Lockout** - Security after multiple failed attempts
 
 ### 🎨 UI/UX Features
@@ -105,9 +105,9 @@ Add the following to the `.gitignore` file
 - [x] **Loading States** - Smooth loading indicators and error handling
 - [x] **Toast Notifications** - User-friendly feedback with Sonner
 - [x] **Dark Mode Support** - Automatic theme switching
-- [ ] **Accessibility Features** - Screen reader support and keyboard navigation
-- [ ] **Internationalization (i18n)** - Multi-language support
-- [ ] **PWA Support** - Progressive Web App capabilities
+- [x] **Accessibility Features** - Screen reader support and keyboard navigation
+- [x] **Internationalization (i18n)** - Multi-language support
+- [x] **PWA Support** - Progressive Web App capabilities
 
 ### 🔧 Technical Features
 - [x] **Database Integration** - Drizzle ORM with PostgreSQL
@@ -116,7 +116,7 @@ Add the following to the `.gitignore` file
 - [ ] **Real-time Notifications** - WebSocket or Server-Sent Events
 - [ ] **API Rate Limiting** - Protect against abuse
 - [ ] **Caching Strategy** - Redis or in-memory caching
-- [ ] **Search Functionality** - Advanced search and filtering
+- [x] **Search Functionality** - Advanced search and filtering
 
 ### 🚀 Performance & Deployment
 - [x] **Next.js 15** - Latest React framework with App Router
@@ -132,117 +132,101 @@ Add the following to the `.gitignore` file
 
 ```
 ├── actions/                    # Server actions
+│   ├── delete-account.ts      # Account deletion actions
 │   ├── email.ts               # Email verification actions
+│   ├── password-reset.ts      # Password reset actions
 │   ├── profile.ts             # Profile management actions
 │   ├── register.ts            # User registration actions
+│   ├── search.ts              # Search functionality actions
 │   └── signin.ts              # Sign-in actions
 ├── app/                       # Next.js App Router
-│   ├── api/                   # API routes
+│   ├── [locale]/              # Internationalized routes
+│   │   ├── dashboard/         # Protected dashboard page
+│   │   │   └── page.tsx       # Dashboard component
+│   │   ├── forgot-password/   # Password reset request page
+│   │   │   ├── forgot-password-form.tsx
+│   │   │   └── page.tsx
+│   │   ├── profile/           # User profile page
+│   │   │   ├── loading.tsx   # Profile loading component
+│   │   │   └── page.tsx      # Profile page component
+│   │   ├── register/         # User registration page
+│   │   │   └── page.tsx      # Registration page component
+│   │   ├── reset-password/   # Password reset page
+│   │   │   ├── [token]/      # Dynamic token route
+│   │   │   │   └── page.tsx
+│   │   │   ├── page.tsx
+│   │   │   └── reset-password-form.tsx
+│   │   ├── search/           # Search functionality
+│   │   │   ├── loading.tsx   # Search loading component
+│   │   │   └── page.tsx      # Search page component
+│   │   ├── signin/           # Sign-in page
+│   │   │   ├── page.tsx      # Sign-in page component
+│   │   │   └── sign-in-form.tsx
+│   │   ├── verify-email/     # Email verification page
+│   │   │   ├── email-verification.tsx
+│   │   │   └── page.tsx      # Email verification component
+│   │   ├── layout.tsx        # Locale layout
+│   │   ├── loading.tsx       # Global loading component
+│   │   └── page.tsx          # Home page
+│   ├── api/                  # API routes
 │   │   └── [...all]/         # Better Auth API routes
-│   │       └── route.ts       # Catch-all API route
-│   ├── dashboard/            # Protected dashboard page
-│   │   └── page.tsx          # Dashboard component
-│   ├── profile/              # User profile page
-│   │   ├── loading.tsx       # Profile loading component
-│   │   └── page.tsx          # Profile page component
-│   ├── register/             # User registration page
-│   │   └── page.tsx          # Registration page component
-│   ├── search/               # Search functionality
-│   │   ├── loading.tsx       # Search loading component
-│   │   └── page.tsx          # Search page component
-│   ├── signin/               # Sign-in page
-│   │   ├── page.tsx          # Sign-in page component
-│   │   └── sign-in-form.tsx  # Sign-in form component
-│   ├── verify-email/         # Email verification page
-│   │   └── page.tsx          # Email verification component
-│   ├── favicon.ico           # Site favicon
-│   ├── globals.css           # Global styles
-│   ├── layout.tsx            # Root layout
-│   ├── loading.tsx           # Global loading component
-│   └── page.tsx              # Home page
+│   │       └── route.ts      # Catch-all API route
+│   └── globals.css           # Global styles
 ├── components/               # React components
 │   ├── ui/                   # shadcn/ui components
-│   │   ├── accordion.tsx     # Accordion component
-│   │   ├── alert-dialog.tsx  # Alert dialog component
-│   │   ├── alert.tsx         # Alert component
-│   │   ├── aspect-ratio.tsx  # Aspect ratio component
-│   │   ├── avatar.tsx        # Avatar component
-│   │   ├── badge.tsx         # Badge component
-│   │   ├── breadcrumb.tsx    # Breadcrumb component
-│   │   ├── button.tsx        # Button component
-│   │   ├── calendar.tsx      # Calendar component
-│   │   ├── card.tsx          # Card component
-│   │   ├── carousel.tsx      # Carousel component
-│   │   ├── chart.tsx         # Chart component
-│   │   ├── checkbox.tsx      # Checkbox component
-│   │   ├── collapsible.tsx   # Collapsible component
-│   │   ├── command.tsx       # Command component
-│   │   ├── context-menu.tsx  # Context menu component
-│   │   ├── dialog.tsx        # Dialog component
-│   │   ├── drawer.tsx        # Drawer component
-│   │   ├── dropdown-menu.tsx # Dropdown menu component
-│   │   ├── form.tsx          # Form component
-│   │   ├── hover-card.tsx    # Hover card component
-│   │   ├── input-otp.tsx     # OTP input component
-│   │   ├── input.tsx         # Input component
-│   │   ├── label.tsx         # Label component
-│   │   ├── menubar.tsx       # Menu bar component
-│   │   ├── navigation-menu.tsx # Navigation menu component
-│   │   ├── pagination.tsx    # Pagination component
-│   │   ├── popover.tsx       # Popover component
-│   │   ├── progress.tsx      # Progress component
-│   │   ├── radio-group.tsx   # Radio group component
-│   │   ├── resizable.tsx     # Resizable component
-│   │   ├── scroll-area.tsx   # Scroll area component
-│   │   ├── select.tsx        # Select component
-│   │   ├── separator.tsx     # Separator component
-│   │   ├── sheet.tsx         # Sheet component
-│   │   ├── sidebar.tsx       # Sidebar component
-│   │   ├── skeleton.tsx      # Skeleton component
-│   │   ├── slider.tsx        # Slider component
-│   │   ├── sonner.tsx        # Sonner toast component
-│   │   ├── switch.tsx        # Switch component
-│   │   ├── table.tsx         # Table component
-│   │   ├── tabs.tsx          # Tabs component
-│   │   ├── textarea.tsx      # Textarea component
-│   │   ├── toggle-group.tsx  # Toggle group component
-│   │   ├── toggle.tsx        # Toggle component
-│   │   └── tooltip.tsx       # Tooltip component
+│   │   └── [all shadcn/ui components]
+│   ├── delete-account-dialog.tsx  # Account deletion dialog
 │   ├── email-verification-banner.tsx  # Email verification banner
-│   ├── email-verification.tsx         # Email verification component
-│   ├── navigation.tsx                 # Navigation component
-│   ├── theme-provider.tsx             # Theme provider component
-│   └── theme-toggle.tsx               # Theme toggle component
+│   ├── footer.tsx            # Footer component
+│   ├── navigation.tsx        # Navigation component
+│   ├── theme-provider.tsx    # Theme provider component
+│   └── theme-toggle.tsx      # Theme toggle component
 ├── db/                       # Database configuration
 │   ├── db.ts                 # Database connection
 │   └── schema.ts             # Database schema
+├── drizzle/                  # Drizzle migrations
+│   ├── meta/                 # Migration metadata
+│   ├── relations.ts          # Database relations
+│   ├── schema.ts             # Generated schema
+│   └── [migration files]     # Migration SQL files
 ├── hooks/                    # Custom React hooks
 │   └── use-mobile.ts         # Mobile detection hook
+├── i18n/                     # Internationalization
+│   ├── dictionnaries/       # Translation dictionaries
+│   │   ├── ar.json          # Arabic translations
+│   │   ├── en.json          # English translations
+│   │   ├── fr.json          # French translations
+│   │   └── wilayas-dairas-commune_*.json  # Location data
+│   ├── navigation.ts        # i18n navigation utilities
+│   ├── request.ts           # i18n request utilities
+│   └── routing.ts           # i18n routing configuration
 ├── lib/                      # Utility libraries
-│   ├── auth.ts               # Better Auth server configuration
-│   ├── auth-client.ts        # Better Auth client configuration
-│   ├── email/                # Email templates
+│   ├── auth.ts              # Better Auth server configuration
+│   ├── auth-client.ts       # Better Auth client configuration
+│   ├── email/               # Email templates
+│   │   ├── PasswordResetEmail.tsx
 │   │   └── WelcomeVerificationEmail.tsx
-│   ├── resend-client.ts      # Email service client
-│   └── utils.ts              # Utility functions
+│   ├── locations.ts         # Location utilities
+│   ├── resend-client.ts     # Email service client
+│   └── utils.ts             # Utility functions
 ├── public/                   # Static assets
-│   ├── file.svg              # File icon
-│   ├── globe.svg             # Globe icon
-│   ├── next.svg              # Next.js logo
-│   ├── vercel.svg            # Vercel logo
-│   └── window.svg            # Window icon
-├── components.json           # shadcn/ui configuration
-├── drizzle.config.ts         # Drizzle configuration
-├── eslint.config.mjs         # ESLint configuration
-├── LICENSE                   # Project license
-├── next-env.d.ts             # Next.js environment types
-├── next.config.ts            # Next.js configuration
-├── package.json              # Dependencies and scripts
-├── package-lock.json         # Package lock file
-├── postcss.config.mjs        # PostCSS configuration
-├── tsconfig.json             # TypeScript configuration
-├── tsconfig.tsbuildinfo      # TypeScript build info
-└── README.md                 # Project documentation
+│   ├── favicon.ico          # Site favicon
+│   ├── file.svg             # File icon
+│   ├── globe.svg            # Globe icon
+│   ├── next.svg             # Next.js logo
+│   ├── vercel.svg           # Vercel logo
+│   └── window.svg           # Window icon
+├── components.json          # shadcn/ui configuration
+├── drizzle.config.ts        # Drizzle configuration
+├── eslint.config.mjs        # ESLint configuration
+├── LICENSE                  # Project license
+├── next-env.d.ts            # Next.js environment types
+├── next.config.ts           # Next.js configuration
+├── package.json             # Dependencies and scripts
+├── postcss.config.mjs       # PostCSS configuration
+├── proxy.ts                 # Proxy configuration
+├── tsconfig.json            # TypeScript configuration
+└── README.md                # Project documentation
 ```
 
 ## 🔧 Configuration

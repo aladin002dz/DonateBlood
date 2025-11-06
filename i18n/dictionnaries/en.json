@@ -26,8 +26,7 @@
         "logout": "Logout",
         "language": "Language",
         "selectLanguage": "Select Language"
-    }
-    ,
+    },
     "Auth": {
         "SignIn": {
             "title": "Sign In",
@@ -68,6 +67,8 @@
             "location": "Location",
             "wilayaLabel": "Wilaya (Province) *",
             "wilayaPlaceholder": "e.g., Algiers, Oran, Constantine",
+            "dairaLabel": "Daira (District) *",
+            "dairaPlaceholder": "e.g., Bab Ezzouar, Bir Mourad Rais",
             "communeLabel": "Commune (City) *",
             "communePlaceholder": "e.g., Bab Ezzouar, Bir Mourad Rais",
             "donationInfo": "Donation Information",
@@ -140,6 +141,7 @@
         "phoneNumber": "Phone Number",
         "locationInfo": "Location",
         "wilaya": "Wilaya (Province)",
+        "daira": "Daira (District)",
         "commune": "Commune (City)",
         "donationInfo": "Donation Information",
         "lastDonationLabel": "Date of Last Donation",
@@ -165,6 +167,10 @@
         "anyBloodGroup": "Any blood group",
         "wilaya": "Wilaya",
         "enterWilaya": "Enter wilaya",
+        "selectWilayaFirst": "Please select a wilaya first",
+        "daira": "Daira",
+        "enterDaira": "Enter daira",
+        "selectDairaFirst": "Please select a daira first",
         "commune": "Commune",
         "enterCommune": "Enter commune",
         "donationType": "Donation Type",
@@ -214,6 +220,8 @@
         "phoneInvalid": "Please enter a valid phone number (e.g., +1234567890 or 0540109714)",
         "wilayaMin2": "Wilaya must be at least 2 characters",
         "wilayaMax50": "Wilaya must be less than 50 characters",
+        "dairaMin2": "Daira must be at least 2 characters",
+        "dairaMax50": "Daira must be less than 50 characters",
         "communeMin2": "Commune must be at least 2 characters",
         "communeMax50": "Commune must be less than 50 characters",
         "lastDonationFuture": "Last donation date cannot be in the future",

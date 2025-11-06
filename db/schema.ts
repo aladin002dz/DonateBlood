@@ -10,6 +10,7 @@ export const user = pgTable("user", {
     // Blood donation specific fields
     bloodGroup: text("blood_group"),
     wilaya: text("wilaya"),
+    daira: text("daira"),
     commune: text("commune"),
     lastDonation: text("last_donation"),
     donationType: text("donation_type"),
