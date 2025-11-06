@@ -188,7 +188,7 @@ export default function SearchPage() {
                   disabled={!currentWilayaCode}
                 >
                   <SelectTrigger id="daira" className="w-full rounded-lg">
-                    <SelectValue placeholder={currentWilayaCode ? t('enterDaira') : t('selectWilayaFirst') || 'Select wilaya first'} />
+                    <SelectValue placeholder={currentWilayaCode ? t('enterDaira') : t('selectWilayaFirst')} />
                   </SelectTrigger>
                   <SelectContent className="z-50" position="popper" sideOffset={4}>
                     {availableDairas.map((daira) => (
@@ -207,7 +207,7 @@ export default function SearchPage() {
                   disabled={!currentWilayaCode || !filters.daira}
                 >
                   <SelectTrigger id="commune" className="w-full rounded-lg">
-                    <SelectValue placeholder={filters.daira ? t('enterCommune') : t('selectDairaFirst') || 'Select daira first'} />
+                    <SelectValue placeholder={filters.daira ? t('enterCommune') : t('selectDairaFirst')} />
                   </SelectTrigger>
                   <SelectContent className="z-50" position="popper" sideOffset={4}>
                     {availableCommunes.map((commune) => (
