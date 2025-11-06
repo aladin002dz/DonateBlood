@@ -142,103 +142,100 @@ export default function SearchPage() {
             <CardDescription>{t('searchFiltersDesc')}</CardDescription>
           </CardHeader>
           <CardContent>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 mb-4">
-              <div className="space-y-2">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 mb-4 min-w-0
+  lg:[grid-template-columns:repeat(5,minmax(12rem,1fr))]">
+              {/* Blood group */}
+              <div className="space-y-2 min-w-0">
                 <Label htmlFor="bloodGroup">{t('bloodGroup')}</Label>
-                <Select value={filters.bloodGroup || ""} onValueChange={(value) => handleFilterChange("bloodGroup", value)}>
-                  <SelectTrigger className="rounded-lg">
+                <Select
+                  value={filters.bloodGroup || ""}
+                  onValueChange={(value) => handleFilterChange("bloodGroup", value)}
+                >
+                  <SelectTrigger id="bloodGroup" className="w-full rounded-lg">
                     <SelectValue placeholder={t('anyBloodGroup')} />
                   </SelectTrigger>
-                  <SelectContent>
+                  <SelectContent className="z-50" position="popper" sideOffset={4}>
                     {bloodGroups.map((group) => (
-                      <SelectItem key={group} value={group}>
-                        {group}
-                      </SelectItem>
+                      <SelectItem key={group} value={group}>{group}</SelectItem>
                     ))}
                   </SelectContent>
                 </Select>
               </div>
 
-              <div className="space-y-2">
+              {/* Wilaya */}
+              <div className="space-y-2 min-w-0">
                 <Label htmlFor="wilaya">{t('wilaya')}</Label>
-                <Select
-                  value={currentWilayaCode || ""}
-                  onValueChange={handleWilayaChange}
-                >
-                  <SelectTrigger className="rounded-lg">
+                <Select value={currentWilayaCode || ""} onValueChange={handleWilayaChange}>
+                  <SelectTrigger id="wilaya" className="w-full rounded-lg">
                     <SelectValue placeholder={t('enterWilaya')}>
                       {currentWilayaCode ? wilayas.find(w => w.code === currentWilayaCode)?.display : ""}
                     </SelectValue>
                   </SelectTrigger>
-                  <SelectContent>
+                  <SelectContent className="z-50" position="popper" sideOffset={4}>
                     {wilayas.map((wilaya) => (
-                      <SelectItem key={wilaya.code} value={wilaya.code}>
-                        {wilaya.display}
-                      </SelectItem>
+                      <SelectItem key={wilaya.code} value={wilaya.code}>{wilaya.display}</SelectItem>
                     ))}
                   </SelectContent>
                 </Select>
               </div>
 
-              <div className="space-y-2">
+              {/* Daira */}
+              <div className="space-y-2 min-w-0">
                 <Label htmlFor="daira">{t('daira')}</Label>
                 <Select
                   value={filters.daira || ""}
                   onValueChange={(value) => handleFilterChange("daira", value)}
                   disabled={!currentWilayaCode}
                 >
-                  <SelectTrigger className="rounded-lg">
+                  <SelectTrigger id="daira" className="w-full rounded-lg">
                     <SelectValue placeholder={currentWilayaCode ? t('enterDaira') : t('selectWilayaFirst') || 'Select wilaya first'} />
                   </SelectTrigger>
-                  <SelectContent>
+                  <SelectContent className="z-50" position="popper" sideOffset={4}>
                     {availableDairas.map((daira) => (
-                      <SelectItem key={daira.name} value={daira.name}>
-                        {daira.name}
-                      </SelectItem>
+                      <SelectItem key={daira.name} value={daira.name}>{daira.name}</SelectItem>
                     ))}
                   </SelectContent>
                 </Select>
               </div>
 
-              <div className="space-y-2">
+              {/* Commune */}
+              <div className="space-y-2 min-w-0">
                 <Label htmlFor="commune">{t('commune')}</Label>
                 <Select
                   value={filters.commune || ""}
                   onValueChange={(value) => handleFilterChange("commune", value)}
                   disabled={!currentWilayaCode || !filters.daira}
                 >
-                  <SelectTrigger className="rounded-lg">
+                  <SelectTrigger id="commune" className="w-full rounded-lg">
                     <SelectValue placeholder={filters.daira ? t('enterCommune') : t('selectDairaFirst') || 'Select daira first'} />
                   </SelectTrigger>
-                  <SelectContent>
+                  <SelectContent className="z-50" position="popper" sideOffset={4}>
                     {availableCommunes.map((commune) => (
-                      <SelectItem key={commune} value={commune}>
-                        {commune}
-                      </SelectItem>
+                      <SelectItem key={commune} value={commune}>{commune}</SelectItem>
                     ))}
                   </SelectContent>
                 </Select>
               </div>
 
-              <div className="space-y-2">
+              {/* Donation Type */}
+              <div className="space-y-2 min-w-0">
                 <Label htmlFor="donationType">{t('donationType')}</Label>
                 <Select
                   value={filters.donationType || ""}
                   onValueChange={(value) => handleFilterChange("donationType", value)}
                 >
-                  <SelectTrigger className="rounded-lg">
+                  <SelectTrigger id="donationType" className="w-full rounded-lg">
                     <SelectValue placeholder={t('anyType')} />
                   </SelectTrigger>
-                  <SelectContent>
+                  <SelectContent className="z-50" position="popper" sideOffset={4}>
                     {donationTypes.map((type) => (
-                      <SelectItem key={type} value={type}>
-                        {getDonationTypeTranslation(type)}
-                      </SelectItem>
+                      <SelectItem key={type} value={type}>{getDonationTypeTranslation(type)}</SelectItem>
                     ))}
                   </SelectContent>
                 </Select>
               </div>
             </div>
+
 
             <div className="flex items-center space-x-2 mb-4">
               <Switch
