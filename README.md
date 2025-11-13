@@ -1,4 +1,8 @@
-# Better Auth Protection Demo
+# Donate Blood Platform
+
+This application is a platform for donating blood and finding donors.
+
+**Current version:** 0.8.0 (beta)
 
 ## Technical Stack
 <div align="center">
@@ -17,12 +21,9 @@
 
 <div align="center">
 
-A modern Next.js application demonstrating secure authentication with **Better Auth**, featuring social login providers, email/password authentication, and a beautiful user dashboard.
-
 [🚀 Live Demo](https://donate-blood-virid.vercel.app/) • [🐛 Report Bug](https://github.com/aladin002dz/DonateBlood/issues) • [✨ Request Feature](https://github.com/aladin002dz/DonateBlood/issues)
 
 </div>
-
 
 ## Add Drizzle
 
@@ -127,107 +128,6 @@ Add the following to the `.gitignore` file
 - [ ] **CDN Integration** - Global content delivery
 - [ ] **Database Optimization** - Query optimization and indexing
 - [x] **Automated Testing** - Unit, integration, and E2E tests
-
-## 📁 Project Structure
-
-```
-├── actions/                    # Server actions
-│   ├── delete-account.ts      # Account deletion actions
-│   ├── email.ts               # Email verification actions
-│   ├── password-reset.ts      # Password reset actions
-│   ├── profile.ts             # Profile management actions
-│   ├── register.ts            # User registration actions
-│   ├── search.ts              # Search functionality actions
-│   └── signin.ts              # Sign-in actions
-├── app/                       # Next.js App Router
-│   ├── [locale]/              # Internationalized routes
-│   │   ├── dashboard/         # Protected dashboard page
-│   │   │   └── page.tsx       # Dashboard component
-│   │   ├── forgot-password/   # Password reset request page
-│   │   │   ├── forgot-password-form.tsx
-│   │   │   └── page.tsx
-│   │   ├── profile/           # User profile page
-│   │   │   ├── loading.tsx   # Profile loading component
-│   │   │   └── page.tsx      # Profile page component
-│   │   ├── register/         # User registration page
-│   │   │   └── page.tsx      # Registration page component
-│   │   ├── reset-password/   # Password reset page
-│   │   │   ├── [token]/      # Dynamic token route
-│   │   │   │   └── page.tsx
-│   │   │   ├── page.tsx
-│   │   │   └── reset-password-form.tsx
-│   │   ├── search/           # Search functionality
-│   │   │   ├── loading.tsx   # Search loading component
-│   │   │   └── page.tsx      # Search page component
-│   │   ├── signin/           # Sign-in page
-│   │   │   ├── page.tsx      # Sign-in page component
-│   │   │   └── sign-in-form.tsx
-│   │   ├── verify-email/     # Email verification page
-│   │   │   ├── email-verification.tsx
-│   │   │   └── page.tsx      # Email verification component
-│   │   ├── layout.tsx        # Locale layout
-│   │   ├── loading.tsx       # Global loading component
-│   │   └── page.tsx          # Home page
-│   ├── api/                  # API routes
-│   │   └── [...all]/         # Better Auth API routes
-│   │       └── route.ts      # Catch-all API route
-│   └── globals.css           # Global styles
-├── components/               # React components
-│   ├── ui/                   # shadcn/ui components
-│   │   └── [all shadcn/ui components]
-│   ├── delete-account-dialog.tsx  # Account deletion dialog
-│   ├── email-verification-banner.tsx  # Email verification banner
-│   ├── footer.tsx            # Footer component
-│   ├── navigation.tsx        # Navigation component
-│   ├── theme-provider.tsx    # Theme provider component
-│   └── theme-toggle.tsx      # Theme toggle component
-├── db/                       # Database configuration
-│   ├── db.ts                 # Database connection
-│   └── schema.ts             # Database schema
-├── drizzle/                  # Drizzle migrations
-│   ├── meta/                 # Migration metadata
-│   ├── relations.ts          # Database relations
-│   ├── schema.ts             # Generated schema
-│   └── [migration files]     # Migration SQL files
-├── hooks/                    # Custom React hooks
-│   └── use-mobile.ts         # Mobile detection hook
-├── i18n/                     # Internationalization
-│   ├── dictionnaries/       # Translation dictionaries
-│   │   ├── ar.json          # Arabic translations
-│   │   ├── en.json          # English translations
-│   │   ├── fr.json          # French translations
-│   │   └── wilayas-dairas-commune_*.json  # Location data
-│   ├── navigation.ts        # i18n navigation utilities
-│   ├── request.ts           # i18n request utilities
-│   └── routing.ts           # i18n routing configuration
-├── lib/                      # Utility libraries
-│   ├── auth.ts              # Better Auth server configuration
-│   ├── auth-client.ts       # Better Auth client configuration
-│   ├── email/               # Email templates
-│   │   ├── PasswordResetEmail.tsx
-│   │   └── WelcomeVerificationEmail.tsx
-│   ├── locations.ts         # Location utilities
-│   ├── resend-client.ts     # Email service client
-│   └── utils.ts             # Utility functions
-├── public/                   # Static assets
-│   ├── favicon.ico          # Site favicon
-│   ├── file.svg             # File icon
-│   ├── globe.svg            # Globe icon
-│   ├── next.svg             # Next.js logo
-│   ├── vercel.svg           # Vercel logo
-│   └── window.svg           # Window icon
-├── components.json          # shadcn/ui configuration
-├── drizzle.config.ts        # Drizzle configuration
-├── eslint.config.mjs        # ESLint configuration
-├── LICENSE                  # Project license
-├── next-env.d.ts            # Next.js environment types
-├── next.config.ts           # Next.js configuration
-├── package.json             # Dependencies and scripts
-├── postcss.config.mjs       # PostCSS configuration
-├── proxy.ts                 # Proxy configuration
-├── tsconfig.json            # TypeScript configuration
-└── README.md                # Project documentation
-```
 
 ## 🔧 Configuration
 
