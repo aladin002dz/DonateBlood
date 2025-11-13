@@ -2,7 +2,6 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { customSignIn } from '../signin';
 import { db } from '@/db/db';
 import { auth } from '@/lib/auth';
-import { headers } from 'next/headers';
 
 // Mock dependencies
 vi.mock('@/db/db', () => ({
@@ -44,10 +43,18 @@ describe('customSignIn', () => {
       }),
     });
     
-    (db.select as any) = mockSelect;
-    (auth.api.signInEmail as any).mockResolvedValue({
-      user: mockUser,
-      session: { token: 'session-token' },
+    vi.mocked(db.select).mockImplementation(mockSelect as never);
+    vi.mocked(auth.api.signInEmail).mockResolvedValue({
+      user: {
+        ...mockUser,
+        emailVerified: false,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+        image: null,
+      },
+      redirect: false,
+      token: 'session-token',
+      url: undefined,
     });
     
     const result = await customSignIn('test@example.com', 'password123');
@@ -78,7 +85,7 @@ describe('customSignIn', () => {
       }),
     });
     
-    (db.select as any) = mockSelect;
+    vi.mocked(db.select).mockImplementation(mockSelect as never);
     
     const result = await customSignIn('nonexistent@example.com', 'password123');
     
@@ -101,7 +108,7 @@ describe('customSignIn', () => {
       }),
     });
     
-    (db.select as any) = mockSelect;
+    vi.mocked(db.select).mockImplementation(mockSelect as never);
     
     const result = await customSignIn('test@example.com', 'password123');
     
@@ -123,8 +130,8 @@ describe('customSignIn', () => {
       }),
     });
     
-    (db.select as any) = mockSelect;
-    (auth.api.signInEmail as any).mockResolvedValue(null);
+    vi.mocked(db.select).mockImplementation(mockSelect as never);
+    vi.mocked(auth.api.signInEmail).mockRejectedValue(new Error('Invalid credentials'));
     
     const result = await customSignIn('test@example.com', 'wrongpassword');
     
@@ -140,7 +147,7 @@ describe('customSignIn', () => {
       }),
     });
     
-    (db.select as any) = mockSelect;
+    vi.mocked(db.select).mockImplementation(mockSelect as never);
     
     const result = await customSignIn('test@example.com', 'password123');
     

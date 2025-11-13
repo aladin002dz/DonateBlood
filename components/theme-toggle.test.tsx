@@ -10,9 +10,12 @@ vi.mock('next-themes', () => ({
 
 describe('ThemeToggle', () => {
   it('should render theme toggle button', () => {
-    (useTheme as any).mockReturnValue({
+    vi.mocked(useTheme).mockReturnValue({
       theme: 'light',
       setTheme: vi.fn(),
+      themes: ['light', 'dark'],
+      resolvedTheme: 'light',
+      systemTheme: 'light',
     });
     
     render(<ThemeToggle />);

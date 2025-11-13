@@ -2,7 +2,6 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { getProfile, updateProfile } from '../profile';
 import { db } from '@/db/db';
 import { auth } from '@/lib/auth';
-import { headers } from 'next/headers';
 
 // Mock dependencies
 vi.mock('@/db/db', () => ({
@@ -31,7 +30,8 @@ describe('getProfile', () => {
 
   it('should successfully get user profile', async () => {
     const mockSession = {
-      user: { id: 'user-id' },
+      user: { id: 'user-id', email: 'test@example.com', name: 'Test User', emailVerified: false, image: null, createdAt: new Date(), updatedAt: new Date() },
+      session: { id: 'session-id', userId: 'user-id', expiresAt: new Date(), token: 'token', createdAt: new Date(), updatedAt: new Date() },
     };
     
     const mockProfile = {
@@ -52,7 +52,7 @@ describe('getProfile', () => {
       updatedAt: new Date(),
     };
     
-    (auth.api.getSession as any).mockResolvedValue(mockSession);
+    vi.mocked(auth.api.getSession).mockResolvedValue(mockSession);
     
     const mockSelect = vi.fn().mockReturnValue({
       from: vi.fn().mockReturnValue({
@@ -62,7 +62,7 @@ describe('getProfile', () => {
       }),
     });
     
-    (db.select as any) = mockSelect;
+    vi.mocked(db.select).mockImplementation(mockSelect as never);
     
     const result = await getProfile();
     
@@ -72,7 +72,7 @@ describe('getProfile', () => {
   });
 
   it('should return error if not authenticated', async () => {
-    (auth.api.getSession as any).mockResolvedValue(null);
+    vi.mocked(auth.api.getSession).mockResolvedValue(null);
     
     const result = await getProfile();
     
@@ -82,10 +82,11 @@ describe('getProfile', () => {
 
   it('should return error if user not found', async () => {
     const mockSession = {
-      user: { id: 'user-id' },
+      user: { id: 'user-id', email: 'test@example.com', name: 'Test User', emailVerified: false, image: null, createdAt: new Date(), updatedAt: new Date() },
+      session: { id: 'session-id', userId: 'user-id', expiresAt: new Date(), token: 'token', createdAt: new Date(), updatedAt: new Date() },
     };
     
-    (auth.api.getSession as any).mockResolvedValue(mockSession);
+    vi.mocked(auth.api.getSession).mockResolvedValue(mockSession);
     
     const mockSelect = vi.fn().mockReturnValue({
       from: vi.fn().mockReturnValue({
@@ -95,7 +96,7 @@ describe('getProfile', () => {
       }),
     });
     
-    (db.select as any) = mockSelect;
+    vi.mocked(db.select).mockImplementation(mockSelect as never);
     
     const result = await getProfile();
     
@@ -111,14 +112,15 @@ describe('updateProfile', () => {
 
   it('should successfully update profile', async () => {
     const mockSession = {
-      user: { id: 'user-id' },
+      user: { id: 'user-id', email: 'test@example.com', name: 'Test User', emailVerified: false, image: null, createdAt: new Date(), updatedAt: new Date() },
+      session: { id: 'session-id', userId: 'user-id', expiresAt: new Date(), token: 'token', createdAt: new Date(), updatedAt: new Date() },
     };
     
     const formData = new FormData();
     formData.append('name', 'Updated Name');
     formData.append('bloodGroup', 'A+');
     
-    (auth.api.getSession as any).mockResolvedValue(mockSession);
+    vi.mocked(auth.api.getSession).mockResolvedValue(mockSession);
     
     // Mock no existing user with same email/phone
     const mockSelect = vi.fn().mockReturnValue({
@@ -129,7 +131,7 @@ describe('updateProfile', () => {
       }),
     });
     
-    (db.select as any) = mockSelect;
+    vi.mocked(db.select).mockImplementation(mockSelect as never);
     
     const mockUpdate = vi.fn().mockReturnValue({
       set: vi.fn().mockReturnValue({
@@ -137,7 +139,7 @@ describe('updateProfile', () => {
       }),
     });
     
-    (db.update as any) = mockUpdate;
+    vi.mocked(db.update).mockImplementation(mockUpdate as never);
     
     const result = await updateProfile(formData);
     
@@ -149,7 +151,7 @@ describe('updateProfile', () => {
     const formData = new FormData();
     formData.append('name', 'Updated Name');
     
-    (auth.api.getSession as any).mockResolvedValue(null);
+    vi.mocked(auth.api.getSession).mockResolvedValue(null);
     
     const result = await updateProfile(formData);
     
@@ -159,13 +161,14 @@ describe('updateProfile', () => {
 
   it('should return error for invalid phone number', async () => {
     const mockSession = {
-      user: { id: 'user-id' },
+      user: { id: 'user-id', email: 'test@example.com', name: 'Test User', emailVerified: false, image: null, createdAt: new Date(), updatedAt: new Date() },
+      session: { id: 'session-id', userId: 'user-id', expiresAt: new Date(), token: 'token', createdAt: new Date(), updatedAt: new Date() },
     };
     
     const formData = new FormData();
     formData.append('phone', '123'); // Invalid
     
-    (auth.api.getSession as any).mockResolvedValue(mockSession);
+    vi.mocked(auth.api.getSession).mockResolvedValue(mockSession);
     
     const result = await updateProfile(formData);
     
@@ -175,13 +178,14 @@ describe('updateProfile', () => {
 
   it('should return error if email already exists', async () => {
     const mockSession = {
-      user: { id: 'user-id' },
+      user: { id: 'user-id', email: 'test@example.com', name: 'Test User', emailVerified: false, image: null, createdAt: new Date(), updatedAt: new Date() },
+      session: { id: 'session-id', userId: 'user-id', expiresAt: new Date(), token: 'token', createdAt: new Date(), updatedAt: new Date() },
     };
     
     const formData = new FormData();
     formData.append('email', 'existing@example.com');
     
-    (auth.api.getSession as any).mockResolvedValue(mockSession);
+    vi.mocked(auth.api.getSession).mockResolvedValue(mockSession);
     
     let callCount = 0;
     const mockSelect = vi.fn().mockReturnValue({
@@ -198,7 +202,7 @@ describe('updateProfile', () => {
       }),
     });
     
-    (db.select as any) = mockSelect;
+    vi.mocked(db.select).mockImplementation(mockSelect as never);
     
     const result = await updateProfile(formData);
     

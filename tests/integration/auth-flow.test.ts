@@ -42,13 +42,18 @@ describe('Authentication Flow Integration', () => {
       }),
     });
     
-    (db.select as any) = mockSelect;
-    (auth.api.signUpEmail as any).mockResolvedValue({
+    vi.mocked(db.select).mockImplementation(mockSelect as never);
+    vi.mocked(auth.api.signUpEmail).mockResolvedValue({
       user: {
         id: userId,
-        email: formData.get('email'),
-        name: formData.get('fullName'),
+        email: formData.get('email') as string,
+        name: formData.get('fullName') as string,
+        emailVerified: false,
+        image: null,
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
+      token: 'signup-token',
     });
     
     const mockUpdate = vi.fn().mockReturnValue({
@@ -56,7 +61,7 @@ describe('Authentication Flow Integration', () => {
         where: vi.fn().mockResolvedValue(undefined),
       }),
     });
-    (db.update as any) = mockUpdate;
+    vi.mocked(db.update).mockImplementation(mockUpdate as never);
     
     const registerResult = await registerUser(formData);
     expect(registerResult.success).toBe(true);
@@ -76,10 +81,18 @@ describe('Authentication Flow Integration', () => {
       }),
     });
     
-    (db.select as any) = mockSelectSignIn;
-    (auth.api.signInEmail as any).mockResolvedValue({
-      user: mockUser,
-      session: { token: 'session-token' },
+    vi.mocked(db.select).mockImplementation(mockSelectSignIn as never);
+    vi.mocked(auth.api.signInEmail).mockResolvedValue({
+      user: {
+        ...mockUser,
+        emailVerified: false,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+        image: null,
+      },
+      redirect: false,
+      token: 'session-token',
+      url: undefined,
     });
     
     const signInResult = await customSignIn(
@@ -90,8 +103,9 @@ describe('Authentication Flow Integration', () => {
     expect(signInResult.success).toBe(true);
     
     // Step 3: Get profile
-    (auth.api.getSession as any).mockResolvedValue({
-      user: { id: userId },
+    vi.mocked(auth.api.getSession).mockResolvedValue({
+      user: { id: userId, email: 'test@example.com', name: 'Test User', emailVerified: false, image: null, createdAt: new Date(), updatedAt: new Date() },
+      session: { id: 'session-id', userId: userId, expiresAt: new Date(), token: 'token', createdAt: new Date(), updatedAt: new Date() },
     });
     
     const mockProfile = {
@@ -116,7 +130,7 @@ describe('Authentication Flow Integration', () => {
       }),
     });
     
-    (db.select as any) = mockSelectProfile;
+    vi.mocked(db.select).mockImplementation(mockSelectProfile as never);
     
     const profileResult = await getProfile();
     expect(profileResult.success).toBe(true);

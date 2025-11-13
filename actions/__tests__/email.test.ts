@@ -24,7 +24,7 @@ describe('sendPasswordResetEmail', () => {
     const { Resend } = await import('resend');
     const mockResend = new Resend('test-key');
     
-    (mockResend.emails.send as any).mockResolvedValue({
+    vi.mocked(mockResend.emails.send).mockResolvedValue({
       data: { id: 'email-id' },
       error: null,
     });
@@ -39,9 +39,9 @@ describe('sendPasswordResetEmail', () => {
     const { Resend } = await import('resend');
     const mockResend = new Resend('test-key');
     
-    (mockResend.emails.send as any).mockResolvedValue({
+    vi.mocked(mockResend.emails.send).mockResolvedValue({
       data: null,
-      error: { message: 'Email sending failed' },
+      error: { message: 'Email sending failed', name: 'internal_server_error' as const, statusCode: 500 },
     });
     
     await expect(
@@ -50,12 +50,12 @@ describe('sendPasswordResetEmail', () => {
   });
 
   it('should use correct locale for email subject', async () => {
-    (getLocale as any).mockResolvedValue('fr');
+    vi.mocked(getLocale).mockResolvedValue('fr');
     
     const { Resend } = await import('resend');
     const mockResend = new Resend('test-key');
     
-    (mockResend.emails.send as any).mockResolvedValue({
+    vi.mocked(mockResend.emails.send).mockResolvedValue({
       data: { id: 'email-id' },
       error: null,
     });

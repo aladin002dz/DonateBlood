@@ -1,7 +1,7 @@
 import { describe, it, expect, vi } from 'vitest';
 import { render, screen } from '@/tests/utils';
 import { Navigation } from './navigation';
-import { useSession, signOut } from '@/lib/auth-client';
+import { useSession } from '@/lib/auth-client';
 
 // Mock dependencies
 vi.mock('@/lib/auth-client', () => ({
@@ -21,7 +21,7 @@ vi.mock('@/i18n/navigation', () => ({
 
 describe('Navigation', () => {
   it('should render navigation for unauthenticated users', () => {
-    (useSession as any).mockReturnValue({ data: null });
+    vi.mocked(useSession).mockReturnValue({ data: null, isPending: false, isRefetching: false, error: null, refetch: vi.fn() });
     
     render(<Navigation />);
     
@@ -30,13 +30,29 @@ describe('Navigation', () => {
   });
 
   it('should render navigation for authenticated users', () => {
-    (useSession as any).mockReturnValue({
+    vi.mocked(useSession).mockReturnValue({
       data: {
         user: {
           id: 'user-id',
           email: 'test@example.com',
+          name: 'Test User',
+          emailVerified: false,
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
+        session: {
+          id: 'session-id',
+          userId: 'user-id',
+          expiresAt: new Date(),
+          token: 'token',
+          createdAt: new Date(),
+          updatedAt: new Date(),
         },
       },
+      isPending: false,
+      isRefetching: false,
+      error: null,
+      refetch: vi.fn(),
     });
     
     render(<Navigation />);

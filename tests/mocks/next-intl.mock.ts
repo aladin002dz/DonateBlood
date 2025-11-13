@@ -1,5 +1,3 @@
-import { vi } from 'vitest';
-
 export const mockTranslations = {
   'Auth.SignIn.title': 'Sign In',
   'Auth.SignIn.email': 'Email',

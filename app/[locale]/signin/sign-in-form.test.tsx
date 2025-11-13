@@ -41,7 +41,6 @@ describe('SignIn Form', () => {
     const user = userEvent.setup();
     render(<SignIn />);
     
-    const identifierInput = screen.getByLabelText(/identifier/i);
     const passwordInput = screen.getByLabelText(/password/i);
     const submitButton = screen.getByRole('button', { name: /sign in/i });
     
@@ -85,7 +84,7 @@ describe('SignIn Form', () => {
 
   it('should submit form with valid email credentials', async () => {
     const user = userEvent.setup();
-    (signIn.email as any).mockResolvedValue({});
+    vi.mocked(signIn.email).mockResolvedValue({});
     
     render(<SignIn />);
     
@@ -109,9 +108,26 @@ describe('SignIn Form', () => {
 
   it('should submit form with phone number using custom sign-in', async () => {
     const user = userEvent.setup();
-    (customSignIn as any).mockResolvedValue({
+    vi.mocked(customSignIn).mockResolvedValue({
       success: true,
       redirect: '/profile',
+      user: {
+        id: 'user-id',
+        name: 'Test User',
+        email: 'test@example.com',
+        phone: '1234567890',
+        emailVerified: false,
+        phoneVerified: false,
+        bloodGroup: null,
+        wilaya: null,
+        daira: null,
+        commune: null,
+        lastDonation: null,
+        donationType: null,
+        emergencyAvailable: true,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
     });
     
     render(<SignIn />);
@@ -131,7 +147,7 @@ describe('SignIn Form', () => {
 
   it('should disable submit button when loading', async () => {
     const user = userEvent.setup();
-    (signIn.email as any).mockImplementation(() => new Promise(() => {})); // Never resolves
+    vi.mocked(signIn.email).mockImplementation(() => new Promise(() => {})); // Never resolves
     
     render(<SignIn />);
     

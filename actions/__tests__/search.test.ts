@@ -50,7 +50,7 @@ describe('searchDonors', () => {
       }),
     });
     
-    (db.select as any) = mockSelect;
+    vi.mocked(db.select).mockImplementation(mockSelect as never);
     
     const filters: SearchFilters = { bloodGroup: 'O+' };
     const result = await searchDonors(filters);
@@ -70,7 +70,7 @@ describe('searchDonors', () => {
       }),
     });
     
-    (db.select as any) = mockSelect;
+    vi.mocked(db.select).mockImplementation(mockSelect as never);
     
     const filters: SearchFilters = { wilaya: 'Adrar' };
     const result = await searchDonors(filters);
@@ -90,7 +90,7 @@ describe('searchDonors', () => {
       }),
     });
     
-    (db.select as any) = mockSelect;
+    vi.mocked(db.select).mockImplementation(mockSelect as never);
     
     const filters: SearchFilters = { emergencyOnly: true };
     const result = await searchDonors(filters);
@@ -116,7 +116,7 @@ describe('searchDonors', () => {
       }),
     });
     
-    (db.select as any) = mockSelect;
+    vi.mocked(db.select).mockImplementation(mockSelect as never);
     
     const filters: SearchFilters = {
       bloodGroup: 'O+',
@@ -138,7 +138,7 @@ describe('searchDonors', () => {
       }),
     });
     
-    (db.select as any) = mockSelect;
+    vi.mocked(db.select).mockImplementation(mockSelect as never);
     
     const filters: SearchFilters = { bloodGroup: 'AB-' };
     const result = await searchDonors(filters);
@@ -156,7 +156,7 @@ describe('searchDonors', () => {
       }),
     });
     
-    (db.select as any) = mockSelect;
+    vi.mocked(db.select).mockImplementation(mockSelect as never);
     
     const filters: SearchFilters = { bloodGroup: 'O+' };
     const result = await searchDonors(filters);
@@ -176,7 +176,7 @@ describe('searchDonors', () => {
       }),
     });
     
-    (db.select as any) = mockSelect;
+    vi.mocked(db.select).mockImplementation(mockSelect as never);
     
     const result = await searchDonors();
     

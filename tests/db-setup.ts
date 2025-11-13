@@ -23,14 +23,14 @@ export async function cleanupTestDb() {
 }
 
 export async function seedTestData() {
-  const db = getTestDb();
   // Add seeding logic here if needed
-  // Example: await db.insert(user).values([...]);
+  // Example: const db = getTestDb();
+  // await db.insert(user).values([...]);
 }
 
 export async function clearTestData() {
-  const db = getTestDb();
   // Add cleanup logic here
-  // Example: await db.delete(user);
+  // Example: const db = getTestDb();
+  // await db.delete(user);
 }
 

@@ -54,7 +54,7 @@ describe('Search Flow Integration', () => {
       }),
     });
     
-    (db.select as any) = mockSelect;
+    vi.mocked(db.select).mockImplementation(mockSelect as never);
     
     const result = await searchDonors({
       bloodGroup: 'O+',
@@ -77,7 +77,7 @@ describe('Search Flow Integration', () => {
       }),
     });
     
-    (db.select as any) = mockSelect;
+    vi.mocked(db.select).mockImplementation(mockSelect as never);
     
     const result = await searchDonors({
       bloodGroup: 'AB-',
@@ -98,7 +98,7 @@ describe('Search Flow Integration', () => {
       }),
     });
     
-    (db.select as any) = mockSelect;
+    vi.mocked(db.select).mockImplementation(mockSelect as never);
     
     // Search with English name
     const resultEn = await searchDonors({ wilaya: 'Adrar' });

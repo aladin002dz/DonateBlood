@@ -1,7 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { requestPasswordReset, resetPassword, validateResetToken } from '../password-reset';
 import { auth } from '@/lib/auth';
-import { headers } from 'next/headers';
 
 // Mock dependencies
 vi.mock('@/lib/auth', () => ({
@@ -23,7 +22,7 @@ describe('requestPasswordReset', () => {
   });
 
   it('should successfully request password reset', async () => {
-    (auth.api.forgetPassword as any).mockResolvedValue({ success: true });
+    vi.mocked(auth.api.forgetPassword).mockResolvedValue({ status: true });
     
     const result = await requestPasswordReset('test@example.com');
     
@@ -32,7 +31,7 @@ describe('requestPasswordReset', () => {
   });
 
   it('should return error if reset fails', async () => {
-    (auth.api.forgetPassword as any).mockResolvedValue(null);
+    vi.mocked(auth.api.forgetPassword).mockResolvedValue({ status: false });
     
     const result = await requestPasswordReset('test@example.com');
     
@@ -41,7 +40,7 @@ describe('requestPasswordReset', () => {
   });
 
   it('should handle errors gracefully', async () => {
-    (auth.api.forgetPassword as any).mockRejectedValue(new Error('API error'));
+    vi.mocked(auth.api.forgetPassword).mockRejectedValue(new Error('API error'));
     
     const result = await requestPasswordReset('test@example.com');
     
@@ -56,7 +55,7 @@ describe('resetPassword', () => {
   });
 
   it('should successfully reset password', async () => {
-    (auth.api.resetPassword as any).mockResolvedValue({ success: true });
+    vi.mocked(auth.api.resetPassword).mockResolvedValue({ status: true });
     
     const result = await resetPassword('valid-token', 'newPassword123');
     
@@ -65,7 +64,7 @@ describe('resetPassword', () => {
   });
 
   it('should return error for invalid token', async () => {
-    (auth.api.resetPassword as any).mockResolvedValue(null);
+    vi.mocked(auth.api.resetPassword).mockResolvedValue({ status: false });
     
     const result = await resetPassword('invalid-token', 'newPassword123');
     
@@ -74,7 +73,7 @@ describe('resetPassword', () => {
   });
 
   it('should handle errors gracefully', async () => {
-    (auth.api.resetPassword as any).mockRejectedValue(new Error('API error'));
+    vi.mocked(auth.api.resetPassword).mockRejectedValue(new Error('API error'));
     
     const result = await resetPassword('token', 'newPassword123');
     

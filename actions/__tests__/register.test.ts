@@ -2,8 +2,6 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { registerUser } from '../register';
 import { db } from '@/db/db';
 import { auth } from '@/lib/auth';
-import { user } from '@/db/schema';
-import { eq } from 'drizzle-orm';
 import { createTestUserFormData } from '@/tests/factories/user.factory';
 
 // Mock dependencies
@@ -39,15 +37,20 @@ describe('registerUser', () => {
       }),
     });
     
-    (db.select as any) = mockSelect;
+    vi.mocked(db.select).mockImplementation(mockSelect as never);
     
     // Mock auth signup
-    (auth.api.signUpEmail as any).mockResolvedValue({
+    vi.mocked(auth.api.signUpEmail).mockResolvedValue({
       user: {
         id: 'test-user-id',
-        email: formData.get('email'),
-        name: formData.get('fullName'),
+        email: formData.get('email') as string,
+        name: formData.get('fullName') as string,
+        emailVerified: false,
+        image: null,
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
+      token: 'signup-token',
     });
     
     // Mock update
@@ -56,7 +59,7 @@ describe('registerUser', () => {
         where: vi.fn().mockResolvedValue(undefined),
       }),
     });
-    (db.update as any) = mockUpdate;
+    vi.mocked(db.update).mockImplementation(mockUpdate as never);
     
     const result = await registerUser(formData);
     
@@ -76,7 +79,7 @@ describe('registerUser', () => {
       }),
     });
     
-    (db.select as any) = mockSelect;
+    vi.mocked(db.select).mockImplementation(mockSelect as never);
     
     const result = await registerUser(formData);
     
@@ -103,7 +106,7 @@ describe('registerUser', () => {
       }),
     });
     
-    (db.select as any) = mockSelect;
+    vi.mocked(db.select).mockImplementation(mockSelect as never);
     
     const result = await registerUser(formData);
     
@@ -153,7 +156,7 @@ describe('registerUser', () => {
       }),
     });
     
-    (db.select as any) = mockSelect;
+    vi.mocked(db.select).mockImplementation(mockSelect as never);
     
     const result = await registerUser(formData);
     
