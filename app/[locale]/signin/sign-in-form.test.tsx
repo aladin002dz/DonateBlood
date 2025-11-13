@@ -1,0 +1,159 @@
+import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { render, screen, waitFor } from '@/tests/utils';
+import userEvent from '@testing-library/user-event';
+import SignIn from './sign-in-form';
+import { customSignIn } from '@/actions/signin';
+import { signIn } from '@/lib/auth-client';
+
+// Mock dependencies
+vi.mock('@/actions/signin', () => ({
+  customSignIn: vi.fn(),
+}));
+
+vi.mock('@/lib/auth-client', () => ({
+  signIn: {
+    email: vi.fn(),
+    social: vi.fn(),
+  },
+}));
+
+vi.mock('sonner', () => ({
+  toast: {
+    success: vi.fn(),
+    error: vi.fn(),
+  },
+}));
+
+describe('SignIn Form', () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
+
+  it('should render sign-in form', () => {
+    render(<SignIn />);
+    
+    expect(screen.getByText(/sign in/i)).toBeInTheDocument();
+    expect(screen.getByLabelText(/identifier/i)).toBeInTheDocument();
+    expect(screen.getByLabelText(/password/i)).toBeInTheDocument();
+  });
+
+  it('should show validation error for empty identifier', async () => {
+    const user = userEvent.setup();
+    render(<SignIn />);
+    
+    const identifierInput = screen.getByLabelText(/identifier/i);
+    const passwordInput = screen.getByLabelText(/password/i);
+    const submitButton = screen.getByRole('button', { name: /sign in/i });
+    
+    await user.type(passwordInput, 'password123');
+    await user.click(submitButton);
+    
+    await waitFor(() => {
+      expect(screen.getByText(/required/i)).toBeInTheDocument();
+    });
+  });
+
+  it('should show validation error for invalid email', async () => {
+    const user = userEvent.setup();
+    render(<SignIn />);
+    
+    const identifierInput = screen.getByLabelText(/identifier/i);
+    const passwordInput = screen.getByLabelText(/password/i);
+    
+    await user.type(identifierInput, 'invalid-email');
+    await user.type(passwordInput, 'password123');
+    
+    await waitFor(() => {
+      expect(screen.getByText(/invalid/i)).toBeInTheDocument();
+    });
+  });
+
+  it('should show validation error for short password', async () => {
+    const user = userEvent.setup();
+    render(<SignIn />);
+    
+    const identifierInput = screen.getByLabelText(/identifier/i);
+    const passwordInput = screen.getByLabelText(/password/i);
+    
+    await user.type(identifierInput, 'test@example.com');
+    await user.type(passwordInput, '123');
+    
+    await waitFor(() => {
+      expect(screen.getByText(/6 characters/i)).toBeInTheDocument();
+    });
+  });
+
+  it('should submit form with valid email credentials', async () => {
+    const user = userEvent.setup();
+    (signIn.email as any).mockResolvedValue({});
+    
+    render(<SignIn />);
+    
+    const identifierInput = screen.getByLabelText(/identifier/i);
+    const passwordInput = screen.getByLabelText(/password/i);
+    const submitButton = screen.getByRole('button', { name: /sign in/i });
+    
+    await user.type(identifierInput, 'test@example.com');
+    await user.type(passwordInput, 'password123');
+    await user.click(submitButton);
+    
+    await waitFor(() => {
+      expect(signIn.email).toHaveBeenCalledWith(
+        expect.objectContaining({
+          email: 'test@example.com',
+          password: 'password123',
+        })
+      );
+    });
+  });
+
+  it('should submit form with phone number using custom sign-in', async () => {
+    const user = userEvent.setup();
+    (customSignIn as any).mockResolvedValue({
+      success: true,
+      redirect: '/profile',
+    });
+    
+    render(<SignIn />);
+    
+    const identifierInput = screen.getByLabelText(/identifier/i);
+    const passwordInput = screen.getByLabelText(/password/i);
+    const submitButton = screen.getByRole('button', { name: /sign in/i });
+    
+    await user.type(identifierInput, '1234567890');
+    await user.type(passwordInput, 'password123');
+    await user.click(submitButton);
+    
+    await waitFor(() => {
+      expect(customSignIn).toHaveBeenCalledWith('1234567890', 'password123');
+    });
+  });
+
+  it('should disable submit button when loading', async () => {
+    const user = userEvent.setup();
+    (signIn.email as any).mockImplementation(() => new Promise(() => {})); // Never resolves
+    
+    render(<SignIn />);
+    
+    const identifierInput = screen.getByLabelText(/identifier/i);
+    const passwordInput = screen.getByLabelText(/password/i);
+    const submitButton = screen.getByRole('button', { name: /sign in/i });
+    
+    await user.type(identifierInput, 'test@example.com');
+    await user.type(passwordInput, 'password123');
+    await user.click(submitButton);
+    
+    await waitFor(() => {
+      expect(submitButton).toBeDisabled();
+    });
+  });
+
+  it('should show forgot password link', () => {
+    render(<SignIn />);
+    
+    const forgotLink = screen.getByText(/forgot/i);
+    expect(forgotLink).toBeInTheDocument();
+    expect(forgotLink.closest('a')).toHaveAttribute('href', '/forgot-password');
+  });
+});
+
