@@ -1,6 +1,6 @@
+import { ThemeProvider } from '@/components/theme-provider';
 import { render, type RenderOptions } from '@testing-library/react';
 import { NextIntlClientProvider } from 'next-intl';
-import { ThemeProvider } from '@/components/theme-provider';
 import type React from 'react';
 
 // Mock messages for i18n
@@ -37,6 +37,16 @@ const mockMessages = {
     identifierInvalid: 'Please enter a valid email address or phone number (e.g., +1234567890)',
     requiredPassword: 'Password is required',
     minPassword6: 'Password must be at least 6 characters',
+  },
+  Navigation: {
+    home: 'Home',
+    search: 'Search',
+    signin: 'Sign In',
+    register: 'Register',
+    profile: 'Profile',
+    logout: 'Logout',
+    brandName: 'DonateBlood',
+    selectLanguage: 'Select Language',
   },
 };
 

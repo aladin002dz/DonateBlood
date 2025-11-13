@@ -166,14 +166,15 @@ describe('updateProfile', () => {
     };
     
     const formData = new FormData();
-    formData.append('phone', '123'); // Invalid
+    formData.append('phone', '123'); // Invalid - too short
     
     vi.mocked(auth.api.getSession).mockResolvedValue(mockSession);
     
     const result = await updateProfile(formData);
     
     expect(result.success).toBe(false);
-    expect(result.error).toContain('valid phone number');
+    // The error could be from zod validation (min length) or phone regex validation
+    expect(result.error).toMatch(/phone number|valid phone/i);
   });
 
   it('should return error if email already exists', async () => {

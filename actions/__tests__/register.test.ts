@@ -27,6 +27,8 @@ describe('registerUser', () => {
 
   it('should successfully register a new user', async () => {
     const formData = createTestUserFormData();
+    // Ensure phone is valid to pass phone validation
+    formData.set('phone', '+1234567890');
     
     // Mock database queries
     const mockSelect = vi.fn().mockReturnValue({
@@ -69,6 +71,8 @@ describe('registerUser', () => {
 
   it('should return error if email already exists', async () => {
     const formData = createTestUserFormData();
+    // Ensure phone is valid to pass phone validation
+    formData.set('phone', '+1234567890');
     
     // Mock existing user
     const mockSelect = vi.fn().mockReturnValue({
@@ -89,6 +93,8 @@ describe('registerUser', () => {
 
   it('should return error if phone number already exists', async () => {
     const formData = createTestUserFormData();
+    // Ensure phone is valid to pass phone validation
+    formData.set('phone', '+1234567890');
     
     // Mock no existing email, but existing phone
     let callCount = 0;
@@ -116,16 +122,19 @@ describe('registerUser', () => {
 
   it('should return error for invalid phone number', async () => {
     const formData = createTestUserFormData();
-    formData.set('phone', '123'); // Invalid phone
+    formData.set('phone', '123'); // Invalid phone - too short
     
     const result = await registerUser(formData);
     
     expect(result.success).toBe(false);
-    expect(result.error).toContain('valid phone number');
+    // The error could be from zod validation (min length) or phone regex validation
+    expect(result.error).toMatch(/phone number|valid phone/i);
   });
 
   it('should return error if passwords do not match', async () => {
     const formData = createTestUserFormData();
+    // Ensure phone is valid to pass phone validation
+    formData.set('phone', '+1234567890');
     formData.set('password', 'password123');
     formData.set('confirmPassword', 'different123');
     

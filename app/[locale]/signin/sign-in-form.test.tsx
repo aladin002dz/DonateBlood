@@ -46,12 +46,15 @@ describe('SignIn Form', () => {
     const identifierInput = screen.getByLabelText(/email or phone/i);
     const passwordInput = screen.getByLabelText(/^password$/i);
     
-    // Focus and blur the identifier field to trigger validation
-    await user.click(identifierInput);
-    await user.tab();
+    // Type something in identifier and then clear it to trigger validation
+    await user.type(identifierInput, 'test');
+    await user.clear(identifierInput);
     
     // Type password to make form partially valid
     await user.type(passwordInput, 'password123');
+    
+    // Blur the identifier field to trigger validation
+    await user.tab();
     
     await waitFor(() => {
       expect(screen.getByText(/email or phone number is required/i)).toBeInTheDocument();

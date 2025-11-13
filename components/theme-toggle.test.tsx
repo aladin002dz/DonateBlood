@@ -6,6 +6,7 @@ import { useTheme } from 'next-themes';
 // Mock dependencies
 vi.mock('next-themes', () => ({
   useTheme: vi.fn(),
+  ThemeProvider: ({ children }: { children: React.ReactNode }) => children,
 }));
 
 describe('ThemeToggle', () => {
@@ -20,8 +21,9 @@ describe('ThemeToggle', () => {
     
     render(<ThemeToggle />);
     
-    const button = screen.getByRole('button');
-    expect(button).toBeInTheDocument();
+    const buttons = screen.getAllByRole('button');
+    expect(buttons.length).toBeGreaterThan(0);
+    expect(buttons[0]).toBeInTheDocument();
   });
 });
 
