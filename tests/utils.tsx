@@ -8,9 +8,23 @@ const mockMessages = {
   Auth: {
     SignIn: {
       title: 'Sign In',
-      email: 'Email',
-      password: 'Password',
+      description: 'Enter your credentials to access your account',
+      identifierLabel: 'Email or Phone Number',
+      identifierPlaceholder: 'm@example.com or +1234567890',
+      passwordLabel: 'Password',
+      passwordPlaceholder: 'Password',
       submit: 'Sign In',
+      forgot: 'Forgot your password?',
+      continueWith: 'Or continue with',
+      continueGoogle: 'Continue with Google',
+      continueGithub: 'Continue with GitHub',
+      toastSuccess: 'Signed in successfully',
+      toastNetwork: 'Network error. Please check your connection and try again.',
+      toastGeneric: 'An error occurred during sign-in',
+      toastGoogle: 'An error occurred during Google sign-in',
+      toastGithub: 'An error occurred during GitHub sign-in',
+      errorIncorrectPassword: 'Incorrect password',
+      errorUserNotFound: 'User not found',
     },
     SignUp: {
       title: 'Sign Up',
@@ -19,6 +33,10 @@ const mockMessages = {
   Validation: {
     required: 'This field is required',
     email: 'Invalid email',
+    requiredIdentifier: 'Email or phone number is required',
+    identifierInvalid: 'Please enter a valid email address or phone number (e.g., +1234567890)',
+    requiredPassword: 'Password is required',
+    minPassword6: 'Password must be at least 6 characters',
   },
 };
 

@@ -24,6 +24,10 @@ vi.mock('@/lib/auth', () => ({
   },
 }));
 
+vi.mock('next/headers', () => ({
+  headers: vi.fn().mockResolvedValue({}),
+}));
+
 describe('Authentication Flow Integration', () => {
   beforeEach(() => {
     vi.clearAllMocks();
@@ -31,18 +35,20 @@ describe('Authentication Flow Integration', () => {
 
   it('should complete full registration and sign-in flow', async () => {
     const formData = createTestUserFormData();
+    // Ensure phone number is in valid format for registration
+    formData.set('phone', '+1234567890');
     const userId = 'test-user-id';
     
     // Step 1: Register user
-    const mockSelect = vi.fn().mockReturnValue({
+    // Mock db.select to return empty arrays for both email and phone checks
+    // Each call to db.select() should return a fresh chain
+    vi.mocked(db.select).mockImplementation(() => ({
       from: vi.fn().mockReturnValue({
         where: vi.fn().mockReturnValue({
           limit: vi.fn().mockResolvedValue([]), // No existing user
         }),
       }),
-    });
-    
-    vi.mocked(db.select).mockImplementation(mockSelect as never);
+    }) as never);
     vi.mocked(auth.api.signUpEmail).mockResolvedValue({
       user: {
         id: userId,

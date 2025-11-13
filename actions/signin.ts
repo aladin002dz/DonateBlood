@@ -59,6 +59,13 @@ export async function customSignIn(identifier: string, password: string) {
         if (error && typeof error === 'object' && 'message' in error) {
             const errorMessage = error.message as string;
             // Check if it's a password-related error
+            const lowerMessage = errorMessage.toLowerCase();
+            if (lowerMessage.includes('password') || 
+                lowerMessage.includes('invalid credentials') || 
+                lowerMessage.includes('incorrect') ||
+                lowerMessage.includes('unauthorized')) {
+                return { error: 'Incorrect password' };
+            }
             return { error: errorMessage };
         }
 

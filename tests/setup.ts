@@ -22,12 +22,12 @@ vi.mock('next/navigation', () => ({
   useSearchParams: () => new URLSearchParams(),
 }));
 
-// Mock next-intl
+// Mock next-intl - but keep useTranslations to work with NextIntlClientProvider
 vi.mock('next-intl', async () => {
   const actual = await vi.importActual('next-intl');
   return {
     ...actual,
-    useTranslations: () => (key: string) => key,
+    // Don't mock useTranslations - let NextIntlClientProvider handle it
     useLocale: () => 'en',
     useMessages: () => ({}),
   };

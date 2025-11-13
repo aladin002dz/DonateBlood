@@ -32,23 +32,29 @@ describe('SignIn Form', () => {
   it('should render sign-in form', () => {
     render(<SignIn />);
     
-    expect(screen.getByText(/sign in/i)).toBeInTheDocument();
-    expect(screen.getByLabelText(/identifier/i)).toBeInTheDocument();
-    expect(screen.getByLabelText(/password/i)).toBeInTheDocument();
+    // Check that "Sign In" text appears (could be in title or button)
+    const signInTexts = screen.getAllByText(/sign in/i);
+    expect(signInTexts.length).toBeGreaterThan(0);
+    expect(screen.getByLabelText(/email or phone/i)).toBeInTheDocument();
+    expect(screen.getByLabelText(/^password$/i)).toBeInTheDocument();
   });
 
   it('should show validation error for empty identifier', async () => {
     const user = userEvent.setup();
     render(<SignIn />);
     
-    const passwordInput = screen.getByLabelText(/password/i);
-    const submitButton = screen.getByRole('button', { name: /sign in/i });
+    const identifierInput = screen.getByLabelText(/email or phone/i);
+    const passwordInput = screen.getByLabelText(/^password$/i);
     
+    // Focus and blur the identifier field to trigger validation
+    await user.click(identifierInput);
+    await user.tab();
+    
+    // Type password to make form partially valid
     await user.type(passwordInput, 'password123');
-    await user.click(submitButton);
     
     await waitFor(() => {
-      expect(screen.getByText(/required/i)).toBeInTheDocument();
+      expect(screen.getByText(/email or phone number is required/i)).toBeInTheDocument();
     });
   });
 
@@ -56,14 +62,16 @@ describe('SignIn Form', () => {
     const user = userEvent.setup();
     render(<SignIn />);
     
-    const identifierInput = screen.getByLabelText(/identifier/i);
-    const passwordInput = screen.getByLabelText(/password/i);
+    const identifierInput = screen.getByLabelText(/email or phone/i);
+    const passwordInput = screen.getByLabelText(/^password$/i);
     
     await user.type(identifierInput, 'invalid-email');
     await user.type(passwordInput, 'password123');
+    // Trigger validation by blurring the field
+    await user.tab();
     
     await waitFor(() => {
-      expect(screen.getByText(/invalid/i)).toBeInTheDocument();
+      expect(screen.getByText(/valid email address or phone number/i)).toBeInTheDocument();
     });
   });
 
@@ -71,8 +79,8 @@ describe('SignIn Form', () => {
     const user = userEvent.setup();
     render(<SignIn />);
     
-    const identifierInput = screen.getByLabelText(/identifier/i);
-    const passwordInput = screen.getByLabelText(/password/i);
+    const identifierInput = screen.getByLabelText(/email or phone/i);
+    const passwordInput = screen.getByLabelText(/^password$/i);
     
     await user.type(identifierInput, 'test@example.com');
     await user.type(passwordInput, '123');
@@ -88,8 +96,8 @@ describe('SignIn Form', () => {
     
     render(<SignIn />);
     
-    const identifierInput = screen.getByLabelText(/identifier/i);
-    const passwordInput = screen.getByLabelText(/password/i);
+    const identifierInput = screen.getByLabelText(/email or phone/i);
+    const passwordInput = screen.getByLabelText(/^password$/i);
     const submitButton = screen.getByRole('button', { name: /sign in/i });
     
     await user.type(identifierInput, 'test@example.com');
@@ -132,8 +140,8 @@ describe('SignIn Form', () => {
     
     render(<SignIn />);
     
-    const identifierInput = screen.getByLabelText(/identifier/i);
-    const passwordInput = screen.getByLabelText(/password/i);
+    const identifierInput = screen.getByLabelText(/email or phone/i);
+    const passwordInput = screen.getByLabelText(/^password$/i);
     const submitButton = screen.getByRole('button', { name: /sign in/i });
     
     await user.type(identifierInput, '1234567890');
@@ -151,8 +159,8 @@ describe('SignIn Form', () => {
     
     render(<SignIn />);
     
-    const identifierInput = screen.getByLabelText(/identifier/i);
-    const passwordInput = screen.getByLabelText(/password/i);
+    const identifierInput = screen.getByLabelText(/email or phone/i);
+    const passwordInput = screen.getByLabelText(/^password$/i);
     const submitButton = screen.getByRole('button', { name: /sign in/i });
     
     await user.type(identifierInput, 'test@example.com');
