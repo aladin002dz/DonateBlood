@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "next dev --turbopack",
     "prebuild": "npm run lint && tsc --noEmit",
-    "build": "cross-env CSS_TRANSFORMER_WASM=1 next build",
+    "build": "next build --turbopack",
     "start": "next start",
     "lint": "eslint",
     "prepare": "husky",
