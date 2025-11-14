@@ -9,7 +9,7 @@ test.describe('Authentication Flow', () => {
   test('should navigate to sign-in page', async ({ page }) => {
     await page.getByRole('link', { name: 'Sign In' }).click();
     await expect(page).toHaveURL(/.*\/en\/signin/);
-    await expect(page.getByRole('heading', { name: 'Sign In' })).toBeVisible();
+    await expect(page.locator('[data-slot="card-title"]').getByText('Sign In')).toBeVisible();
   });
 
   test('should show validation errors for empty form', async ({ page }) => {
