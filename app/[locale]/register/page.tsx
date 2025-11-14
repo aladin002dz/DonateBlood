@@ -120,6 +120,7 @@ export default function RegisterPage() {
     reset
   } = useForm<RegistrationFormData>({
     resolver: zodResolver(registrationSchema),
+    mode: "onChange",
     defaultValues: {
       fullName: "",
       bloodGroup: "",
