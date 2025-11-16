@@ -44,7 +44,7 @@ export default function RegisterPage() {
       .string()
       .min(2, v('minName2'))
       .max(100, v('maxName100'))
-      .regex(/^[a-zA-Z\s]+$/, v('nameAlpha')),
+      .regex(/^[\p{L}\s]+$/u, v('nameAlpha')),
 
     bloodGroup: z
       .string()
