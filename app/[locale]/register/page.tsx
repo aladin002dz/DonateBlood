@@ -32,6 +32,8 @@ export default function RegisterPage() {
   const bloodGroups = ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"]
   const donationTypes = ["Blood", "Blood & Platelets"]
 
+  const defaultAlias = t('defaultAlias')
+
   // Helper function to translate donation type
   const getDonationTypeTranslation = (type: string | null): string => {
     if (!type) return ""
@@ -44,7 +46,7 @@ export default function RegisterPage() {
       .string()
       .min(2, v('minName2'))
       .max(100, v('maxName100'))
-      .regex(/^[a-zA-Z\s]+$/, v('nameAlpha')),
+      .regex(/^[\p{L}\s]+$/u, v('nameAlpha')),
 
     bloodGroup: z
       .string()
@@ -120,8 +122,9 @@ export default function RegisterPage() {
     reset
   } = useForm<RegistrationFormData>({
     resolver: zodResolver(registrationSchema),
+    mode: "onChange",
     defaultValues: {
-      fullName: "",
+      fullName: defaultAlias,
       bloodGroup: "",
       email: "",
       password: "",
@@ -231,8 +234,12 @@ export default function RegisterPage() {
                     {...register("fullName")}
                     className={`rounded-lg ${errors.fullName ? 'border-red-500' : ''}`}
                   />
-                  {errors.fullName && (
+                  {errors.fullName ? (
                     <p className="text-sm text-red-500">{errors.fullName.message}</p>
+                  ) : (
+                    <p className="text-sm text-muted-foreground">
+                      {t('fullNameHelper')}
+                    </p>
                   )}
                 </div>
 

@@ -3,6 +3,14 @@
 import { auth } from '@/lib/auth';
 import { headers } from 'next/headers';
 
+interface AuthApiResult {
+    status?: boolean;
+}
+
+function isAuthApiResult(result: unknown): result is AuthApiResult {
+    return typeof result === 'object' && result !== null;
+}
+
 export async function requestPasswordReset(email: string) {
     try {
         // Use Better Auth's built-in password reset functionality
@@ -14,7 +22,7 @@ export async function requestPasswordReset(email: string) {
             headers: await headers()
         });
 
-        if (result) {
+        if (result && isAuthApiResult(result) && result.status !== false) {
             return {
                 success: true,
                 message: 'Password reset email sent successfully'
@@ -45,7 +53,7 @@ export async function resetPassword(token: string, newPassword: string) {
             headers: await headers()
         });
 
-        if (result) {
+        if (result && isAuthApiResult(result) && result.status !== false) {
             return {
                 success: true,
                 message: 'Password reset successfully'

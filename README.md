@@ -127,7 +127,7 @@ Add the following to the `.gitignore` file
 - [ ] **SEO Optimization** - Meta tags and structured data
 - [ ] **CDN Integration** - Global content delivery
 - [ ] **Database Optimization** - Query optimization and indexing
-- [ ] **Automated Testing** - Unit, integration, and E2E tests
+- [x] **Automated Testing** - Unit, integration, and E2E tests
 
 ## 🔧 Configuration
 
@@ -169,6 +169,100 @@ export const auth = betterAuth({
 3. Set Authorization callback URL to `http://localhost:3000/api/auth/callback/github`
 
 
+## 🧪 Testing
+
+This project includes comprehensive testing infrastructure with unit, integration, and end-to-end tests.
+
+### Testing Stack
+
+- **Vitest** - Fast unit and integration testing
+- **React Testing Library** - Component testing utilities
+- **Playwright** - End-to-end testing for critical user flows
+- **MSW (Mock Service Worker)** - API mocking for integration tests
+
+### Running Tests
+
+```bash
+# Run all unit and integration tests
+npm test
+
+# Run tests in watch mode
+npm run test:watch
+
+# Run tests with UI dashboard
+npm run test:ui
+
+# Generate coverage report
+npm run test:coverage
+
+# Run end-to-end tests
+npm run test:e2e
+
+# Run E2E tests with UI
+npm run test:e2e:ui
+```
+
+### Test Structure
+
+```
+├── actions/__tests__/          # Server action unit tests
+├── components/                  # Component tests (co-located)
+│   ├── navigation.test.tsx
+│   └── theme-toggle.test.tsx
+├── lib/__tests__/              # Utility function tests
+├── app/[locale]/signin/        # Page component tests
+│   └── sign-in-form.test.tsx
+├── tests/                      # Test utilities and setup
+│   ├── setup.ts               # Global test setup
+│   ├── utils.tsx              # Custom render functions
+│   ├── factories/             # Test data factories
+│   ├── mocks/                 # Mock implementations
+│   └── integration/           # Integration tests
+├── e2e/                        # End-to-end tests
+│   ├── auth.spec.ts
+│   ├── search.spec.ts
+│   └── profile.spec.ts
+├── vitest.config.ts           # Vitest configuration
+└── playwright.config.ts       # Playwright configuration
+```
+
+### Test Organization
+
+- **Components**: Tests are co-located with components (same folder)
+- **Pages**: Page tests are in `__tests__` folders within page directories
+- **Server Actions**: Tests are in `__tests__` folders within action directories
+- **Utilities**: Tests are in `__tests__` folders within lib directories
+
+### Coverage Goals
+
+- Server actions: 80%+ coverage
+- Utility functions: 90%+ coverage
+- Components: 70%+ coverage
+- Overall: 75%+ coverage
+
+### Writing Tests
+
+When writing new tests:
+
+1. **Unit Tests**: Test individual functions and components in isolation
+2. **Integration Tests**: Test interactions between multiple components or services
+3. **E2E Tests**: Test complete user flows from start to finish
+
+Example unit test:
+
+```typescript
+import { describe, it, expect } from 'vitest';
+import { render, screen } from '@/tests/utils';
+import MyComponent from './MyComponent';
+
+describe('MyComponent', () => {
+  it('should render correctly', () => {
+    render(<MyComponent />);
+    expect(screen.getByText('Hello')).toBeInTheDocument();
+  });
+});
+```
+
 ## 📚 Learn More
 
 - [Next.js Documentation](https://nextjs.org/docs) - Learn about Next.js features
@@ -176,6 +270,8 @@ export const auth = betterAuth({
 - [shadcn/ui Documentation](https://ui.shadcn.com) - UI component library
 - [Tailwind CSS Documentation](https://tailwindcss.com/docs) - CSS framework
 - [Drizzle Documentation](https://orm.drizzle.team/docs/introduction) - Database ORM library
+- [Vitest Documentation](https://vitest.dev) - Testing framework
+- [Playwright Documentation](https://playwright.dev) - E2E testing framework
 
 ## 🤝 Contributing
 
