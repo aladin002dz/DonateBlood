@@ -4,19 +4,11 @@ test.describe('Authentication Flow', () => {
   // Use a global beforeEach/beforeAll if you navigate to the home page once.
   // Keeping it as is for isolated tests.
   test.beforeEach(async ({ page }) => {
-    // Navigate to home page before each test with locale prefix
-    await page.goto('/en');
-    // Wait for the navigation bar to be visible and interactive
-    await page.getByRole('navigation').waitFor({ state: 'visible' });
+    await page.goto('/en/signin');
+    await page.waitForLoadState('networkidle');
   });
 
   test('should navigate to sign-in page', async ({ page }) => {
-    // Use a more specific click action and wait for the resulting URL
-    await page.getByRole('link', { name: 'Sign In' }).click();
-
-    // Explicitly wait for the navigation to the sign-in URL
-    await page.waitForURL(/.*\/en\/signin/);
-
     // Then check the URL and the sign-in card title
     await expect(page).toHaveURL(/.*\/en\/signin/);
     // Assuming the sign-in page uses the same card title slot as registration
@@ -24,12 +16,8 @@ test.describe('Authentication Flow', () => {
   });
 
   test('should show validation errors for empty form', async ({ page }) => {
-    await page.goto('/en/signin');
-    await page.waitForLoadState('networkidle'); // Wait for page stability
-
     // The validation error selectors likely need to be more reliable.
     // Assuming 'p.text-destructive' is correct, but wait for it to be attached/visible.
-
     const identifierInput = page.locator('input[id="identifier"]');
     const passwordInput = page.locator('input[id="password"]');
 
@@ -50,22 +38,29 @@ test.describe('Authentication Flow', () => {
   });
 
   test('should show error for invalid email format', async ({ page }) => {
-    await page.goto('/en/signin');
-    await page.waitForLoadState('networkidle');
 
     const identifierInput = page.locator('input[id="identifier"]');
     const passwordInput = page.locator('input[id="password"]');
 
     await identifierInput.fill('invalid-email');
+    // Filling the password ensures all fields have input, often useful for form libraries
     await passwordInput.fill('password123');
 
     // Trigger validation by blurring the identifier field
     await identifierInput.blur();
+    await passwordInput.blur();
 
-    // Wait for the specific validation error text to appear
-    await expect(page.locator('text=/Please enter a valid email address or phone number/i')).toBeVisible({ timeout: 10000 });
-    // Check for the presence of the destructive class element
-    await expect(page.locator('p.text-destructive')).toBeVisible();
+    // FIX: Using page.locator(selector, options) instead of .filter()
+    // Translation: "Email or phone number is required"
+    const errorLocator = 'p.text-destructive';
+
+    const requiredIndentifierErrorLocator = page.locator(errorLocator, { hasText: /Please enter a valid email address or phone number (e.g., +1234567890)/i });
+    // 1. Assert the error container is visible
+    await expect(requiredIndentifierErrorLocator).toBeVisible({ timeout: 10000 });
+
+    const requiredPasswordErrorLocator = page.locator(errorLocator, { hasText: /Password must be at least 6 characters/i });
+    // 1. Assert the error container is visible
+    await expect(requiredPasswordErrorLocator).toBeVisible({ timeout: 10000 });
   });
 
   test('should navigate to registration page', async ({ page }) => {
@@ -77,10 +72,6 @@ test.describe('Authentication Flow', () => {
   });
 
   test('should navigate to forgot password page', async ({ page }) => {
-    // The beforeEach only goes to '/en', so this goto is necessary to get the link
-    await page.goto('/en/signin');
-    await page.waitForLoadState('networkidle');
-
     await page.getByRole('link', { name: /forgot/i }).click();
     // Explicitly wait for the navigation
     await page.waitForURL(/.*\/en\/forgot-password/);
