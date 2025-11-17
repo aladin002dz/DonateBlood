@@ -4,6 +4,7 @@ import { useSession } from "@/lib/auth-client";
 import { Heart, Search, UserPlus } from "lucide-react";
 import { useTranslations } from 'next-intl';
 import Link from "next/link";
+import { Logo } from "@/components/logo";
 
 export default function HomePage() {
   const t = useTranslations('HomePage');
@@ -14,7 +15,7 @@ export default function HomePage() {
         {/* Header */}
         <div className="mb-8">
           <div className="flex justify-center mb-4">
-            <Heart className="h-16 w-16 md:h-20 md:w-20 text-primary fill-current" />
+            <Logo size="home" className="h-16 w-16 md:h-20 md:w-20" alt={t('title')} />
           </div>
           <h1 className="text-3xl md:text-5xl font-bold text-primary mb-4 text-balance">
             {t('title')}
