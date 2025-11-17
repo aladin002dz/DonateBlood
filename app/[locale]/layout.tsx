@@ -30,7 +30,17 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
         ar: '/ar'
       }
     },
-    generator: 'v0.app'
+    generator: 'v0.app',
+    icons: {
+      icon: [
+        { url: '/favicon.ico', sizes: 'any' },
+        { url: '/logo/logo-nav.png', sizes: '24x24', type: 'image/png' },
+        { url: '/logo/logo-mobile.png', sizes: '32x32', type: 'image/png' },
+      ],
+      apple: [
+        { url: '/logo/logo-home.png', sizes: '180x180', type: 'image/png' },
+      ],
+    },
   };
 }
 

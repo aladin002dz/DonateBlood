@@ -8,6 +8,7 @@ import { cn } from "@/lib/utils"
 import { Globe, Heart, Home, LogIn, LogOut, Menu, Search, User, UserPlus, X } from "lucide-react"
 import { useLocale, useTranslations } from "next-intl"
 import { useState } from "react"
+import { Logo } from "@/components/logo"
 
 type NavItem = {
   href: string
@@ -74,7 +75,7 @@ export function Navigation() {
       <div className="container mx-auto flex h-16 max-w-screen-2xl items-center">
         {/* Logo */}
         <Link href="/" className="mr-6 flex items-center space-x-2">
-          <Heart className="h-6 w-6 text-primary fill-current" />
+          <Logo size="nav" className="h-6 w-6" alt={t("brandName")} />
           <span className="hidden font-bold sm:inline-block text-primary">{t("brandName")}</span>
         </Link>
 
@@ -181,7 +182,7 @@ export function Navigation() {
                   onClick={() => setIsOpen(false)}
                   className="flex items-center space-x-2 px-2 py-2"
                 >
-                  <Heart className="h-6 w-6 text-primary fill-current" />
+                  <Logo size="mobile" className="h-6 w-6" alt={t("brandName")} />
                   <span className="font-bold text-primary">{t("brandName")}</span>
                 </Link>
 
