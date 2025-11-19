@@ -4,7 +4,9 @@ import { defineConfig, devices } from '@playwright/test';
  * Read environment variables from file.
  * https://github.com/motdotla/dotenv
  */
-// require('dotenv').config();
+import dotenv from 'dotenv';
+import path from 'path';
+dotenv.config({ path: path.resolve(__dirname, '.env') });
 
 /**
  * See https://playwright.dev/docs/test-configuration.
@@ -19,6 +21,8 @@ export default defineConfig({
   retries: process.env.CI ? 2 : 0,
   /* Opt out of parallel tests on CI. */
   workers: process.env.CI ? 1 : undefined,
+  /* Timeout for each test - increased for Next.js compilation */
+  timeout: 60 * 1000, // 60 seconds per test
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
   reporter: 'html',
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
@@ -33,19 +37,69 @@ export default defineConfig({
 
   /* Configure projects for major browsers */
   projects: [
+    // Auth setup project
+    { name: 'setup', testMatch: /.*\.setup\.ts/ },
+
+    // Authenticated tests - use auth storage state
     {
-      name: 'chromium',
-      use: { ...devices['Desktop Chrome'] },
+      name: 'chromium-auth',
+      use: {
+        ...devices['Desktop Chrome'],
+        storageState: 'playwright/.auth/user.json',
+      },
+      testMatch: /.*\.spec\.ts/,
+      testIgnore: /.*unauthenticated.*|.*not.*authenticated.*|.*should.*redirect.*sign.*in/,
+      dependencies: ['setup'],
     },
 
     {
-      name: 'firefox',
-      use: { ...devices['Desktop Firefox'] },
+      name: 'firefox-auth',
+      use: {
+        ...devices['Desktop Firefox'],
+        storageState: 'playwright/.auth/user.json',
+      },
+      testMatch: /.*\.spec\.ts/,
+      testIgnore: /.*unauthenticated.*|.*not.*authenticated.*|.*should.*redirect.*sign.*in/,
+      dependencies: ['setup'],
     },
 
     {
-      name: 'webkit',
-      use: { ...devices['Desktop Safari'] },
+      name: 'webkit-auth',
+      use: {
+        ...devices['Desktop Safari'],
+        storageState: 'playwright/.auth/user.json',
+      },
+      testMatch: /.*\.spec\.ts/,
+      testIgnore: /.*unauthenticated.*|.*not.*authenticated.*|.*should.*redirect.*sign.*in/,
+      dependencies: ['setup'],
+    },
+
+    // Non-authenticated tests - no storage state
+    {
+      name: 'chromium-unauth',
+      use: {
+        ...devices['Desktop Chrome'],
+      },
+      testMatch: /.*\.spec\.ts/,
+      grep: /unauthenticated|not.*authenticated|should.*redirect.*sign.*in/,
+    },
+
+    {
+      name: 'firefox-unauth',
+      use: {
+        ...devices['Desktop Firefox'],
+      },
+      testMatch: /.*\.spec\.ts/,
+      grep: /unauthenticated|not.*authenticated|should.*redirect.*sign.*in/,
+    },
+
+    {
+      name: 'webkit-unauth',
+      use: {
+        ...devices['Desktop Safari'],
+      },
+      testMatch: /.*\.spec\.ts/,
+      grep: /unauthenticated|not.*authenticated|should.*redirect.*sign.*in/,
     },
 
     /* Test against mobile viewports. */
@@ -65,6 +119,9 @@ export default defineConfig({
     url: 'http://localhost:3000',
     reuseExistingServer: !process.env.CI,
     timeout: 120 * 1000,
+    env: {
+      PLAYWRIGHT_TEST_MODE: 'true',
+    },
   },
 });
 

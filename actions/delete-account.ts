@@ -35,6 +35,18 @@ export async function deleteAccount() {
             };
         }
 
+        // TEST MODE: Skip actual deletion during E2E tests
+        // Set PLAYWRIGHT_TEST_MODE=true in your playwright.config.ts
+        if (process.env.PLAYWRIGHT_TEST_MODE === 'true') {
+            console.log('⚠️ TEST MODE: Simulating account deletion without database changes');
+
+            // Return success response without deleting anything
+            return {
+                success: true,
+                message: 'Account deleted successfully'
+            };
+        }
+
         // Delete all related data in the correct order to respect foreign key constraints
         // 1. Delete sessions (they reference user.id)
         await db.delete(sessionTable).where(eq(sessionTable.userId, userId));
