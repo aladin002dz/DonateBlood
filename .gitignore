@@ -14,7 +14,8 @@
 /coverage
 /test-results
 /playwright-report
-/playwright/.cache
+/tests/playwright/.cache
+/tests/playwright/.auth
 *.spec.ts.snap
 
 # next.js
