@@ -16,7 +16,7 @@ import { useSession } from "@/lib/auth-client"
 import { getCommunes, getDairas, getWilayas } from "@/lib/locations"
 import { AlertTriangle, Heart, Loader2, Save, Trash2, User } from "lucide-react"
 import { useLocale, useTranslations } from 'next-intl'
-import { useRouter } from "next/navigation"
+import { useRouter } from "@/i18n/navigation"
 import { useEffect, useMemo, useState } from "react"
 import { toast } from "sonner"
 
@@ -80,7 +80,9 @@ export default function ProfilePage() {
 
   // Redirect if not authenticated
   useEffect(() => {
+    console.log('Profile Page: sessionLoading:', sessionLoading, 'session:', session);
     if (!sessionLoading && !session) {
+      console.log('Profile Page: Redirecting to /signin');
       router.push("/signin")
     }
   }, [session, sessionLoading, router])

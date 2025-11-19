@@ -28,6 +28,10 @@ export default defineConfig({
   resolve: {
     alias: {
       '@': path.resolve(process.cwd(), './'),
+      'next-intl/server': path.resolve(process.cwd(), './tests/mocks/next-intl-server.ts'),
+      'next-intl/navigation': path.resolve(process.cwd(), './tests/mocks/next-intl-navigation.ts'),
+      'next-intl/routing': path.resolve(process.cwd(), './tests/mocks/next-intl-routing.ts'),
+      'next-intl': path.resolve(process.cwd(), './tests/mocks/next-intl.ts'),
     },
   },
 });
