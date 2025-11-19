@@ -9,7 +9,7 @@ export function Footer() {
 
     return (
         <footer className="bg-background border-t border-border mt-auto">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 pb-24 md:pb-6">
                 <div className="flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-0 sm:space-x-2 text-muted-foreground">
                     <div className="flex items-center space-x-2">
                         <span>{t('builtWith')}</span>

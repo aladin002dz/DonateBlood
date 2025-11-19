@@ -23,8 +23,8 @@ export function ThemeToggle() {
     ]
 
     return (
-        <div className="fixed bottom-6 right-6 z-50">
-            <div className="flex items-center rounded-full border border-border bg-card/80 backdrop-blur-sm p-1 shadow-lg">
+        <div className="fixed bottom-16 md:bottom-6 right-6 z-50">
+            <div className="flex flex-col md:flex-row items-center rounded-full border border-border bg-card/80 backdrop-blur-sm p-1 shadow-lg">
                 {themes.map(({ value, icon: Icon, label }) => (
                     <button
                         key={value}
