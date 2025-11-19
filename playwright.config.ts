@@ -45,7 +45,7 @@ export default defineConfig({
       name: 'chromium-auth',
       use: {
         ...devices['Desktop Chrome'],
-        storageState: 'playwright/.auth/user.json',
+        storageState: 'tests/playwright/.auth/user.json',
       },
       testMatch: /.*\.spec\.ts/,
       testIgnore: /.*unauthenticated.*|.*not.*authenticated.*|.*should.*redirect.*sign.*in/,
@@ -56,7 +56,7 @@ export default defineConfig({
       name: 'firefox-auth',
       use: {
         ...devices['Desktop Firefox'],
-        storageState: 'playwright/.auth/user.json',
+        storageState: 'tests/playwright/.auth/user.json',
       },
       testMatch: /.*\.spec\.ts/,
       testIgnore: /.*unauthenticated.*|.*not.*authenticated.*|.*should.*redirect.*sign.*in/,
@@ -67,7 +67,7 @@ export default defineConfig({
       name: 'webkit-auth',
       use: {
         ...devices['Desktop Safari'],
-        storageState: 'playwright/.auth/user.json',
+        storageState: 'tests/playwright/.auth/user.json',
       },
       testMatch: /.*\.spec\.ts/,
       testIgnore: /.*unauthenticated.*|.*not.*authenticated.*|.*should.*redirect.*sign.*in/,
