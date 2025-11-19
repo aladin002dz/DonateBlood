@@ -10,11 +10,13 @@ vi.mock('next-intl/server', () => ({
 const mockSend = vi.fn();
 
 vi.mock('resend', () => ({
-  Resend: vi.fn().mockImplementation(() => ({
-    emails: {
-      send: mockSend,
-    },
-  })),
+  Resend: vi.fn().mockImplementation(function () {
+    return {
+      emails: {
+        send: mockSend,
+      },
+    };
+  }),
 }));
 
 describe('sendPasswordResetEmail', () => {
@@ -28,9 +30,9 @@ describe('sendPasswordResetEmail', () => {
       data: { id: 'email-id' },
       error: null,
     });
-    
+
     const result = await sendPasswordResetEmail('test@example.com', 'reset-token');
-    
+
     expect(result.success).toBe(true);
     expect(result.data).toBeDefined();
   });
@@ -40,7 +42,7 @@ describe('sendPasswordResetEmail', () => {
       data: null,
       error: { message: 'Email sending failed', name: 'internal_server_error' as const, statusCode: 500 },
     });
-    
+
     await expect(
       sendPasswordResetEmail('test@example.com', 'reset-token')
     ).rejects.toThrow();
@@ -48,14 +50,14 @@ describe('sendPasswordResetEmail', () => {
 
   it('should use correct locale for email subject', async () => {
     vi.mocked(getLocale).mockResolvedValue('fr');
-    
+
     mockSend.mockResolvedValue({
       data: { id: 'email-id' },
       error: null,
     });
-    
+
     await sendPasswordResetEmail('test@example.com', 'reset-token');
-    
+
     expect(mockSend).toHaveBeenCalled();
   });
 });

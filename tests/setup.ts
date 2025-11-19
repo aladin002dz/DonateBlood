@@ -17,37 +17,6 @@ vi.mock('next/navigation', () => ({
     pathname: '/',
     query: {},
     asPath: '/',
-  }),
-  usePathname: () => '/',
-  useSearchParams: () => new URLSearchParams(),
-}));
-
-// Mock next-intl - but keep useTranslations to work with NextIntlClientProvider
-vi.mock('next-intl', async () => {
-  const actual = await vi.importActual('next-intl');
-  return {
-    ...actual,
-    // Don't mock useTranslations - let NextIntlClientProvider handle it
-    useLocale: () => 'en',
-    useMessages: () => ({}),
-  };
-});
-
-// Mock next-intl/server
-vi.mock('next-intl/server', async () => {
-  const actual = await vi.importActual('next-intl/server');
-  return {
-    ...actual,
-    getTranslations: () => (key: string) => key,
-    getMessages: () => ({}),
-  };
-});
-
-// Mock next-themes
-vi.mock('next-themes', () => ({
-  useTheme: () => ({
-    theme: 'light',
-    setTheme: vi.fn(),
     resolvedTheme: 'light',
   }),
   ThemeProvider: ({ children }: { children: React.ReactNode }) => children,
@@ -69,4 +38,18 @@ global.ResizeObserver = vi.fn().mockImplementation(() => ({
   unobserve: vi.fn(),
   disconnect: vi.fn(),
 }));
+
+Object.defineProperty(window, 'matchMedia', {
+  writable: true,
+  value: vi.fn().mockImplementation((query) => ({
+    matches: false,
+    media: query,
+    onchange: null,
+    addListener: vi.fn(), // deprecated
+    removeListener: vi.fn(), // deprecated
+    addEventListener: vi.fn(),
+    removeEventListener: vi.fn(),
+    dispatchEvent: vi.fn(),
+  })),
+});
 
