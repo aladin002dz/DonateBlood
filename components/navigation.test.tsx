@@ -22,11 +22,12 @@ vi.mock('@/i18n/navigation', () => ({
 describe('Navigation', () => {
   it('should render navigation for unauthenticated users', () => {
     vi.mocked(useSession).mockReturnValue({ data: null, isPending: false, isRefetching: false, error: null, refetch: vi.fn() });
-    
+
     render(<Navigation />);
-    
-    expect(screen.getByText(/home/i)).toBeInTheDocument();
-    expect(screen.getByText(/sign in/i)).toBeInTheDocument();
+
+    expect(screen.getAllByText(/home/i)).toHaveLength(2);
+    expect(screen.getAllByText(/sign in/i)).toHaveLength(2);
+    expect(screen.getAllByText(/search/i)).toHaveLength(2);
   });
 
   it('should render navigation for authenticated users', () => {
@@ -54,12 +55,12 @@ describe('Navigation', () => {
       error: null,
       refetch: vi.fn(),
     });
-    
+
     render(<Navigation />);
-    
-    expect(screen.getByText(/home/i)).toBeInTheDocument();
-    expect(screen.getByText(/search/i)).toBeInTheDocument();
-    expect(screen.getByText(/profile/i)).toBeInTheDocument();
+
+    expect(screen.getAllByText(/home/i)).toHaveLength(2);
+    expect(screen.getAllByText(/search/i)).toHaveLength(2);
+    expect(screen.getAllByText(/profile/i)).toHaveLength(2);
   });
 });
 

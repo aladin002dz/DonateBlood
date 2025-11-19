@@ -20,6 +20,7 @@ type NavItem = {
 export function Navigation() {
   const t = useTranslations("Navigation")
   const locale = useLocale()
+  const translate = (key: string) => (t ? t(key) : key)
   const pathname = usePathname()
   const router = useRouter()
   const { data: session } = useSession()
@@ -36,22 +37,22 @@ export function Navigation() {
   }
 
   const navItems: NavItem[] = [
-    { href: "/", label: t("home"), icon: Home },
+    { href: "/", label: translate("home"), icon: Home },
     ...(session
       ? [
-        { href: "/search", label: t("search"), icon: Search },
-        { href: "/profile", label: t("profile"), icon: User },
+        { href: "/search", label: translate("search"), icon: Search },
+        { href: "/profile", label: translate("profile"), icon: User },
         {
           href: "#",
-          label: t("logout"),
+          label: translate("logout"),
           icon: LogOut,
           onClick: handleSignOut,
         },
       ]
       : [
-        { href: "/search", label: t("search"), icon: Search },
-        { href: "/signin", label: t("signin"), icon: LogIn },
-        { href: "/register", label: t("register"), icon: UserPlus },
+        { href: "/search", label: translate("search"), icon: Search },
+        { href: "/signin", label: translate("signin"), icon: LogIn },
+        { href: "/register", label: translate("register"), icon: UserPlus },
       ]),
   ]
 
