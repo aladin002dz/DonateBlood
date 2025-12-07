@@ -13,6 +13,7 @@ export interface SearchFilters {
     commune?: string;
     donationType?: string;
     emergencyOnly?: boolean;
+    query?: string;
 }
 
 export interface DonorData {
@@ -325,6 +326,85 @@ export async function searchDonors(filters: SearchFilters = {}) {
         // Filter for emergency available donors only if requested
         if (filters.emergencyOnly) {
             conditions.push(eq(user.emergencyAvailable, true));
+        }
+
+        // Parse and apply free-text query
+        if (filters.query && filters.query.trim() !== '') {
+            const queryText = filters.query.trim();
+            const tokens = queryText.split(/\s+/).filter(t => t.length > 0);
+
+            // Blood type pattern (A+, A-, B+, B-, AB+, AB-, O+, O-)
+            const bloodTypePattern = /^(A|B|AB|O)[+-]$/i;
+
+            const bloodTypes: string[] = [];
+            const locationTerms: string[] = [];
+
+            for (const token of tokens) {
+                if (bloodTypePattern.test(token)) {
+                    // Normalize blood type (uppercase)
+                    bloodTypes.push(token.toUpperCase());
+                } else {
+                    locationTerms.push(token);
+                }
+            }
+
+            // Apply blood type filter from query (if not already set by dropdown)
+            if (bloodTypes.length > 0 && !filters.bloodGroup) {
+                if (bloodTypes.length === 1) {
+                    conditions.push(eq(user.bloodGroup, bloodTypes[0]));
+                } else {
+                    const bloodConditions = bloodTypes.map(bt => eq(user.bloodGroup, bt));
+                    conditions.push(or(...bloodConditions)!);
+                }
+            }
+
+            // Apply location search across wilaya, daira, and commune
+            if (locationTerms.length > 0) {
+                // Combine location terms back into a search string
+                const locationQuery = locationTerms.join(' ');
+
+                // Get all possible translations for the location query
+                const wilayaTranslations = getAllWilayaTranslations(locationQuery);
+                const dairaTranslations = getAllDairaTranslations(locationQuery);
+                const communeTranslations = getAllCommuneTranslations(locationQuery);
+
+                // Build location conditions - match any field
+                const locationConditions: ReturnType<typeof ilike>[] = [];
+
+                // Add wilaya matches
+                if (wilayaTranslations.length > 0) {
+                    for (const translation of wilayaTranslations) {
+                        locationConditions.push(ilike(user.wilaya, `%${translation}%`));
+                    }
+                }
+
+                // Add daira matches
+                if (dairaTranslations.length > 0) {
+                    for (const translation of dairaTranslations) {
+                        locationConditions.push(ilike(user.daira, `%${translation}%`));
+                    }
+                }
+
+                // Add commune matches
+                if (communeTranslations.length > 0) {
+                    for (const translation of communeTranslations) {
+                        locationConditions.push(ilike(user.commune, `%${translation}%`));
+                    }
+                }
+
+                // Fallback: if no translations found, search the raw terms across all location fields
+                if (locationConditions.length === 0) {
+                    for (const term of locationTerms) {
+                        locationConditions.push(ilike(user.wilaya, `%${term}%`));
+                        locationConditions.push(ilike(user.daira, `%${term}%`));
+                        locationConditions.push(ilike(user.commune, `%${term}%`));
+                    }
+                }
+
+                if (locationConditions.length > 0) {
+                    conditions.push(or(...locationConditions)!);
+                }
+            }
         }
 
         // Fetch donors from database

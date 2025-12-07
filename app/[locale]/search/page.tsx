@@ -4,6 +4,7 @@ import { searchDonors, type DonorData, type SearchFilters } from "@/actions/sear
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Switch } from "@/components/ui/switch"
@@ -23,7 +24,9 @@ export default function SearchPage() {
     commune: "",
     donationType: "",
     emergencyOnly: false,
+    query: "",
   })
+  const [searchQuery, setSearchQuery] = useState("")
   const [isFiltersOpen, setIsFiltersOpen] = useState(false)
 
   // Get location data
@@ -103,6 +106,7 @@ export default function SearchPage() {
   }
 
   const clearFilters = () => {
+    setSearchQuery("")
     setFilters({
       bloodGroup: "",
       wilaya: "",
@@ -110,6 +114,7 @@ export default function SearchPage() {
       commune: "",
       donationType: "",
       emergencyOnly: false,
+      query: "",
     })
   }
 
@@ -125,23 +130,33 @@ export default function SearchPage() {
     <div className="container mx-auto px-4 py-8">
       <div className="max-w-6xl mx-auto">
         {/* Header */}
+        {/* Search Header */}
         <div className="text-center mb-8">
-          <div className="flex justify-center mb-4">
-            <Search className="h-12 w-12 text-primary" />
+          <h1 className="text-2xl md:text-3xl font-bold text-primary mb-4">{t('title')}</h1>
+          <div className="max-w-2xl mx-auto flex flex-col sm:flex-row items-end sm:items-center gap-3">
+            <div className="relative flex-1 w-full">
+              <Search className={`absolute top-1/2 transform -translate-y-1/2 h-5 w-5 text-muted-foreground ${locale === 'ar' ? 'right-4' : 'left-4'}`} />
+              <Input
+                type="text"
+                placeholder={t('searchPlaceholder')}
+                value={searchQuery}
+                onChange={(e) => {
+                  const value = e.target.value;
+                  setSearchQuery(value);
+                  setFilters(prev => ({ ...prev, query: value }));
+                }}
+                className={`w-full py-6 text-lg rounded-full border-2 border-primary/20 focus:border-primary shadow-lg ${locale === 'ar' ? 'pr-12 pl-4' : 'pl-12 pr-4'}`}
+              />
+            </div>
+            <Button
+              onClick={() => setIsFiltersOpen(!isFiltersOpen)}
+              className="rounded-full bg-primary hover:bg-primary/90 text-primary-foreground px-5 py-6 flex items-center gap-2 font-medium shrink-0"
+            >
+              <SlidersHorizontal className="h-5 w-5" />
+              {t('filters')}
+            </Button>
           </div>
-          <h1 className="text-2xl md:text-3xl font-bold text-primary mb-2">{t('title')}</h1>
-          <p className="text-muted-foreground">{t('subtitle')}</p>
-        </div>
-
-        {/* Filter Toggle Button */}
-        <div className="flex justify-start mb-6">
-          <Button
-            onClick={() => setIsFiltersOpen(!isFiltersOpen)}
-            className="rounded-full bg-primary hover:bg-primary/90 text-primary-foreground px-6 py-2 flex items-center gap-2 font-medium"
-          >
-            <SlidersHorizontal className="h-5 w-5" />
-            {t('filters')}
-          </Button>
+          <p className="text-muted-foreground mt-4">{t('subtitle')}</p>
         </div>
 
         {/* Search Filters */}

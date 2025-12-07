@@ -169,8 +169,9 @@
     "Search": {
         "title": "Trouver des Donneurs de Sang",
         "subtitle": "Rechercher des donneurs disponibles dans votre région",
+        "searchPlaceholder": "Rechercher par groupe sanguin (A+, O-...) ou lieu (Alger, Oran...)",
         "searchFilters": "Filtres de recherche",
-        "filters":"Filtres",
+        "filters": "Filtres",
         "searchFiltersDesc": "Utilisez les filtres ci-dessous pour trouver des donneurs correspondant à vos besoins",
         "bloodGroup": "Groupe sanguin",
         "anyBloodGroup": "N'importe quel groupe",
