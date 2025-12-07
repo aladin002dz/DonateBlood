@@ -170,6 +170,7 @@
         "title": "Trouver des Donneurs de Sang",
         "subtitle": "Rechercher des donneurs disponibles dans votre région",
         "searchFilters": "Filtres de recherche",
+        "filters":"Filtres",
         "searchFiltersDesc": "Utilisez les filtres ci-dessous pour trouver des donneurs correspondant à vos besoins",
         "bloodGroup": "Groupe sanguin",
         "anyBloodGroup": "N'importe quel groupe",
