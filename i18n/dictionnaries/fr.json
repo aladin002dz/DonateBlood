@@ -168,6 +168,7 @@
     },
     "Search": {
         "title": "Trouver des Donneurs de Sang",
+        "defaultAlias": "Donneur bénévole",
         "subtitle": "Rechercher des donneurs disponibles dans votre région",
         "searchPlaceholder": "Rechercher par groupe sanguin (A+, O-...) ou lieu (Alger, Oran...)",
         "searchFilters": "Filtres de recherche",
