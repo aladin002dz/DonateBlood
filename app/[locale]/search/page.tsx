@@ -327,7 +327,7 @@ export default function SearchPage() {
                   <CardHeader className="pb-3">
                     <div className="flex items-start justify-between">
                       <div>
-                        <CardTitle className="text-lg">{donor.name}</CardTitle>
+                        <CardTitle className="text-lg">{/*donor.name*/ t('defaultAlias')}</CardTitle>
                         <div className="flex items-center gap-2 mt-2">
                           <Badge
                             variant="secondary"
@@ -374,7 +374,8 @@ export default function SearchPage() {
                       className="w-full bg-primary hover:bg-primary/90 text-primary-foreground rounded-lg mt-4 disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                       <Phone className="h-4 w-4 mr-2" />
-                      {donor.phone ? t('contactDonor') : t('noContactInfo')}
+                      {/*donor.phone ? t('contactDonor') : t('noContactInfo')*/}
+                      {donor.phone}
                     </Button>
                   </CardContent>
                 </Card>

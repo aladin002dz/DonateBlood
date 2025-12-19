@@ -169,6 +169,7 @@
     "Search": {
         "title": "Find Blood Donors",
         "subtitle": "Search for available donors in your area",
+        "defaultAlias": "Benefactor",
         "searchPlaceholder": "Search by blood type (A+, O-...) or location (Algiers, Oran...)",
         "filters": "Filters",
         "searchFilters": "Search Filters",
