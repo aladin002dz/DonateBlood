@@ -203,7 +203,9 @@
         "contactDonor": "Contact Donor",
         "noContactInfo": "No Contact Info",
         "noDonorsFound": "No donors found",
-        "noDonorsFoundDesc": "Try adjusting your search filters to find more donors in your area."
+        "noDonorsFoundDesc": "Try adjusting your search filters to find more donors in your area.",
+        "signInToView": "Sign in to view contact",
+        "showContact": "Show Contact"
     },
     "Footer": {
         "builtWith": "Built with",
