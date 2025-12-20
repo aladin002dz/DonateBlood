@@ -9,12 +9,16 @@ import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Switch } from "@/components/ui/switch"
 import { getCommunes, getDairas, getWilayas } from "@/lib/locations"
-import { Clock, Heart, Loader2, MapPin, Phone, Search, SlidersHorizontal } from "lucide-react"
+import { Clock, Eye, Heart, Loader2, MapPin, Phone, Search, SlidersHorizontal } from "lucide-react"
+import { useSession } from "@/lib/auth-client"
+import { useRouter } from "next/navigation"
 import { useLocale, useTranslations } from 'next-intl'
 import { useEffect, useMemo, useState } from "react"
 
 export default function SearchPage() {
   const locale = useLocale()
+  const router = useRouter()
+  const { data: session } = useSession()
   const t = useTranslations('Search')
   const tProfile = useTranslations('Profile')
   const [filters, setFilters] = useState<SearchFilters>({
@@ -52,6 +56,7 @@ export default function SearchPage() {
   const [donors, setDonors] = useState<DonorData[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+  const [revealedDonors, setRevealedDonors] = useState<Set<string>>(new Set())
 
   const bloodGroups = ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"]
   const donationTypes = ["Blood", "Blood & Platelets"]
@@ -119,8 +124,18 @@ export default function SearchPage() {
   }
 
   const handleContact = (donor: DonorData) => {
+    if (!session) {
+      router.push(`/${locale}/signin`)
+      return
+    }
+
+    if (!revealedDonors.has(donor.id)) {
+      setRevealedDonors(prev => new Set(prev).add(donor.id))
+      return
+    }
+
     if (donor.phone) {
-      alert(`Contacting ${donor.name} at ${donor.phone}`)
+      window.location.href = `tel:${donor.phone}`
     } else {
       alert(`Contact information for ${donor.name} is not available`)
     }
@@ -370,12 +385,25 @@ export default function SearchPage() {
 
                     <Button
                       onClick={() => handleContact(donor)}
-                      disabled={!donor.emergencyAvailable || !donor.phone}
+                      disabled={!donor.emergencyAvailable}
                       className="w-full bg-primary hover:bg-primary/90 text-primary-foreground rounded-lg mt-4 disabled:opacity-50 disabled:cursor-not-allowed"
                     >
-                      <Phone className="h-4 w-4 mr-2" />
-                      {/*donor.phone ? t('contactDonor') : t('noContactInfo')*/}
-                      {donor.phone}
+                      {!session ? (
+                        <>
+                          <Phone className="h-4 w-4 mr-2" />
+                          {t('signInToView')}
+                        </>
+                      ) : revealedDonors.has(donor.id) ? (
+                        <>
+                          <Phone className="h-4 w-4 mr-2" />
+                          {donor.phone}
+                        </>
+                      ) : (
+                        <>
+                          <Eye className="h-4 w-4 mr-2" />
+                          {t('showContact')}
+                        </>
+                      )}
                     </Button>
                   </CardContent>
                 </Card>
