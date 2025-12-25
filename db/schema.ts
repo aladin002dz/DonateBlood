@@ -12,7 +12,12 @@ export const user = pgTable("user", {
     phone: text("phone").unique(),
     emailVerified: boolean("email_verified").default(false).notNull(),
     phoneVerified: boolean("phone_verified").default(false).notNull(),
+    image: text("image"),
     role: userRoleEnum("role").default('user').notNull(),
+    // Admin plugin fields
+    banned: boolean("banned").default(false),
+    banReason: text("ban_reason"),
+    banExpires: timestamp("ban_expires"),
     // Blood donation specific fields
     bloodGroup: text("blood_group"),
     wilaya: text("wilaya"),

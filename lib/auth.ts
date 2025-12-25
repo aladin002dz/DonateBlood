@@ -7,6 +7,7 @@ import {
 } from 'better-auth';
 import { drizzleAdapter } from 'better-auth/adapters/drizzle';
 import { nextCookies } from 'better-auth/next-js';
+import { admin } from 'better-auth/plugins';
 
 export const auth = betterAuth({
     database: drizzleAdapter(db, {
@@ -48,7 +49,13 @@ export const auth = betterAuth({
             clientSecret: process.env.GITHUB_CLIENT_SECRET!
         }
     },
-    plugins: [nextCookies()],
+    plugins: [
+        nextCookies(),
+        admin({
+            defaultRole: 'user',
+            adminRoles: ['admin', 'moderator'],
+        }),
+    ],
 
     emailVerification: {
         sendOnSignUp: true, // Auto-send verification email on signup
