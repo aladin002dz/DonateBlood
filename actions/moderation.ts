@@ -1,0 +1,238 @@
+"use server";
+
+import { db } from '@/db/db';
+import { donor, report, user } from '@/db/schema';
+import { auth } from '@/lib/auth';
+import { eq, sql } from 'drizzle-orm';
+import { revalidatePath } from 'next/cache';
+import { headers } from 'next/headers';
+
+/**
+ * Helper function to get the current session.
+ * Throws an error if the user is not authenticated.
+ */
+async function getAuthenticatedSession() {
+    const session = await auth.api.getSession({
+        headers: await headers()
+    });
+
+    if (!session) {
+        throw new Error('Unauthorized');
+    }
+
+    return session;
+}
+
+/**
+ * Generate a unique ID for new records.
+ */
+function generateId(): string {
+    return crypto.randomUUID();
+}
+
+/**
+ * Report a donor with a specific reason.
+ * - Inserts a record into the `report` table.
+ * - Increments `reportCount` on the donor.
+ * - If `reportCount` reaches 3, automatically updates the donor's `status` to 'hidden'.
+ */
+export async function reportDonor(donorId: string, reason: string) {
+    try {
+        const session = await getAuthenticatedSession();
+
+        // Validate inputs
+        if (!donorId || !reason) {
+            return {
+                success: false,
+                error: 'Donor ID and reason are required'
+            };
+        }
+
+        // Check if the donor exists
+        const donorResult = await db.select()
+            .from(donor)
+            .where(eq(donor.id, donorId))
+            .limit(1);
+
+        if (donorResult.length === 0) {
+            return {
+                success: false,
+                error: 'Donor not found'
+            };
+        }
+
+        const targetDonor = donorResult[0];
+
+        // Prevent users from reporting themselves
+        if (targetDonor.userId === session.user.id) {
+            return {
+                success: false,
+                error: 'You cannot report yourself'
+            };
+        }
+
+        // Insert report record
+        await db.insert(report).values({
+            id: generateId(),
+            reporterId: session.user.id,
+            donorId: donorId,
+            reason: reason,
+            status: 'pending',
+        });
+
+        // Increment reportCount on the donor
+        const newReportCount = targetDonor.reportCount + 1;
+
+        // If reportCount reaches 3, set status to 'hidden'
+        if (newReportCount >= 3) {
+            await db.update(donor)
+                .set({
+                    reportCount: newReportCount,
+                    status: 'hidden'
+                })
+                .where(eq(donor.id, donorId));
+        } else {
+            await db.update(donor)
+                .set({
+                    reportCount: newReportCount
+                })
+                .where(eq(donor.id, donorId));
+        }
+
+        return {
+            success: true,
+            message: 'Report submitted successfully'
+        };
+    } catch (error) {
+        console.error('Error reporting donor:', error);
+
+        if (error instanceof Error && error.message === 'Unauthorized') {
+            return {
+                success: false,
+                error: 'Unauthorized'
+            };
+        }
+
+        return {
+            success: false,
+            error: 'Internal server error'
+        };
+    }
+}
+
+/**
+ * Update a donor's status with hierarchy protection.
+ * - Admins can change any donor's status.
+ * - Moderators can only change status of donors owned by regular users.
+ * - Regular users cannot change donor statuses.
+ */
+export async function updateDonorStatus(donorId: string, newStatus: string) {
+    try {
+        const session = await getAuthenticatedSession();
+
+        // Validate inputs
+        if (!donorId || !newStatus) {
+            return {
+                success: false,
+                error: 'Donor ID and new status are required'
+            };
+        }
+
+        // Validate the new status value
+        const validStatuses = ['active', 'hidden', 'banned'];
+        if (!validStatuses.includes(newStatus)) {
+            return {
+                success: false,
+                error: `Invalid status. Must be one of: ${validStatuses.join(', ')}`
+            };
+        }
+
+        // Get the current user's role
+        const currentUserRole = (session.user as { role?: string }).role || 'user';
+
+        // Hierarchy Protection: Users cannot change donor statuses
+        if (currentUserRole === 'user') {
+            throw new Error('Unauthorized');
+        }
+
+        // Fetch the target donor
+        const donorResult = await db.select()
+            .from(donor)
+            .where(eq(donor.id, donorId))
+            .limit(1);
+
+        if (donorResult.length === 0) {
+            return {
+                success: false,
+                error: 'Donor not found'
+            };
+        }
+
+        const targetDonor = donorResult[0];
+
+        // Fetch the user who owns the donor profile
+        const ownerResult = await db.select()
+            .from(user)
+            .where(eq(user.id, targetDonor.userId))
+            .limit(1);
+
+        if (ownerResult.length === 0) {
+            return {
+                success: false,
+                error: 'Donor owner not found'
+            };
+        }
+
+        const donorOwner = ownerResult[0];
+        const donorOwnerRole = donorOwner.role || 'user';
+
+        // Hierarchy Protection for Moderators
+        if (currentUserRole === 'moderator') {
+            // Moderators can only change status of donors owned by regular users
+            if (donorOwnerRole === 'admin' || donorOwnerRole === 'moderator') {
+                throw new Error('Moderators cannot ban staff');
+            }
+        }
+
+        // Admin can change any donor's status - no additional checks needed
+
+        // Update the donor's status
+        await db.update(donor)
+            .set({
+                status: newStatus as 'active' | 'hidden' | 'banned'
+            })
+            .where(eq(donor.id, donorId));
+
+        // Revalidate relevant paths
+        revalidatePath('/dashboard');
+        revalidatePath('/admin');
+        revalidatePath('/search');
+
+        return {
+            success: true,
+            message: `Donor status updated to ${newStatus}`
+        };
+    } catch (error) {
+        console.error('Error updating donor status:', error);
+
+        if (error instanceof Error) {
+            if (error.message === 'Unauthorized') {
+                return {
+                    success: false,
+                    error: 'Unauthorized'
+                };
+            }
+            if (error.message === 'Moderators cannot ban staff') {
+                return {
+                    success: false,
+                    error: 'Moderators cannot ban staff'
+                };
+            }
+        }
+
+        return {
+            success: false,
+            error: 'Internal server error'
+        };
+    }
+}
