@@ -3,7 +3,7 @@
 import { db } from '@/db/db';
 import { donor, report, user } from '@/db/schema';
 import { auth } from '@/lib/auth';
-import { eq, sql } from 'drizzle-orm';
+import { eq, gt, or, sql } from 'drizzle-orm';
 import { revalidatePath } from 'next/cache';
 import { headers } from 'next/headers';
 
@@ -197,10 +197,17 @@ export async function updateDonorStatus(donorId: string, newStatus: string) {
         // Admin can change any donor's status - no additional checks needed
 
         // Update the donor's status
+        // Reset reportCount when approving
+        const updateData: { status: 'active' | 'hidden' | 'banned'; reportCount?: number } = {
+            status: newStatus as 'active' | 'hidden' | 'banned'
+        };
+
+        if (newStatus === 'active') {
+            updateData.reportCount = 0;
+        }
+
         await db.update(donor)
-            .set({
-                status: newStatus as 'active' | 'hidden' | 'banned'
-            })
+            .set(updateData)
             .where(eq(donor.id, donorId));
 
         // Revalidate relevant paths
@@ -228,6 +235,61 @@ export async function updateDonorStatus(donorId: string, newStatus: string) {
                     error: 'Moderators cannot ban staff'
                 };
             }
+        }
+
+        return {
+            success: false,
+            error: 'Internal server error'
+        };
+    }
+}
+
+/**
+ * Get all flagged donors (hidden status OR reportCount > 0) with owner details.
+ * Only accessible by admin or moderator.
+ */
+export async function getFlaggedDonors() {
+    try {
+        const session = await getAuthenticatedSession();
+        const currentUserRole = (session.user as { role?: string }).role || 'user';
+
+        // Only admin/moderator can access
+        if (currentUserRole !== 'admin' && currentUserRole !== 'moderator') {
+            return {
+                success: false,
+                error: 'Unauthorized'
+            };
+        }
+
+        // Fetch donors with status 'hidden' OR reportCount > 0
+        // Join with user table to get owner details
+        const flaggedDonors = await db
+            .select({
+                id: donor.id,
+                userId: donor.userId,
+                status: donor.status,
+                reportCount: donor.reportCount,
+                ownerName: user.name,
+                ownerPhone: user.phone,
+                ownerRole: user.role,
+            })
+            .from(donor)
+            .innerJoin(user, eq(donor.userId, user.id))
+            .where(or(eq(donor.status, 'hidden'), gt(donor.reportCount, 0)));
+
+        return {
+            success: true,
+            donors: flaggedDonors,
+            currentUserRole
+        };
+    } catch (error) {
+        console.error('Error fetching flagged donors:', error);
+
+        if (error instanceof Error && error.message === 'Unauthorized') {
+            return {
+                success: false,
+                error: 'Unauthorized'
+            };
         }
 
         return {
