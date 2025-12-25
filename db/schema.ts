@@ -1,4 +1,9 @@
-import { boolean, pgTable, text, timestamp } from 'drizzle-orm/pg-core';
+import { boolean, integer, pgEnum, pgTable, text, timestamp } from 'drizzle-orm/pg-core';
+
+// Enums for moderation system
+export const userRoleEnum = pgEnum('user_role', ['user', 'moderator', 'admin']);
+export const donorStatusEnum = pgEnum('donor_status', ['active', 'hidden', 'banned']);
+export const reportStatusEnum = pgEnum('report_status', ['pending', 'reviewed', 'resolved', 'dismissed']);
 
 export const user = pgTable("user", {
     id: text("id").primaryKey(),
@@ -7,6 +12,7 @@ export const user = pgTable("user", {
     phone: text("phone").unique(),
     emailVerified: boolean("email_verified").default(false).notNull(),
     phoneVerified: boolean("phone_verified").default(false).notNull(),
+    role: userRoleEnum("role").default('user').notNull(),
     // Blood donation specific fields
     bloodGroup: text("blood_group"),
     wilaya: text("wilaya"),
@@ -20,6 +26,33 @@ export const user = pgTable("user", {
         .defaultNow()
         .$onUpdate(() => /* @__PURE__ */ new Date())
         .notNull(),
+});
+
+export const donor = pgTable("donor", {
+    id: text("id").primaryKey(),
+    userId: text("user_id")
+        .notNull()
+        .references(() => user.id, { onDelete: "cascade" }),
+    status: donorStatusEnum("status").default('active').notNull(),
+    reportCount: integer("report_count").default(0).notNull(),
+    createdAt: timestamp("created_at").defaultNow().notNull(),
+    updatedAt: timestamp("updated_at")
+        .defaultNow()
+        .$onUpdate(() => /* @__PURE__ */ new Date())
+        .notNull(),
+});
+
+export const report = pgTable("report", {
+    id: text("id").primaryKey(),
+    reporterId: text("reporter_id")
+        .notNull()
+        .references(() => user.id, { onDelete: "cascade" }),
+    donorId: text("donor_id")
+        .notNull()
+        .references(() => donor.id, { onDelete: "cascade" }),
+    reason: text("reason").notNull(),
+    status: reportStatusEnum("status").default('pending').notNull(),
+    createdAt: timestamp("created_at").defaultNow().notNull(),
 });
 
 export const session = pgTable("session", {

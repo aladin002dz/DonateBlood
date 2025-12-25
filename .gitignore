@@ -47,3 +47,6 @@ next-env.d.ts
 
 # husky
 .husky/_
+
+.vercel
+.env*.local
