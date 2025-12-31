@@ -1,6 +1,6 @@
 "use client";
 
-import { getFlaggedDonors, updateDonorStatus } from "@/actions/moderation";
+import { getFlaggedDonors, updateDonorStatus, getAllReports } from "@/actions/moderation";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -18,6 +18,7 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useSession } from "@/lib/auth-client";
 import { useRouter } from "@/i18n/navigation";
 import { Check, Home, Loader2, Shield, Ban, AlertTriangle } from "lucide-react";
@@ -35,10 +36,21 @@ type FlaggedDonor = {
     ownerRole: "user" | "moderator" | "admin";
 };
 
+type Report = {
+    id: string;
+    reason: string;
+    status: "pending" | "reviewed" | "resolved" | "dismissed";
+    createdAt: Date;
+    reporterName: string;
+    donorId: string;
+    donorName: string;
+};
+
 export default function AdminDashboard() {
     const { data: session, isPending: sessionPending } = useSession();
     const router = useRouter();
     const [donors, setDonors] = useState<FlaggedDonor[]>([]);
+    const [reports, setReports] = useState<Report[]>([]);
     const [currentUserRole, setCurrentUserRole] = useState<string>("");
     const [isLoading, setIsLoading] = useState(true);
     const [isPending, startTransition] = useTransition();
@@ -63,6 +75,11 @@ export default function AdminDashboard() {
                 if (result.success && result.donors) {
                     setDonors(result.donors as FlaggedDonor[]);
                     setCurrentUserRole(result.currentUserRole || "");
+                }
+
+                const reportsResult = await getAllReports();
+                if (reportsResult.success && reportsResult.reports) {
+                    setReports(reportsResult.reports as Report[]);
                 }
             } catch (error) {
                 console.error("Error fetching donors:", error);
@@ -199,94 +216,151 @@ export default function AdminDashboard() {
                 </div>
 
                 {/* Flagged Donors Table */}
-                <Card>
-                    <CardHeader>
-                        <CardTitle className="flex items-center gap-2">
-                            <AlertTriangle className="h-5 w-5 text-yellow-500" />
-                            Flagged Donors
-                        </CardTitle>
-                        <CardDescription>
-                            Donors with hidden status or reports. Review and take action.
-                        </CardDescription>
-                    </CardHeader>
-                    <CardContent>
-                        {donors.length === 0 ? (
-                            <div className="text-center py-12 text-muted-foreground">
-                                <Check className="h-12 w-12 mx-auto mb-4 text-green-500" />
-                                <p className="text-lg font-medium">All clear!</p>
-                                <p className="text-sm">No flagged donors to review.</p>
-                            </div>
-                        ) : (
-                            <Table>
-                                <TableHeader>
-                                    <TableRow>
-                                        <TableHead>Donor Name</TableHead>
-                                        <TableHead>Phone</TableHead>
-                                        <TableHead>Status</TableHead>
-                                        <TableHead>Report Count</TableHead>
-                                        <TableHead>Owner Role</TableHead>
-                                        <TableHead className="text-right">Actions</TableHead>
-                                    </TableRow>
-                                </TableHeader>
-                                <TableBody>
-                                    {donors.map((donor) => (
-                                        <TableRow key={donor.id}>
-                                            <TableCell className="font-medium">
-                                                {donor.ownerName}
-                                            </TableCell>
-                                            <TableCell>{donor.ownerPhone || "N/A"}</TableCell>
-                                            <TableCell>{getStatusBadge(donor.status)}</TableCell>
-                                            <TableCell>
-                                                <span
-                                                    className={`font-medium ${donor.reportCount >= 3
-                                                            ? "text-red-500"
-                                                            : donor.reportCount > 0
-                                                                ? "text-yellow-500"
-                                                                : ""
-                                                        }`}
-                                                >
-                                                    {donor.reportCount}
-                                                </span>
-                                            </TableCell>
-                                            <TableCell>{getRoleBadge(donor.ownerRole)}</TableCell>
-                                            <TableCell className="text-right">
-                                                <div className="flex justify-end gap-2">
-                                                    <Button
-                                                        size="sm"
-                                                        variant="outline"
-                                                        className="text-green-600 hover:text-green-700 hover:bg-green-50"
-                                                        onClick={() => handleApprove(donor.id)}
-                                                        disabled={
-                                                            isPending ||
-                                                            shouldDisableButtons(donor.ownerRole)
-                                                        }
-                                                    >
-                                                        <Check className="h-4 w-4 mr-1" />
-                                                        Approve
-                                                    </Button>
-                                                    <Button
-                                                        size="sm"
-                                                        variant="outline"
-                                                        className="text-red-600 hover:text-red-700 hover:bg-red-50"
-                                                        onClick={() => handleBan(donor.id)}
-                                                        disabled={
-                                                            isPending ||
-                                                            donor.status === "banned" ||
-                                                            shouldDisableButtons(donor.ownerRole)
-                                                        }
-                                                    >
-                                                        <Ban className="h-4 w-4 mr-1" />
-                                                        Ban
-                                                    </Button>
-                                                </div>
-                                            </TableCell>
-                                        </TableRow>
-                                    ))}
-                                </TableBody>
-                            </Table>
-                        )}
-                    </CardContent>
-                </Card>
+                <Tabs defaultValue="donors" className="w-full">
+                    <TabsList className="mb-4">
+                        <TabsTrigger value="donors">Flagged Donors</TabsTrigger>
+                        <TabsTrigger value="reports">All Reports</TabsTrigger>
+                    </TabsList>
+
+                    <TabsContent value="donors">
+                        <Card>
+                            <CardHeader>
+                                <CardTitle className="flex items-center gap-2">
+                                    <AlertTriangle className="h-5 w-5 text-yellow-500" />
+                                    Flagged Donors
+                                </CardTitle>
+                                <CardDescription>
+                                    Donors with hidden status or reports. Review and take action.
+                                </CardDescription>
+                            </CardHeader>
+                            <CardContent>
+                                {donors.length === 0 ? (
+                                    <div className="text-center py-12 text-muted-foreground">
+                                        <Check className="h-12 w-12 mx-auto mb-4 text-green-500" />
+                                        <p className="text-lg font-medium">All clear!</p>
+                                        <p className="text-sm">No flagged donors to review.</p>
+                                    </div>
+                                ) : (
+                                    <Table>
+                                        <TableHeader>
+                                            <TableRow>
+                                                <TableHead>Donor Name</TableHead>
+                                                <TableHead>Phone</TableHead>
+                                                <TableHead>Status</TableHead>
+                                                <TableHead>Report Count</TableHead>
+                                                <TableHead>Owner Role</TableHead>
+                                                <TableHead className="text-right">Actions</TableHead>
+                                            </TableRow>
+                                        </TableHeader>
+                                        <TableBody>
+                                            {donors.map((donor) => (
+                                                <TableRow key={donor.id}>
+                                                    <TableCell className="font-medium">
+                                                        {donor.ownerName}
+                                                    </TableCell>
+                                                    <TableCell>{donor.ownerPhone || "N/A"}</TableCell>
+                                                    <TableCell>{getStatusBadge(donor.status)}</TableCell>
+                                                    <TableCell>
+                                                        <span
+                                                            className={`font-medium ${donor.reportCount >= 3
+                                                                ? "text-red-500"
+                                                                : donor.reportCount > 0
+                                                                    ? "text-yellow-500"
+                                                                    : ""
+                                                                }`}
+                                                        >
+                                                            {donor.reportCount}
+                                                        </span>
+                                                    </TableCell>
+                                                    <TableCell>{getRoleBadge(donor.ownerRole)}</TableCell>
+                                                    <TableCell className="text-right">
+                                                        <div className="flex justify-end gap-2">
+                                                            <Button
+                                                                size="sm"
+                                                                variant="outline"
+                                                                className="text-green-600 hover:text-green-700 hover:bg-green-50"
+                                                                onClick={() => handleApprove(donor.id)}
+                                                                disabled={
+                                                                    isPending ||
+                                                                    shouldDisableButtons(donor.ownerRole)
+                                                                }
+                                                            >
+                                                                <Check className="h-4 w-4 mr-1" />
+                                                                Approve
+                                                            </Button>
+                                                            <Button
+                                                                size="sm"
+                                                                variant="outline"
+                                                                className="text-red-600 hover:text-red-700 hover:bg-red-50"
+                                                                onClick={() => handleBan(donor.id)}
+                                                                disabled={
+                                                                    isPending ||
+                                                                    donor.status === "banned" ||
+                                                                    shouldDisableButtons(donor.ownerRole)
+                                                                }
+                                                            >
+                                                                <Ban className="h-4 w-4 mr-1" />
+                                                                Ban
+                                                            </Button>
+                                                        </div>
+                                                    </TableCell>
+                                                </TableRow>
+                                            ))}
+                                        </TableBody>
+                                    </Table>
+                                )}
+                            </CardContent>
+                        </Card>
+                    </TabsContent>
+
+                    <TabsContent value="reports">
+                        <Card>
+                            <CardHeader>
+                                <CardTitle className="flex items-center gap-2">
+                                    <Shield className="h-5 w-5 text-primary" />
+                                    All Reports
+                                </CardTitle>
+                                <CardDescription>
+                                    Detailed view of all submitted reports.
+                                </CardDescription>
+                            </CardHeader>
+                            <CardContent>
+                                {reports.length === 0 ? (
+                                    <div className="text-center py-12 text-muted-foreground">
+                                        <p className="text-lg font-medium">No reports found.</p>
+                                    </div>
+                                ) : (
+                                    <Table>
+                                        <TableHeader>
+                                            <TableRow>
+                                                <TableHead>Date</TableHead>
+                                                <TableHead>Reporter</TableHead>
+                                                <TableHead>Donor</TableHead>
+                                                <TableHead>Reason</TableHead>
+                                                <TableHead>Status</TableHead>
+                                            </TableRow>
+                                        </TableHeader>
+                                        <TableBody>
+                                            {reports.map((report) => (
+                                                <TableRow key={report.id}>
+                                                    <TableCell>
+                                                        {new Date(report.createdAt).toLocaleDateString()}
+                                                    </TableCell>
+                                                    <TableCell>{report.reporterName}</TableCell>
+                                                    <TableCell>{report.donorName}</TableCell>
+                                                    <TableCell>{report.reason}</TableCell>
+                                                    <TableCell>
+                                                        <Badge variant="outline">{report.status}</Badge>
+                                                    </TableCell>
+                                                </TableRow>
+                                            ))}
+                                        </TableBody>
+                                    </Table>
+                                )}
+                            </CardContent>
+                        </Card>
+                    </TabsContent>
+                </Tabs>
             </div>
         </div>
     );

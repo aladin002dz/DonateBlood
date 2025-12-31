@@ -14,6 +14,7 @@ import { useSession } from "@/lib/auth-client"
 import { useRouter } from "next/navigation"
 import { useLocale, useTranslations } from 'next-intl'
 import { useEffect, useMemo, useState } from "react"
+import { ReportDialog } from "@/components/report-dialog"
 
 export default function SearchPage() {
   const locale = useLocale()
@@ -383,28 +384,33 @@ export default function SearchPage() {
                       </div>
                     )}
 
-                    <Button
-                      onClick={() => handleContact(donor)}
-                      disabled={!donor.emergencyAvailable}
-                      className="w-full bg-primary hover:bg-primary/90 text-primary-foreground rounded-lg mt-4 disabled:opacity-50 disabled:cursor-not-allowed"
-                    >
-                      {!session ? (
-                        <>
-                          <Phone className="h-4 w-4 mr-2" />
-                          {t('signInToView')}
-                        </>
-                      ) : revealedDonors.has(donor.id) ? (
-                        <>
-                          <Phone className="h-4 w-4 mr-2" />
-                          {donor.phone}
-                        </>
-                      ) : (
-                        <>
-                          <Eye className="h-4 w-4 mr-2" />
-                          {t('showContact')}
-                        </>
+                    <div className="flex gap-2 mt-4">
+                      <Button
+                        onClick={() => handleContact(donor)}
+                        disabled={!donor.emergencyAvailable}
+                        className="flex-1 bg-primary hover:bg-primary/90 text-primary-foreground rounded-lg disabled:opacity-50 disabled:cursor-not-allowed"
+                      >
+                        {!session ? (
+                          <>
+                            <Phone className="h-4 w-4 mr-2" />
+                            {t('signInToView')}
+                          </>
+                        ) : revealedDonors.has(donor.id) ? (
+                          <>
+                            <Phone className="h-4 w-4 mr-2" />
+                            {donor.phone}
+                          </>
+                        ) : (
+                          <>
+                            <Eye className="h-4 w-4 mr-2" />
+                            {t('showContact')}
+                          </>
+                        )}
+                      </Button>
+                      {session && (
+                        <ReportDialog donorId={donor.id} donorName={/*donor.name*/ t('defaultAlias')} />
                       )}
-                    </Button>
+                    </div>
                   </CardContent>
                 </Card>
               ))}

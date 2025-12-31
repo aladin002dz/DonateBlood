@@ -3,7 +3,7 @@
 import { db } from '@/db/db';
 import { donor, report, user } from '@/db/schema';
 import { auth } from '@/lib/auth';
-import { eq, gt, or, sql } from 'drizzle-orm';
+import { eq, gt, or, sql, desc } from 'drizzle-orm';
 import { revalidatePath } from 'next/cache';
 import { headers } from 'next/headers';
 
@@ -32,72 +32,84 @@ function generateId(): string {
 
 /**
  * Report a donor with a specific reason.
+ * - Checks if a donor record exists for the given user ID.
+ * - If not, creates a new donor record.
  * - Inserts a record into the `report` table.
  * - Increments `reportCount` on the donor.
  * - If `reportCount` reaches 3, automatically updates the donor's `status` to 'hidden'.
  */
-export async function reportDonor(donorId: string, reason: string) {
+export async function reportDonor(userId: string, reason: string) {
     try {
         const session = await getAuthenticatedSession();
 
         // Validate inputs
-        if (!donorId || !reason) {
+        if (!userId || !reason) {
             return {
                 success: false,
-                error: 'Donor ID and reason are required'
+                error: 'User ID and reason are required'
             };
         }
-
-        // Check if the donor exists
-        const donorResult = await db.select()
-            .from(donor)
-            .where(eq(donor.id, donorId))
-            .limit(1);
-
-        if (donorResult.length === 0) {
-            return {
-                success: false,
-                error: 'Donor not found'
-            };
-        }
-
-        const targetDonor = donorResult[0];
 
         // Prevent users from reporting themselves
-        if (targetDonor.userId === session.user.id) {
+        if (userId === session.user.id) {
             return {
                 success: false,
                 error: 'You cannot report yourself'
             };
         }
 
+        // Check if the donor exists for this user
+        let donorResult = await db.select()
+            .from(donor)
+            .where(eq(donor.userId, userId))
+            .limit(1);
+
+        let targetDonor;
+
+        if (donorResult.length === 0) {
+            // Create a new donor record if it doesn't exist
+            const newDonorId = generateId();
+            await db.insert(donor).values({
+                id: newDonorId,
+                userId: userId,
+                status: 'active',
+                reportCount: 0,
+            });
+
+            targetDonor = {
+                id: newDonorId,
+                userId: userId,
+                reportCount: 0,
+                status: 'active'
+            };
+        } else {
+            targetDonor = donorResult[0];
+        }
+
         // Insert report record
         await db.insert(report).values({
             id: generateId(),
             reporterId: session.user.id,
-            donorId: donorId,
+            donorId: targetDonor.id,
             reason: reason,
             status: 'pending',
         });
 
-        // Increment reportCount on the donor
+        // Increment reportCount on the donor and update status if needed
         const newReportCount = targetDonor.reportCount + 1;
 
-        // If reportCount reaches 3, set status to 'hidden'
+        let updateData: { reportCount: number; status?: 'active' | 'hidden' | 'banned' } = {
+            reportCount: newReportCount
+        };
+
         if (newReportCount >= 3) {
-            await db.update(donor)
-                .set({
-                    reportCount: newReportCount,
-                    status: 'hidden'
-                })
-                .where(eq(donor.id, donorId));
-        } else {
-            await db.update(donor)
-                .set({
-                    reportCount: newReportCount
-                })
-                .where(eq(donor.id, donorId));
+            updateData.status = 'hidden';
         }
+
+        await db.update(donor)
+            .set(updateData)
+            .where(eq(donor.id, targetDonor.id));
+
 
         return {
             success: true,
@@ -295,6 +307,51 @@ export async function getFlaggedDonors() {
         return {
             success: false,
             error: 'Internal server error'
+        };
+    }
+}
+
+/**
+ * Get all reports with reporter and donor details.
+ * Only accessible by admin or moderator.
+ */
+export async function getAllReports() {
+    try {
+        const session = await getAuthenticatedSession();
+        const currentUserRole = (session.user as { role?: string }).role || 'user';
+
+        // Only admin/moderator can access
+        if (currentUserRole !== 'admin' && currentUserRole !== 'moderator') {
+            return {
+                success: false,
+                error: 'Unauthorized'
+            };
+        }
+
+        const reports = await db
+            .select({
+                id: report.id,
+                reason: report.reason,
+                status: report.status,
+                createdAt: report.createdAt,
+                reporterName: user.name,
+                donorId: donor.id,
+                donorName: sql<string>`(SELECT name FROM ${user} WHERE ${user.id} = ${donor.userId})`,
+            })
+            .from(report)
+            .innerJoin(user, eq(report.reporterId, user.id))
+            .innerJoin(donor, eq(report.donorId, donor.id))
+            .orderBy(desc(report.createdAt));
+
+        return {
+            success: true,
+            reports
+        };
+    } catch (error) {
+        console.error('Error fetching reports:', error);
+        return {
+            success: false,
+            error: 'Failed to fetch reports'
         };
     }
 }
