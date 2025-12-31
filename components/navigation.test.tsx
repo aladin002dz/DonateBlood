@@ -40,6 +40,10 @@ describe('Navigation', () => {
           emailVerified: false,
           createdAt: new Date(),
           updatedAt: new Date(),
+          banned: null,
+          role: 'user',
+          banReason: null,
+          banExpires: null,
         },
         session: {
           id: 'session-id',

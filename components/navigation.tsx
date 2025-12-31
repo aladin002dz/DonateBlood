@@ -5,7 +5,7 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 import { Link, usePathname, useRouter } from "@/i18n/navigation"
 import { signOut, useSession } from "@/lib/auth-client"
 import { cn } from "@/lib/utils"
-import { Globe, Heart, Home, LogIn, LogOut, Menu, Search, User, UserPlus, X } from "lucide-react"
+import { Globe, Heart, Home, LogIn, LogOut, Menu, Search, User, UserPlus, X, Shield } from "lucide-react"
 import { useLocale, useTranslations } from "next-intl"
 import { useState } from "react"
 import { Logo } from "@/components/logo"
@@ -36,11 +36,16 @@ export function Navigation() {
     })
   }
 
+  const userRole = (session?.user as { role?: string })?.role || "user"
+  const isAdminOrMod = userRole === "admin" || userRole === "moderator"
+
   const navItems: NavItem[] = [
     { href: "/", label: translate("home"), icon: Home },
     ...(session
       ? [
         { href: "/search", label: translate("search"), icon: Search },
+        // Add Admin Dashboard link if user is admin or moderator
+        ...(isAdminOrMod ? [{ href: "/admin/dashboard", label: "Admin", icon: Shield }] : []),
         { href: "/profile", label: translate("profile"), icon: User },
         {
           href: "#",

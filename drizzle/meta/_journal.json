@@ -8,6 +8,20 @@
       "when": 1762356411975,
       "tag": "0000_handy_major_mapleleaf",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1766668709590,
+      "tag": "0001_handy_invisible_woman",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1766671527478,
+      "tag": "0002_lush_amphibian",
+      "breakpoints": true
     }
   ]
 }

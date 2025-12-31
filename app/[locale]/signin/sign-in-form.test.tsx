@@ -31,7 +31,7 @@ describe('SignIn Form', () => {
 
   it('should render sign-in form', () => {
     render(<SignIn />);
-    
+
     // Check that "Sign In" text appears (could be in title or button)
     const signInTexts = screen.getAllByText(/sign in/i);
     expect(signInTexts.length).toBeGreaterThan(0);
@@ -42,20 +42,20 @@ describe('SignIn Form', () => {
   it('should show validation error for empty identifier', async () => {
     const user = userEvent.setup();
     render(<SignIn />);
-    
+
     const identifierInput = screen.getByLabelText(/email or phone/i);
     const passwordInput = screen.getByLabelText(/^password$/i);
-    
+
     // Type something in identifier and then clear it to trigger validation
     await user.type(identifierInput, 'test');
     await user.clear(identifierInput);
-    
+
     // Type password to make form partially valid
     await user.type(passwordInput, 'password123');
-    
+
     // Blur the identifier field to trigger validation
     await user.tab();
-    
+
     await waitFor(() => {
       expect(screen.getByText(/email or phone number is required/i)).toBeInTheDocument();
     });
@@ -64,15 +64,15 @@ describe('SignIn Form', () => {
   it('should show validation error for invalid email', async () => {
     const user = userEvent.setup();
     render(<SignIn />);
-    
+
     const identifierInput = screen.getByLabelText(/email or phone/i);
     const passwordInput = screen.getByLabelText(/^password$/i);
-    
+
     await user.type(identifierInput, 'invalid-email');
     await user.type(passwordInput, 'password123');
     // Trigger validation by blurring the field
     await user.tab();
-    
+
     await waitFor(() => {
       expect(screen.getByText(/valid email address or phone number/i)).toBeInTheDocument();
     });
@@ -81,13 +81,13 @@ describe('SignIn Form', () => {
   it('should show validation error for short password', async () => {
     const user = userEvent.setup();
     render(<SignIn />);
-    
+
     const identifierInput = screen.getByLabelText(/email or phone/i);
     const passwordInput = screen.getByLabelText(/^password$/i);
-    
+
     await user.type(identifierInput, 'test@example.com');
     await user.type(passwordInput, '123');
-    
+
     await waitFor(() => {
       expect(screen.getByText(/6 characters/i)).toBeInTheDocument();
     });
@@ -96,17 +96,17 @@ describe('SignIn Form', () => {
   it('should submit form with valid email credentials', async () => {
     const user = userEvent.setup();
     vi.mocked(signIn.email).mockResolvedValue({});
-    
+
     render(<SignIn />);
-    
+
     const identifierInput = screen.getByLabelText(/email or phone/i);
     const passwordInput = screen.getByLabelText(/^password$/i);
     const submitButton = screen.getByRole('button', { name: /sign in/i });
-    
+
     await user.type(identifierInput, 'test@example.com');
     await user.type(passwordInput, 'password123');
     await user.click(submitButton);
-    
+
     await waitFor(() => {
       expect(signIn.email).toHaveBeenCalledWith(
         expect.objectContaining({
@@ -129,6 +129,11 @@ describe('SignIn Form', () => {
         phone: '1234567890',
         emailVerified: false,
         phoneVerified: false,
+        image: null,
+        role: 'user',
+        banned: null,
+        banReason: null,
+        banExpires: null,
         bloodGroup: null,
         wilaya: null,
         daira: null,
@@ -140,17 +145,17 @@ describe('SignIn Form', () => {
         updatedAt: new Date(),
       },
     });
-    
+
     render(<SignIn />);
-    
+
     const identifierInput = screen.getByLabelText(/email or phone/i);
     const passwordInput = screen.getByLabelText(/^password$/i);
     const submitButton = screen.getByRole('button', { name: /sign in/i });
-    
+
     await user.type(identifierInput, '1234567890');
     await user.type(passwordInput, 'password123');
     await user.click(submitButton);
-    
+
     await waitFor(() => {
       expect(customSignIn).toHaveBeenCalledWith('1234567890', 'password123');
     });
@@ -158,18 +163,18 @@ describe('SignIn Form', () => {
 
   it('should disable submit button when loading', async () => {
     const user = userEvent.setup();
-    vi.mocked(signIn.email).mockImplementation(() => new Promise(() => {})); // Never resolves
-    
+    vi.mocked(signIn.email).mockImplementation(() => new Promise(() => { })); // Never resolves
+
     render(<SignIn />);
-    
+
     const identifierInput = screen.getByLabelText(/email or phone/i);
     const passwordInput = screen.getByLabelText(/^password$/i);
     const submitButton = screen.getByRole('button', { name: /sign in/i });
-    
+
     await user.type(identifierInput, 'test@example.com');
     await user.type(passwordInput, 'password123');
     await user.click(submitButton);
-    
+
     await waitFor(() => {
       expect(submitButton).toBeDisabled();
     });
@@ -177,7 +182,7 @@ describe('SignIn Form', () => {
 
   it('should show forgot password link', () => {
     render(<SignIn />);
-    
+
     const forgotLink = screen.getByText(/forgot/i);
     expect(forgotLink).toBeInTheDocument();
     expect(forgotLink.closest('a')).toHaveAttribute('href', '/forgot-password');
