@@ -25,7 +25,8 @@
         "profile": "Profile",
         "logout": "Logout",
         "language": "Language",
-        "selectLanguage": "Select Language"
+        "selectLanguage": "Select Language",
+        "admin": "Admin"
     },
     "Auth": {
         "SignIn": {

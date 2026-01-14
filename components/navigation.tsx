@@ -45,7 +45,7 @@ export function Navigation() {
       ? [
         { href: "/search", label: translate("search"), icon: Search },
         // Add Admin Dashboard link if user is admin or moderator
-        ...(isAdminOrMod ? [{ href: "/admin/dashboard", label: "Admin", icon: Shield }] : []),
+        ...(isAdminOrMod ? [{ href: "/admin/dashboard", label: translate("admin"), icon: Shield }] : []),
         { href: "/profile", label: translate("profile"), icon: User },
         {
           href: "#",

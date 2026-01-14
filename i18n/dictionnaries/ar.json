@@ -25,7 +25,8 @@
         "profile": "الملف الشخصي",
         "logout": "تسجيل الخروج",
         "language": "اللغة",
-        "selectLanguage": "اختر اللغة"
+        "selectLanguage": "اختر اللغة",
+        "admin": "الإدارة"
     },
     "Auth": {
         "SignIn": {
