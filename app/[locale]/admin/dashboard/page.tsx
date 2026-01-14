@@ -23,6 +23,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useSession } from "@/lib/auth-client";
 import { useRouter } from "@/i18n/navigation";
+import { useTranslations } from "next-intl";
 import { Check, Home, Loader2, Shield, Ban, AlertTriangle } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState, useTransition } from "react";
@@ -49,6 +50,7 @@ type Report = {
 };
 
 export default function AdminDashboard() {
+    const t = useTranslations('Admin');
     const { data: session, isPending: sessionPending } = useSession();
     const router = useRouter();
     const [donors, setDonors] = useState<FlaggedDonor[]>([]);
@@ -85,7 +87,7 @@ export default function AdminDashboard() {
                 }
             } catch (error) {
                 console.error("Error fetching donors:", error);
-                toast.error("Failed to load flagged donors");
+                toast.error(t('Actions.toast.loadError'));
             } finally {
                 setIsLoading(false);
             }
@@ -100,11 +102,11 @@ export default function AdminDashboard() {
         startTransition(async () => {
             const result = await updateDonorStatus(donorId, "active");
             if (result.success) {
-                toast.success("Donor approved successfully");
+                toast.success(t('Actions.toast.approveSuccess'));
                 // Refresh the list
                 setDonors((prev) => prev.filter((d) => d.id !== donorId));
             } else {
-                toast.error(result.error || "Failed to approve donor");
+                toast.error(result.error || t('Actions.toast.approveError'));
             }
         });
     };
@@ -113,7 +115,7 @@ export default function AdminDashboard() {
         startTransition(async () => {
             const result = await updateDonorStatus(donorId, "banned");
             if (result.success) {
-                toast.success("Donor banned successfully");
+                toast.success(t('Actions.toast.banSuccess'));
                 // Update the list
                 setDonors((prev) =>
                     prev.map((d) =>
@@ -121,7 +123,7 @@ export default function AdminDashboard() {
                     )
                 );
             } else {
-                toast.error(result.error || "Failed to ban donor");
+                toast.error(result.error || t('Actions.toast.banError'));
             }
         });
     };
@@ -145,11 +147,11 @@ export default function AdminDashboard() {
     const getStatusBadge = (status: string) => {
         switch (status) {
             case "active":
-                return <Badge variant="default">Active</Badge>;
+                return <Badge variant="default">{t('Status.active')}</Badge>;
             case "hidden":
-                return <Badge variant="secondary">Hidden</Badge>;
+                return <Badge variant="secondary">{t('Status.hidden')}</Badge>;
             case "banned":
-                return <Badge variant="destructive">Banned</Badge>;
+                return <Badge variant="destructive">{t('Status.banned')}</Badge>;
             default:
                 return <Badge variant="outline">{status}</Badge>;
         }
@@ -158,11 +160,11 @@ export default function AdminDashboard() {
     const getRoleBadge = (role: string) => {
         switch (role) {
             case "admin":
-                return <Badge className="bg-purple-500 hover:bg-purple-600">Admin</Badge>;
+                return <Badge className="bg-purple-500 hover:bg-purple-600">{t('Roles.admin')}</Badge>;
             case "moderator":
-                return <Badge className="bg-blue-500 hover:bg-blue-600">Moderator</Badge>;
+                return <Badge className="bg-blue-500 hover:bg-blue-600">{t('Roles.moderator')}</Badge>;
             default:
-                return <Badge variant="outline">User</Badge>;
+                return <Badge variant="outline">{t('Roles.user')}</Badge>;
         }
     };
 
@@ -171,7 +173,7 @@ export default function AdminDashboard() {
             <div className="min-h-screen flex items-center justify-center">
                 <div className="flex flex-col items-center gap-4">
                     <Loader2 className="h-8 w-8 animate-spin" />
-                    <p className="text-muted-foreground">Loading admin dashboard...</p>
+                    <p className="text-muted-foreground">{t('Dashboard.loading')}</p>
                 </div>
             </div>
         );
@@ -197,7 +199,7 @@ export default function AdminDashboard() {
                             className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors"
                         >
                             <Home className="h-4 w-4" />
-                            <span className="text-sm">Back to Home</span>
+                            <span className="text-sm">{t('Dashboard.backToHome')}</span>
                         </Link>
                     </div>
                     <div className="flex items-center gap-2">
@@ -210,18 +212,18 @@ export default function AdminDashboard() {
                 <div className="mb-8">
                     <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-2 flex items-center gap-3">
                         <Shield className="h-10 w-10 text-primary" />
-                        Admin Dashboard
+                        {t('Dashboard.title')}
                     </h1>
                     <p className="text-gray-600 dark:text-gray-300">
-                        Manage flagged donors and moderate content.
+                        {t('Dashboard.subtitle')}
                     </p>
                 </div>
 
                 {/* Flagged Donors Table */}
                 <Tabs defaultValue="donors" className="w-full">
                     <TabsList className="mb-4">
-                        <TabsTrigger value="donors">Flagged Donors</TabsTrigger>
-                        <TabsTrigger value="reports">All Reports</TabsTrigger>
+                        <TabsTrigger value="donors">{t('Dashboard.tabs.donors')}</TabsTrigger>
+                        <TabsTrigger value="reports">{t('Dashboard.tabs.reports')}</TabsTrigger>
                     </TabsList>
 
                     <TabsContent value="donors">
@@ -229,18 +231,18 @@ export default function AdminDashboard() {
                             <CardHeader>
                                 <CardTitle className="flex items-center gap-2">
                                     <AlertTriangle className="h-5 w-5 text-yellow-500" />
-                                    Flagged Donors
+                                    {t('FlaggedDonors.title')}
                                 </CardTitle>
                                 <CardDescription>
-                                    Donors with hidden status or reports. Review and take action.
+                                    {t('FlaggedDonors.description')}
                                 </CardDescription>
                             </CardHeader>
                             <CardContent>
                                 {donors.length === 0 ? (
                                     <div className="text-center py-12 text-muted-foreground">
                                         <Check className="h-12 w-12 mx-auto mb-4 text-green-500" />
-                                        <p className="text-lg font-medium">All clear!</p>
-                                        <p className="text-sm">No flagged donors to review.</p>
+                                        <p className="text-lg font-medium">{t('FlaggedDonors.emptyState.title')}</p>
+                                        <p className="text-sm">{t('FlaggedDonors.emptyState.description')}</p>
                                     </div>
                                 ) : (
                                     <>
@@ -250,12 +252,12 @@ export default function AdminDashboard() {
                                                 <table className="w-full caption-bottom text-sm text-left">
                                                     <TableHeader>
                                                         <TableRow>
-                                                            <TableHead>Donor Name</TableHead>
-                                                            <TableHead>Phone</TableHead>
-                                                            <TableHead>Status</TableHead>
-                                                            <TableHead>Report Count</TableHead>
-                                                            <TableHead>Owner Role</TableHead>
-                                                            <TableHead className="text-right">Actions</TableHead>
+                                                            <TableHead>{t('FlaggedDonors.columns.donorName')}</TableHead>
+                                                            <TableHead>{t('FlaggedDonors.columns.phone')}</TableHead>
+                                                            <TableHead>{t('FlaggedDonors.columns.status')}</TableHead>
+                                                            <TableHead>{t('FlaggedDonors.columns.reportCount')}</TableHead>
+                                                            <TableHead>{t('FlaggedDonors.columns.ownerRole')}</TableHead>
+                                                            <TableHead className="text-right">{t('FlaggedDonors.columns.actions')}</TableHead>
                                                         </TableRow>
                                                     </TableHeader>
                                                     <TableBody>
@@ -292,7 +294,7 @@ export default function AdminDashboard() {
                                                                             }
                                                                         >
                                                                             <Check className="h-4 w-4 mr-1" />
-                                                                            Approve
+                                                                            {t('Actions.approve')}
                                                                         </Button>
                                                                         <Button
                                                                             size="sm"
@@ -306,7 +308,7 @@ export default function AdminDashboard() {
                                                                             }
                                                                         >
                                                                             <Ban className="h-4 w-4 mr-1" />
-                                                                            Ban
+                                                                            {t('Actions.ban')}
                                                                         </Button>
                                                                     </div>
                                                                 </TableCell>
@@ -331,7 +333,7 @@ export default function AdminDashboard() {
 
                                                     <div className="grid grid-cols-2 gap-2 text-sm mb-4">
                                                         <div className="flex flex-col">
-                                                            <span className="text-muted-foreground">Reports</span>
+                                                            <span className="text-muted-foreground">{t('FlaggedDonors.columns.reportCount')}</span>
                                                             <span
                                                                 className={`font-medium ${donor.reportCount >= 3
                                                                     ? "text-red-500"
@@ -344,7 +346,7 @@ export default function AdminDashboard() {
                                                             </span>
                                                         </div>
                                                         <div className="flex flex-col">
-                                                            <span className="text-muted-foreground">Role</span>
+                                                            <span className="text-muted-foreground">{t('FlaggedDonors.columns.ownerRole')}</span>
                                                             <div>{getRoleBadge(donor.ownerRole)}</div>
                                                         </div>
                                                     </div>
@@ -361,7 +363,7 @@ export default function AdminDashboard() {
                                                             }
                                                         >
                                                             <Check className="h-4 w-4 mr-1" />
-                                                            Approve
+                                                            {t('Actions.approve')}
                                                         </Button>
                                                         <Button
                                                             size="sm"
@@ -375,7 +377,7 @@ export default function AdminDashboard() {
                                                             }
                                                         >
                                                             <Ban className="h-4 w-4 mr-1" />
-                                                            Ban
+                                                            {t('Actions.ban')}
                                                         </Button>
                                                     </div>
                                                 </div>
@@ -392,16 +394,16 @@ export default function AdminDashboard() {
                             <CardHeader>
                                 <CardTitle className="flex items-center gap-2">
                                     <Shield className="h-5 w-5 text-primary" />
-                                    All Reports
+                                    {t('Reports.title')}
                                 </CardTitle>
                                 <CardDescription>
-                                    Detailed view of all submitted reports.
+                                    {t('Reports.description')}
                                 </CardDescription>
                             </CardHeader>
                             <CardContent>
                                 {reports.length === 0 ? (
                                     <div className="text-center py-12 text-muted-foreground">
-                                        <p className="text-lg font-medium">No reports found.</p>
+                                        <p className="text-lg font-medium">{t('Reports.emptyState')}</p>
                                     </div>
                                 ) : (
                                     <>
@@ -411,11 +413,11 @@ export default function AdminDashboard() {
                                                 <table className="w-full caption-bottom text-sm text-left">
                                                     <TableHeader>
                                                         <TableRow>
-                                                            <TableHead>Date</TableHead>
-                                                            <TableHead>Reporter</TableHead>
-                                                            <TableHead>Donor</TableHead>
-                                                            <TableHead>Reason</TableHead>
-                                                            <TableHead>Status</TableHead>
+                                                            <TableHead>{t('Reports.columns.date')}</TableHead>
+                                                            <TableHead>{t('Reports.columns.reporter')}</TableHead>
+                                                            <TableHead>{t('Reports.columns.donor')}</TableHead>
+                                                            <TableHead>{t('Reports.columns.reason')}</TableHead>
+                                                            <TableHead>{t('Reports.columns.status')}</TableHead>
                                                         </TableRow>
                                                     </TableHeader>
                                                     <TableBody>
@@ -450,16 +452,16 @@ export default function AdminDashboard() {
 
                                                     <div className="space-y-2 mb-2">
                                                         <div>
-                                                            <span className="text-xs text-muted-foreground uppercase font-semibold">Reason</span>
+                                                            <span className="text-xs text-muted-foreground uppercase font-semibold">{t('Reports.mobileLabels.reason')}</span>
                                                             <p className="text-sm">{report.reason}</p>
                                                         </div>
                                                         <div className="grid grid-cols-2 gap-2 text-sm">
                                                             <div>
-                                                                <span className="text-xs text-muted-foreground uppercase font-semibold">Reporter</span>
+                                                                <span className="text-xs text-muted-foreground uppercase font-semibold">{t('Reports.mobileLabels.reporter')}</span>
                                                                 <p>{report.reporterName}</p>
                                                             </div>
                                                             <div>
-                                                                <span className="text-xs text-muted-foreground uppercase font-semibold">Reported Donor</span>
+                                                                <span className="text-xs text-muted-foreground uppercase font-semibold">{t('Reports.mobileLabels.reportedDonor')}</span>
                                                                 <p>{report.donorName}</p>
                                                             </div>
                                                         </div>

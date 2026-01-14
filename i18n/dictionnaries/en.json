@@ -260,5 +260,71 @@
         "toastSuccess": "Account deleted successfully",
         "toastError": "Failed to delete account",
         "toastGenericError": "An error occurred while deleting your account"
+    },
+    "Admin": {
+        "Dashboard": {
+            "title": "Admin Dashboard",
+            "subtitle": "Manage flagged donors and moderate content.",
+            "loading": "Loading admin dashboard...",
+            "backToHome": "Back to Home",
+            "tabs": {
+                "donors": "Flagged Donors",
+                "reports": "All Reports"
+            }
+        },
+        "FlaggedDonors": {
+            "title": "Flagged Donors",
+            "description": "Donors with hidden status or reports. Review and take action.",
+            "emptyState": {
+                "title": "All clear!",
+                "description": "No flagged donors to review."
+            },
+            "columns": {
+                "donorName": "Donor Name",
+                "phone": "Phone",
+                "status": "Status",
+                "reportCount": "Report Count",
+                "ownerRole": "Owner Role",
+                "actions": "Actions"
+            }
+        },
+        "Reports": {
+            "title": "All Reports",
+            "description": "Detailed view of all submitted reports.",
+            "emptyState": "No reports found.",
+            "columns": {
+                "date": "Date",
+                "reporter": "Reporter",
+                "donor": "Donor",
+                "reason": "Reason",
+                "status": "Status"
+            },
+            "mobileLabels": {
+                "reason": "Reason",
+                "reporter": "Reporter",
+                "reportedDonor": "Reported Donor"
+            }
+        },
+        "Actions": {
+            "approve": "Approve",
+            "ban": "Ban",
+            "toast": {
+                "approveSuccess": "Donor approved successfully",
+                "approveError": "Failed to approve donor",
+                "banSuccess": "Donor banned successfully",
+                "banError": "Failed to ban donor",
+                "loadError": "Failed to load flagged donors"
+            }
+        },
+        "Roles": {
+            "admin": "Admin",
+            "moderator": "Moderator",
+            "user": "User"
+        },
+        "Status": {
+            "active": "Active",
+            "hidden": "Hidden",
+            "banned": "Banned"
+        }
     }
 }
