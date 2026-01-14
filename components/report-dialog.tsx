@@ -20,6 +20,7 @@ import {
 } from "@/components/ui/select"
 import { Textarea } from "@/components/ui/textarea"
 import { Flag } from "lucide-react"
+import { useTranslations } from "next-intl"
 import { useState } from "react"
 import { toast } from "sonner"
 
@@ -30,6 +31,7 @@ interface ReportDialogProps {
 }
 
 export function ReportDialog({ donorId, donorName, trigger }: ReportDialogProps) {
+    const t = useTranslations('Report')
     const [open, setOpen] = useState(false)
     const [loading, setLoading] = useState(false)
     const [reasonType, setReasonType] = useState<string>("")
@@ -37,7 +39,7 @@ export function ReportDialog({ donorId, donorName, trigger }: ReportDialogProps)
 
     const handleSubmit = async () => {
         if (!reasonType) {
-            toast.error("Please select a reason")
+            toast.error(t('toast.selectReason'))
             return
         }
 
@@ -50,15 +52,15 @@ export function ReportDialog({ donorId, donorName, trigger }: ReportDialogProps)
             const result = await reportDonor(donorId, fullReason)
 
             if (result.success) {
-                toast.success("Report submitted successfully")
+                toast.success(t('toast.success'))
                 setOpen(false)
                 setReasonType("")
                 setDescription("")
             } else {
-                toast.error(result.error || "Failed to submit report")
+                toast.error(result.error || t('toast.fail'))
             }
         } catch (error) {
-            toast.error("An error occurred")
+            toast.error(t('toast.error'))
         } finally {
             setLoading(false)
         }
@@ -70,36 +72,35 @@ export function ReportDialog({ donorId, donorName, trigger }: ReportDialogProps)
                 {trigger || (
                     <Button variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground hover:text-destructive">
                         <Flag className="h-4 w-4" />
-                        <span className="sr-only">Report</span>
+                        <span className="sr-only">{t('triggerLabel')}</span>
                     </Button>
                 )}
             </DialogTrigger>
             <DialogContent className="sm:max-w-[425px]">
                 <DialogHeader>
-                    <DialogTitle>Report User</DialogTitle>
+                    <DialogTitle>{t('title')}</DialogTitle>
                     <DialogDescription>
-                        Report {donorName ? `${donorName}` : "this user"} if you encounter any issues.
-                        This helps us keep the community safe.
+                        {t('description', { name: donorName || t('thisUser') })}
                     </DialogDescription>
                 </DialogHeader>
                 <div className="grid gap-4 py-4">
                     <div className="space-y-2">
                         <Select value={reasonType} onValueChange={setReasonType}>
                             <SelectTrigger>
-                                <SelectValue placeholder="Select a reason" />
+                                <SelectValue placeholder={t('selectReason')} />
                             </SelectTrigger>
                             <SelectContent>
-                                <SelectItem value="Wrong Phone Number">Wrong Phone Number</SelectItem>
-                                <SelectItem value="Fake Profile">Fake Profile</SelectItem>
-                                <SelectItem value="Inappropriate Content">Inappropriate Content</SelectItem>
-                                <SelectItem value="Harassment">Harassment</SelectItem>
-                                <SelectItem value="Other">Other</SelectItem>
+                                <SelectItem value="Wrong Phone Number">{t('reasons.wrongPhone')}</SelectItem>
+                                <SelectItem value="Fake Profile">{t('reasons.fakeProfile')}</SelectItem>
+                                <SelectItem value="Inappropriate Content">{t('reasons.inappropriateContent')}</SelectItem>
+                                <SelectItem value="Harassment">{t('reasons.harassment')}</SelectItem>
+                                <SelectItem value="Other">{t('reasons.other')}</SelectItem>
                             </SelectContent>
                         </Select>
                     </div>
                     <div className="space-y-2">
                         <Textarea
-                            placeholder="Additional details (optional)"
+                            placeholder={t('additionalDetails')}
                             value={description}
                             onChange={(e) => setDescription(e.target.value)}
                             className="resize-none"
@@ -108,10 +109,10 @@ export function ReportDialog({ donorId, donorName, trigger }: ReportDialogProps)
                 </div>
                 <DialogFooter>
                     <Button variant="outline" onClick={() => setOpen(false)} disabled={loading}>
-                        Cancel
+                        {t('cancel')}
                     </Button>
                     <Button onClick={handleSubmit} disabled={loading || !reasonType} variant="destructive">
-                        {loading ? "Submitting..." : "Submit Report"}
+                        {loading ? t('submitting') : t('submit')}
                     </Button>
                 </DialogFooter>
             </DialogContent>

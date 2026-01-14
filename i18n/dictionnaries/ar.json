@@ -328,5 +328,29 @@
             "hidden": "مخفي",
             "banned": "محظور"
         }
+    },
+    "Report": {
+        "title": "الإبلاغ عن مستخدم",
+        "description": "أبلغ عن {name} إذا واجهت أي مشاكل. هذا يساعدنا في الحفاظ على سلامة المجتمع.",
+        "thisUser": "هذا المستخدم",
+        "selectReason": "اختر سبباً",
+        "reasons": {
+            "wrongPhone": "رقم هاتف خاطئ",
+            "fakeProfile": "ملف شخصي وهمي",
+            "inappropriateContent": "محتوى غير لائق",
+            "harassment": "مضايقة",
+            "other": "أخرى"
+        },
+        "additionalDetails": "تفاصيل إضافية (اختياري)",
+        "cancel": "إلغاء",
+        "submit": "إرسال البلاغ",
+        "submitting": "جاري الإرسال...",
+        "triggerLabel": "إبلاغ",
+        "toast": {
+            "selectReason": "يرجى اختيار سبب",
+            "success": "تم إرسال البلاغ بنجاح",
+            "fail": "فشل إرسال البلاغ",
+            "error": "حدث خطأ ما"
+        }
     }
 }

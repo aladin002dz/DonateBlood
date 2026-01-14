@@ -325,5 +325,29 @@
             "hidden": "Masqué",
             "banned": "Banni"
         }
+    },
+    "Report": {
+        "title": "Signaler l'utilisateur",
+        "description": "Signalez {name} si vous rencontrez des problèmes. Cela nous aide à garder la communauté sûre.",
+        "thisUser": "cet utilisateur",
+        "selectReason": "Sélectionnez une raison",
+        "reasons": {
+            "wrongPhone": "Faux numéro de téléphone",
+            "fakeProfile": "Faux profil",
+            "inappropriateContent": "Contenu inapproprié",
+            "harassment": "Harcèlement",
+            "other": "Autre"
+        },
+        "additionalDetails": "Détails supplémentaires (optionnel)",
+        "cancel": "Annuler",
+        "submit": "Signaler",
+        "submitting": "Envoi...",
+        "triggerLabel": "Signaler",
+        "toast": {
+            "selectReason": "Veuillez sélectionner une raison",
+            "success": "Signalement envoyé avec succès",
+            "fail": "Échec de l'envoi du signalement",
+            "error": "Une erreur est survenue"
+        }
     }
 }

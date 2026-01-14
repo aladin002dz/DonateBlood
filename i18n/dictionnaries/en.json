@@ -327,5 +327,29 @@
             "hidden": "Hidden",
             "banned": "Banned"
         }
+    },
+    "Report": {
+        "title": "Report User",
+        "description": "Report {name} if you encounter any issues. This helps us keep the community safe.",
+        "thisUser": "this user",
+        "selectReason": "Select a reason",
+        "reasons": {
+            "wrongPhone": "Wrong Phone Number",
+            "fakeProfile": "Fake Profile",
+            "inappropriateContent": "Inappropriate Content",
+            "harassment": "Harassment",
+            "other": "Other"
+        },
+        "additionalDetails": "Additional details (optional)",
+        "cancel": "Cancel",
+        "submit": "Submit Report",
+        "submitting": "Submitting...",
+        "triggerLabel": "Report",
+        "toast": {
+            "selectReason": "Please select a reason",
+            "success": "Report submitted successfully",
+            "fail": "Failed to submit report",
+            "error": "An error occurred"
+        }
     }
 }
