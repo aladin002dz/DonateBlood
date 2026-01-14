@@ -258,5 +258,71 @@
         "toastSuccess": "Compte supprimé avec succès",
         "toastError": "Échec de la suppression du compte",
         "toastGenericError": "Une erreur s'est produite lors de la suppression de votre compte"
+    },
+    "Admin": {
+        "Dashboard": {
+            "title": "Tableau de bord Admin",
+            "subtitle": "Gérer les donneurs signalés et modérer le contenu.",
+            "loading": "Chargement du tableau de bord...",
+            "backToHome": "Retour à l'accueil",
+            "tabs": {
+                "donors": "Donneurs signalés",
+                "reports": "Tous les signalements"
+            }
+        },
+        "FlaggedDonors": {
+            "title": "Donneurs signalés",
+            "description": "Donneurs avec statut masqué ou signalements. Examiner et agir.",
+            "emptyState": {
+                "title": "Tout est propre !",
+                "description": "Aucun donneur signalé à examiner."
+            },
+            "columns": {
+                "donorName": "Nom du donneur",
+                "phone": "Téléphone",
+                "status": "Statut",
+                "reportCount": "Nb signalements",
+                "ownerRole": "Rôle propriétaire",
+                "actions": "Actions"
+            }
+        },
+        "Reports": {
+            "title": "Tous les signalements",
+            "description": "Vue détaillée de tous les signalements soumis.",
+            "emptyState": "Aucun signalement trouvé.",
+            "columns": {
+                "date": "Date",
+                "reporter": "Signaleur",
+                "donor": "Donneur",
+                "reason": "Raison",
+                "status": "Statut"
+            },
+            "mobileLabels": {
+                "reason": "Raison",
+                "reporter": "Signaleur",
+                "reportedDonor": "Donneur signalé"
+            }
+        },
+        "Actions": {
+            "approve": "Approuver",
+            "ban": "Bannir",
+            "toast": {
+                "approveSuccess": "Donneur approuvé avec succès",
+                "approveError": "Échec de l'approbation du donneur",
+                "banSuccess": "Donneur banni avec succès",
+                "banError": "Échec du bannissement du donneur",
+                "loadError": "Échec du chargement des donneurs signalés"
+            }
+        },
+        "Roles": {
+            "admin": "Admin",
+            "moderator": "Modérateur",
+            "user": "Utilisateur"
+        },
+        "Status": {
+            "active": "Actif",
+            "hidden": "Masqué",
+            "banned": "Banni"
+        }
     }
 }

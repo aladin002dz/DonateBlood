@@ -261,5 +261,71 @@
         "toastSuccess": "تم حذف الحساب بنجاح",
         "toastError": "فشل حذف الحساب",
         "toastGenericError": "حدث خطأ أثناء حذف حسابك"
+    },
+    "Admin": {
+        "Dashboard": {
+            "title": "لوحة تحكم المسؤول",
+            "subtitle": "إدارة المتبرعين المبلغ عنهم وتعديل المحتوى.",
+            "loading": "جارٍ تحميل لوحة التحكم...",
+            "backToHome": "العودة للرئيسية",
+            "tabs": {
+                "donors": "المتبرعون المبلغ عنهم",
+                "reports": "جميع البلاغات"
+            }
+        },
+        "FlaggedDonors": {
+            "title": "المتبرعون المبلغ عنهم",
+            "description": "المتبرعون ذوو الحالة المخفية أو المبلغ عنهم. المراجعة واتخاذ الإجراء.",
+            "emptyState": {
+                "title": "كل شيء نظيف!",
+                "description": "لا يوجد متبرعون مبلغ عنهم للمراجعة."
+            },
+            "columns": {
+                "donorName": "اسم المتبرع",
+                "phone": "الهاتف",
+                "status": "الحالة",
+                "reportCount": "عدد البلاغات",
+                "ownerRole": "دور المالك",
+                "actions": "إجراءات"
+            }
+        },
+        "Reports": {
+            "title": "جميع البلاغات",
+            "description": "عرض تفصيلي لجميع البلاغات المقدمة.",
+            "emptyState": "لم يتم العثور على بلاغات.",
+            "columns": {
+                "date": "التاريخ",
+                "reporter": "المُبلغ",
+                "donor": "المتبرع",
+                "reason": "السبب",
+                "status": "الحالة"
+            },
+            "mobileLabels": {
+                "reason": "السبب",
+                "reporter": "المُبلغ",
+                "reportedDonor": "المتبرع المبلغ عنه"
+            }
+        },
+        "Actions": {
+            "approve": "موافقة",
+            "ban": "حظر",
+            "toast": {
+                "approveSuccess": "تمت الموافقة على المتبرع بنجاح",
+                "approveError": "فشل الموافقة على المتبرع",
+                "banSuccess": "تم حظر المتبرع بنجاح",
+                "banError": "فشل حظر المتبرع",
+                "loadError": "فشل تحميل المتبرعين المبلغ عنهم"
+            }
+        },
+        "Roles": {
+            "admin": "مسؤول",
+            "moderator": "مشرف",
+            "user": "مستخدم"
+        },
+        "Status": {
+            "active": "نشط",
+            "hidden": "مخفي",
+            "banned": "محظور"
+        }
     }
 }
