@@ -25,7 +25,8 @@
         "profile": "Profil",
         "logout": "Se déconnecter",
         "language": "Langue",
-        "selectLanguage": "Sélectionner la langue"
+        "selectLanguage": "Sélectionner la langue",
+        "admin": "Admin"
     },
     "Auth": {
         "SignIn": {
