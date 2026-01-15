@@ -29,3 +29,6 @@ Strictly follow the **Gitmoji** convention: `<Emoji> <type>: <subject>`
 ## 4. UI/UX
 - **Tailwind**: Use utility classes over inline styles.
 - **Responsiveness**: Always consider mobile views. Use `md:` and `lg:` modifiers.
+
+## 5. Continuous Improvement
+- **Update Context**: After resolving a bug or correcting a mistake, ALWAYS update `.agent/rules.md` or the relevant Skill to capture the lesson learned and prevent recurrence.
