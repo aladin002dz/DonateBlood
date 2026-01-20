@@ -20,13 +20,13 @@ import {
     TableRow,
 } from "@/components/ui/table";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useSession } from "@/lib/auth-client";
 import { useRouter } from "@/i18n/navigation";
 import { useTranslations } from "next-intl";
 import { Check, Home, Loader2, Shield, Ban, AlertTriangle } from "lucide-react";
 import Link from "next/link";
-import { useEffect, useState, useTransition } from "react";
+import { useEffect, useState, useTransition, Activity } from "react";
 import { toast } from "sonner";
 
 type FlaggedDonor = {
@@ -58,6 +58,7 @@ export default function AdminDashboard() {
     const [currentUserRole, setCurrentUserRole] = useState<string>("");
     const [isLoading, setIsLoading] = useState(true);
     const [isPending, startTransition] = useTransition();
+    const [activeTab, setActiveTab] = useState("donors");
 
     // Check user role and redirect if not admin/moderator
     useEffect(() => {
@@ -220,260 +221,264 @@ export default function AdminDashboard() {
                 </div>
 
                 {/* Flagged Donors Table */}
-                <Tabs defaultValue="donors" className="w-full">
+                <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
                     <TabsList className="mb-4">
                         <TabsTrigger value="donors">{t('Dashboard.tabs.donors')}</TabsTrigger>
                         <TabsTrigger value="reports">{t('Dashboard.tabs.reports')}</TabsTrigger>
                     </TabsList>
 
-                    <TabsContent value="donors">
-                        <Card>
-                            <CardHeader>
-                                <CardTitle className="flex items-center gap-2">
-                                    <AlertTriangle className="h-5 w-5 text-yellow-500" />
-                                    {t('FlaggedDonors.title')}
-                                </CardTitle>
-                                <CardDescription>
-                                    {t('FlaggedDonors.description')}
-                                </CardDescription>
-                            </CardHeader>
-                            <CardContent>
-                                {donors.length === 0 ? (
-                                    <div className="text-center py-12 text-muted-foreground">
-                                        <Check className="h-12 w-12 mx-auto mb-4 text-green-500" />
-                                        <p className="text-lg font-medium">{t('FlaggedDonors.emptyState.title')}</p>
-                                        <p className="text-sm">{t('FlaggedDonors.emptyState.description')}</p>
-                                    </div>
-                                ) : (
-                                    <>
-                                        {/* Desktop View */}
-                                        <div className="hidden md:block">
-                                            <ScrollArea className="h-[calc(100vh-220px)] rounded-md border">
-                                                <table className="w-full caption-bottom text-sm text-left">
-                                                    <TableHeader>
-                                                        <TableRow>
-                                                            <TableHead>{t('FlaggedDonors.columns.donorName')}</TableHead>
-                                                            <TableHead>{t('FlaggedDonors.columns.phone')}</TableHead>
-                                                            <TableHead>{t('FlaggedDonors.columns.status')}</TableHead>
-                                                            <TableHead>{t('FlaggedDonors.columns.reportCount')}</TableHead>
-                                                            <TableHead>{t('FlaggedDonors.columns.ownerRole')}</TableHead>
-                                                            <TableHead className="text-right">{t('FlaggedDonors.columns.actions')}</TableHead>
-                                                        </TableRow>
-                                                    </TableHeader>
-                                                    <TableBody>
-                                                        {donors.map((donor) => (
-                                                            <TableRow key={donor.id}>
-                                                                <TableCell className="font-medium">
-                                                                    {donor.ownerName}
-                                                                </TableCell>
-                                                                <TableCell>{donor.ownerPhone || "N/A"}</TableCell>
-                                                                <TableCell>{getStatusBadge(donor.status)}</TableCell>
-                                                                <TableCell>
-                                                                    <span
-                                                                        className={`font-medium ${donor.reportCount >= 3
-                                                                            ? "text-red-500"
-                                                                            : donor.reportCount > 0
-                                                                                ? "text-yellow-500"
-                                                                                : ""
-                                                                            }`}
-                                                                    >
-                                                                        {donor.reportCount}
-                                                                    </span>
-                                                                </TableCell>
-                                                                <TableCell>{getRoleBadge(donor.ownerRole)}</TableCell>
-                                                                <TableCell className="text-right">
-                                                                    <div className="flex justify-end gap-2">
-                                                                        <Button
-                                                                            size="sm"
-                                                                            variant="outline"
-                                                                            className="text-green-600 hover:text-green-700 hover:bg-green-50"
-                                                                            onClick={() => handleApprove(donor.id)}
-                                                                            disabled={
-                                                                                isPending ||
-                                                                                shouldDisableButtons(donor.ownerRole)
-                                                                            }
-                                                                        >
-                                                                            <Check className="h-4 w-4 mr-1" />
-                                                                            {t('Actions.approve')}
-                                                                        </Button>
-                                                                        <Button
-                                                                            size="sm"
-                                                                            variant="outline"
-                                                                            className="text-red-600 hover:text-red-700 hover:bg-red-50"
-                                                                            onClick={() => handleBan(donor.id)}
-                                                                            disabled={
-                                                                                isPending ||
-                                                                                donor.status === "banned" ||
-                                                                                shouldDisableButtons(donor.ownerRole)
-                                                                            }
-                                                                        >
-                                                                            <Ban className="h-4 w-4 mr-1" />
-                                                                            {t('Actions.ban')}
-                                                                        </Button>
-                                                                    </div>
-                                                                </TableCell>
-                                                            </TableRow>
-                                                        ))}
-                                                    </TableBody>
-                                                </table>
-                                            </ScrollArea>
+                    <Activity mode={activeTab === 'donors' ? 'visible' : 'hidden'}>
+                        <div role="tabpanel" className="flex-1 outline-none" data-slot="tabs-content" hidden={activeTab !== 'donors'}>
+                            <Card>
+                                <CardHeader>
+                                    <CardTitle className="flex items-center gap-2">
+                                        <AlertTriangle className="h-5 w-5 text-yellow-500" />
+                                        {t('FlaggedDonors.title')}
+                                    </CardTitle>
+                                    <CardDescription>
+                                        {t('FlaggedDonors.description')}
+                                    </CardDescription>
+                                </CardHeader>
+                                <CardContent>
+                                    {donors.length === 0 ? (
+                                        <div className="text-center py-12 text-muted-foreground">
+                                            <Check className="h-12 w-12 mx-auto mb-4 text-green-500" />
+                                            <p className="text-lg font-medium">{t('FlaggedDonors.emptyState.title')}</p>
+                                            <p className="text-sm">{t('FlaggedDonors.emptyState.description')}</p>
                                         </div>
+                                    ) : (
+                                        <>
+                                            {/* Desktop View */}
+                                            <div className="hidden md:block">
+                                                <ScrollArea className="h-[calc(100vh-220px)] rounded-md border">
+                                                    <table className="w-full caption-bottom text-sm text-left">
+                                                        <TableHeader>
+                                                            <TableRow>
+                                                                <TableHead>{t('FlaggedDonors.columns.donorName')}</TableHead>
+                                                                <TableHead>{t('FlaggedDonors.columns.phone')}</TableHead>
+                                                                <TableHead>{t('FlaggedDonors.columns.status')}</TableHead>
+                                                                <TableHead>{t('FlaggedDonors.columns.reportCount')}</TableHead>
+                                                                <TableHead>{t('FlaggedDonors.columns.ownerRole')}</TableHead>
+                                                                <TableHead className="text-right">{t('FlaggedDonors.columns.actions')}</TableHead>
+                                                            </TableRow>
+                                                        </TableHeader>
+                                                        <TableBody>
+                                                            {donors.map((donor) => (
+                                                                <TableRow key={donor.id}>
+                                                                    <TableCell className="font-medium">
+                                                                        {donor.ownerName}
+                                                                    </TableCell>
+                                                                    <TableCell>{donor.ownerPhone || "N/A"}</TableCell>
+                                                                    <TableCell>{getStatusBadge(donor.status)}</TableCell>
+                                                                    <TableCell>
+                                                                        <span
+                                                                            className={`font-medium ${donor.reportCount >= 3
+                                                                                ? "text-red-500"
+                                                                                : donor.reportCount > 0
+                                                                                    ? "text-yellow-500"
+                                                                                    : ""
+                                                                                }`}
+                                                                        >
+                                                                            {donor.reportCount}
+                                                                        </span>
+                                                                    </TableCell>
+                                                                    <TableCell>{getRoleBadge(donor.ownerRole)}</TableCell>
+                                                                    <TableCell className="text-right">
+                                                                        <div className="flex justify-end gap-2">
+                                                                            <Button
+                                                                                size="sm"
+                                                                                variant="outline"
+                                                                                className="text-green-600 hover:text-green-700 hover:bg-green-50"
+                                                                                onClick={() => handleApprove(donor.id)}
+                                                                                disabled={
+                                                                                    isPending ||
+                                                                                    shouldDisableButtons(donor.ownerRole)
+                                                                                }
+                                                                            >
+                                                                                <Check className="h-4 w-4 mr-1" />
+                                                                                {t('Actions.approve')}
+                                                                            </Button>
+                                                                            <Button
+                                                                                size="sm"
+                                                                                variant="outline"
+                                                                                className="text-red-600 hover:text-red-700 hover:bg-red-50"
+                                                                                onClick={() => handleBan(donor.id)}
+                                                                                disabled={
+                                                                                    isPending ||
+                                                                                    donor.status === "banned" ||
+                                                                                    shouldDisableButtons(donor.ownerRole)
+                                                                                }
+                                                                            >
+                                                                                <Ban className="h-4 w-4 mr-1" />
+                                                                                {t('Actions.ban')}
+                                                                            </Button>
+                                                                        </div>
+                                                                    </TableCell>
+                                                                </TableRow>
+                                                            ))}
+                                                        </TableBody>
+                                                    </table>
+                                                </ScrollArea>
+                                            </div>
 
-                                        {/* Mobile View */}
-                                        <div className="md:hidden space-y-4">
-                                            {donors.map((donor) => (
-                                                <div key={donor.id} className="p-4 rounded-lg border bg-card text-card-foreground shadow-sm">
-                                                    <div className="flex justify-between items-start mb-2">
-                                                        <div>
-                                                            <div className="font-semibold">{donor.ownerName}</div>
-                                                            <div className="text-sm text-muted-foreground">{donor.ownerPhone || "N/A"}</div>
+                                            {/* Mobile View */}
+                                            <div className="md:hidden space-y-4">
+                                                {donors.map((donor) => (
+                                                    <div key={donor.id} className="p-4 rounded-lg border bg-card text-card-foreground shadow-sm">
+                                                        <div className="flex justify-between items-start mb-2">
+                                                            <div>
+                                                                <div className="font-semibold">{donor.ownerName}</div>
+                                                                <div className="text-sm text-muted-foreground">{donor.ownerPhone || "N/A"}</div>
+                                                            </div>
+                                                            <div>{getStatusBadge(donor.status)}</div>
                                                         </div>
-                                                        <div>{getStatusBadge(donor.status)}</div>
-                                                    </div>
 
-                                                    <div className="grid grid-cols-2 gap-2 text-sm mb-4">
-                                                        <div className="flex flex-col">
-                                                            <span className="text-muted-foreground">{t('FlaggedDonors.columns.reportCount')}</span>
-                                                            <span
-                                                                className={`font-medium ${donor.reportCount >= 3
-                                                                    ? "text-red-500"
-                                                                    : donor.reportCount > 0
-                                                                        ? "text-yellow-500"
-                                                                        : ""
-                                                                    }`}
+                                                        <div className="grid grid-cols-2 gap-2 text-sm mb-4">
+                                                            <div className="flex flex-col">
+                                                                <span className="text-muted-foreground">{t('FlaggedDonors.columns.reportCount')}</span>
+                                                                <span
+                                                                    className={`font-medium ${donor.reportCount >= 3
+                                                                        ? "text-red-500"
+                                                                        : donor.reportCount > 0
+                                                                            ? "text-yellow-500"
+                                                                            : ""
+                                                                        }`}
+                                                                >
+                                                                    {donor.reportCount}
+                                                                </span>
+                                                            </div>
+                                                            <div className="flex flex-col">
+                                                                <span className="text-muted-foreground">{t('FlaggedDonors.columns.ownerRole')}</span>
+                                                                <div>{getRoleBadge(donor.ownerRole)}</div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div className="flex gap-2">
+                                                            <Button
+                                                                size="sm"
+                                                                variant="outline"
+                                                                className="flex-1 text-green-600 hover:text-green-700 hover:bg-green-50"
+                                                                onClick={() => handleApprove(donor.id)}
+                                                                disabled={
+                                                                    isPending ||
+                                                                    shouldDisableButtons(donor.ownerRole)
+                                                                }
                                                             >
-                                                                {donor.reportCount}
-                                                            </span>
-                                                        </div>
-                                                        <div className="flex flex-col">
-                                                            <span className="text-muted-foreground">{t('FlaggedDonors.columns.ownerRole')}</span>
-                                                            <div>{getRoleBadge(donor.ownerRole)}</div>
+                                                                <Check className="h-4 w-4 mr-1" />
+                                                                {t('Actions.approve')}
+                                                            </Button>
+                                                            <Button
+                                                                size="sm"
+                                                                variant="outline"
+                                                                className="flex-1 text-red-600 hover:text-red-700 hover:bg-red-50"
+                                                                onClick={() => handleBan(donor.id)}
+                                                                disabled={
+                                                                    isPending ||
+                                                                    donor.status === "banned" ||
+                                                                    shouldDisableButtons(donor.ownerRole)
+                                                                }
+                                                            >
+                                                                <Ban className="h-4 w-4 mr-1" />
+                                                                {t('Actions.ban')}
+                                                            </Button>
                                                         </div>
                                                     </div>
+                                                ))}
+                                            </div>
+                                        </>
+                                    )}
+                                </CardContent>
+                            </Card>
+                        </div>
+                    </Activity>
 
-                                                    <div className="flex gap-2">
-                                                        <Button
-                                                            size="sm"
-                                                            variant="outline"
-                                                            className="flex-1 text-green-600 hover:text-green-700 hover:bg-green-50"
-                                                            onClick={() => handleApprove(donor.id)}
-                                                            disabled={
-                                                                isPending ||
-                                                                shouldDisableButtons(donor.ownerRole)
-                                                            }
-                                                        >
-                                                            <Check className="h-4 w-4 mr-1" />
-                                                            {t('Actions.approve')}
-                                                        </Button>
-                                                        <Button
-                                                            size="sm"
-                                                            variant="outline"
-                                                            className="flex-1 text-red-600 hover:text-red-700 hover:bg-red-50"
-                                                            onClick={() => handleBan(donor.id)}
-                                                            disabled={
-                                                                isPending ||
-                                                                donor.status === "banned" ||
-                                                                shouldDisableButtons(donor.ownerRole)
-                                                            }
-                                                        >
-                                                            <Ban className="h-4 w-4 mr-1" />
-                                                            {t('Actions.ban')}
-                                                        </Button>
-                                                    </div>
-                                                </div>
-                                            ))}
+                    <Activity mode={activeTab === 'reports' ? 'visible' : 'hidden'}>
+                        <div role="tabpanel" className="flex-1 outline-none" data-slot="tabs-content" hidden={activeTab !== 'reports'}>
+                            <Card>
+                                <CardHeader>
+                                    <CardTitle className="flex items-center gap-2">
+                                        <Shield className="h-5 w-5 text-primary" />
+                                        {t('Reports.title')}
+                                    </CardTitle>
+                                    <CardDescription>
+                                        {t('Reports.description')}
+                                    </CardDescription>
+                                </CardHeader>
+                                <CardContent>
+                                    {reports.length === 0 ? (
+                                        <div className="text-center py-12 text-muted-foreground">
+                                            <p className="text-lg font-medium">{t('Reports.emptyState')}</p>
                                         </div>
-                                    </>
-                                )}
-                            </CardContent>
-                        </Card>
-                    </TabsContent>
-
-                    <TabsContent value="reports">
-                        <Card>
-                            <CardHeader>
-                                <CardTitle className="flex items-center gap-2">
-                                    <Shield className="h-5 w-5 text-primary" />
-                                    {t('Reports.title')}
-                                </CardTitle>
-                                <CardDescription>
-                                    {t('Reports.description')}
-                                </CardDescription>
-                            </CardHeader>
-                            <CardContent>
-                                {reports.length === 0 ? (
-                                    <div className="text-center py-12 text-muted-foreground">
-                                        <p className="text-lg font-medium">{t('Reports.emptyState')}</p>
-                                    </div>
-                                ) : (
-                                    <>
-                                        {/* Desktop View */}
-                                        <div className="hidden md:block">
-                                            <ScrollArea className="h-[calc(100vh-220px)] rounded-md border">
-                                                <table className="w-full caption-bottom text-sm text-left">
-                                                    <TableHeader>
-                                                        <TableRow>
-                                                            <TableHead>{t('Reports.columns.date')}</TableHead>
-                                                            <TableHead>{t('Reports.columns.reporter')}</TableHead>
-                                                            <TableHead>{t('Reports.columns.donor')}</TableHead>
-                                                            <TableHead>{t('Reports.columns.reason')}</TableHead>
-                                                            <TableHead>{t('Reports.columns.status')}</TableHead>
-                                                        </TableRow>
-                                                    </TableHeader>
-                                                    <TableBody>
-                                                        {reports.map((report) => (
-                                                            <TableRow key={report.id}>
-                                                                <TableCell>
-                                                                    {new Date(report.createdAt).toLocaleDateString()}
-                                                                </TableCell>
-                                                                <TableCell>{report.reporterName}</TableCell>
-                                                                <TableCell>{report.donorName}</TableCell>
-                                                                <TableCell>{report.reason}</TableCell>
-                                                                <TableCell>
-                                                                    <Badge variant="outline">{report.status}</Badge>
-                                                                </TableCell>
+                                    ) : (
+                                        <>
+                                            {/* Desktop View */}
+                                            <div className="hidden md:block">
+                                                <ScrollArea className="h-[calc(100vh-220px)] rounded-md border">
+                                                    <table className="w-full caption-bottom text-sm text-left">
+                                                        <TableHeader>
+                                                            <TableRow>
+                                                                <TableHead>{t('Reports.columns.date')}</TableHead>
+                                                                <TableHead>{t('Reports.columns.reporter')}</TableHead>
+                                                                <TableHead>{t('Reports.columns.donor')}</TableHead>
+                                                                <TableHead>{t('Reports.columns.reason')}</TableHead>
+                                                                <TableHead>{t('Reports.columns.status')}</TableHead>
                                                             </TableRow>
-                                                        ))}
-                                                    </TableBody>
-                                                </table>
-                                            </ScrollArea>
-                                        </div>
+                                                        </TableHeader>
+                                                        <TableBody>
+                                                            {reports.map((report) => (
+                                                                <TableRow key={report.id}>
+                                                                    <TableCell>
+                                                                        {new Date(report.createdAt).toLocaleDateString()}
+                                                                    </TableCell>
+                                                                    <TableCell>{report.reporterName}</TableCell>
+                                                                    <TableCell>{report.donorName}</TableCell>
+                                                                    <TableCell>{report.reason}</TableCell>
+                                                                    <TableCell>
+                                                                        <Badge variant="outline">{report.status}</Badge>
+                                                                    </TableCell>
+                                                                </TableRow>
+                                                            ))}
+                                                        </TableBody>
+                                                    </table>
+                                                </ScrollArea>
+                                            </div>
 
-                                        {/* Mobile View */}
-                                        <div className="md:hidden space-y-4">
-                                            {reports.map((report) => (
-                                                <div key={report.id} className="p-4 rounded-lg border bg-card text-card-foreground shadow-sm">
-                                                    <div className="flex justify-between items-start mb-2">
-                                                        <div className="text-sm text-muted-foreground">
-                                                            {new Date(report.createdAt).toLocaleDateString()}
+                                            {/* Mobile View */}
+                                            <div className="md:hidden space-y-4">
+                                                {reports.map((report) => (
+                                                    <div key={report.id} className="p-4 rounded-lg border bg-card text-card-foreground shadow-sm">
+                                                        <div className="flex justify-between items-start mb-2">
+                                                            <div className="text-sm text-muted-foreground">
+                                                                {new Date(report.createdAt).toLocaleDateString()}
+                                                            </div>
+                                                            <Badge variant="outline">{report.status}</Badge>
                                                         </div>
-                                                        <Badge variant="outline">{report.status}</Badge>
-                                                    </div>
 
-                                                    <div className="space-y-2 mb-2">
-                                                        <div>
-                                                            <span className="text-xs text-muted-foreground uppercase font-semibold">{t('Reports.mobileLabels.reason')}</span>
-                                                            <p className="text-sm">{report.reason}</p>
-                                                        </div>
-                                                        <div className="grid grid-cols-2 gap-2 text-sm">
+                                                        <div className="space-y-2 mb-2">
                                                             <div>
-                                                                <span className="text-xs text-muted-foreground uppercase font-semibold">{t('Reports.mobileLabels.reporter')}</span>
-                                                                <p>{report.reporterName}</p>
+                                                                <span className="text-xs text-muted-foreground uppercase font-semibold">{t('Reports.mobileLabels.reason')}</span>
+                                                                <p className="text-sm">{report.reason}</p>
                                                             </div>
-                                                            <div>
-                                                                <span className="text-xs text-muted-foreground uppercase font-semibold">{t('Reports.mobileLabels.reportedDonor')}</span>
-                                                                <p>{report.donorName}</p>
+                                                            <div className="grid grid-cols-2 gap-2 text-sm">
+                                                                <div>
+                                                                    <span className="text-xs text-muted-foreground uppercase font-semibold">{t('Reports.mobileLabels.reporter')}</span>
+                                                                    <p>{report.reporterName}</p>
+                                                                </div>
+                                                                <div>
+                                                                    <span className="text-xs text-muted-foreground uppercase font-semibold">{t('Reports.mobileLabels.reportedDonor')}</span>
+                                                                    <p>{report.donorName}</p>
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                </div>
-                                            ))}
-                                        </div>
-                                    </>
-                                )}
-                            </CardContent>
-                        </Card>
-                    </TabsContent>
+                                                ))}
+                                            </div>
+                                        </>
+                                    )}
+                                </CardContent>
+                            </Card>
+                        </div>
+                    </Activity>
                 </Tabs>
             </div>
         </div>
