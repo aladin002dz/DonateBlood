@@ -51,6 +51,7 @@ describe('customSignIn', () => {
         createdAt: new Date(),
         updatedAt: new Date(),
         image: null,
+        banned: false,
       },
       redirect: false,
       token: 'session-token',

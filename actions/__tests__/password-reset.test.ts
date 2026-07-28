@@ -6,7 +6,7 @@ import { auth } from '@/lib/auth';
 vi.mock('@/lib/auth', () => ({
   auth: {
     api: {
-      forgetPassword: vi.fn(),
+      requestPasswordReset: vi.fn(),
       resetPassword: vi.fn(),
     },
   },
@@ -22,7 +22,7 @@ describe('requestPasswordReset', () => {
   });
 
   it('should successfully request password reset', async () => {
-    vi.mocked(auth.api.forgetPassword).mockResolvedValue({ status: true });
+    vi.mocked(auth.api.requestPasswordReset).mockResolvedValue({ status: true, message: 'sent' });
     
     const result = await requestPasswordReset('test@example.com');
     
@@ -31,7 +31,7 @@ describe('requestPasswordReset', () => {
   });
 
   it('should return error if reset fails', async () => {
-    vi.mocked(auth.api.forgetPassword).mockResolvedValue({ status: false });
+    vi.mocked(auth.api.requestPasswordReset).mockResolvedValue({ status: false, message: 'failed' });
     
     const result = await requestPasswordReset('test@example.com');
     
@@ -40,7 +40,7 @@ describe('requestPasswordReset', () => {
   });
 
   it('should handle errors gracefully', async () => {
-    vi.mocked(auth.api.forgetPassword).mockRejectedValue(new Error('API error'));
+    vi.mocked(auth.api.requestPasswordReset).mockRejectedValue(new Error('API error'));
     
     const result = await requestPasswordReset('test@example.com');
     

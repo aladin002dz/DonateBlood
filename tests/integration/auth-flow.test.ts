@@ -58,6 +58,7 @@ describe('Authentication Flow Integration', () => {
         image: null,
         createdAt: new Date(),
         updatedAt: new Date(),
+        banned: false,
       },
       token: 'signup-token',
     });
@@ -95,6 +96,7 @@ describe('Authentication Flow Integration', () => {
         createdAt: new Date(),
         updatedAt: new Date(),
         image: null,
+        banned: false,
       },
       redirect: false,
       token: 'session-token',

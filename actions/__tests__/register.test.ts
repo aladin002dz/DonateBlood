@@ -51,6 +51,7 @@ describe('registerUser', () => {
         image: null,
         createdAt: new Date(),
         updatedAt: new Date(),
+        banned: false,
       },
       token: 'signup-token',
     });

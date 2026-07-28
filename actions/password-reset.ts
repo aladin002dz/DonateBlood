@@ -14,7 +14,7 @@ function isAuthApiResult(result: unknown): result is AuthApiResult {
 export async function requestPasswordReset(email: string) {
     try {
         // Use Better Auth's built-in password reset functionality
-        const result = await auth.api.forgetPassword({
+        const result = await auth.api.requestPasswordReset({
             body: {
                 email: email,
                 redirectTo: `${process.env.NEXT_PUBLIC_APP_URL}/reset-password`
