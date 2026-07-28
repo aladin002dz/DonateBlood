@@ -8,6 +8,29 @@ import {
 import { drizzleAdapter } from 'better-auth/adapters/drizzle';
 import { nextCookies } from 'better-auth/next-js';
 import { admin } from 'better-auth/plugins';
+import { createAccessControl } from 'better-auth/plugins/access';
+
+const statement = {
+    user: ["create", "list", "set-role", "ban", "impersonate", "impersonate-admins", "delete", "set-password", "set-email", "get", "update"],
+    session: ["list", "revoke", "delete"],
+} as const;
+
+const ac = createAccessControl(statement);
+
+const adminAc = ac.newRole({
+    user: ["create", "list", "set-role", "ban", "impersonate", "delete", "set-password", "set-email", "get", "update"],
+    session: ["list", "revoke", "delete"],
+});
+
+const moderatorAc = ac.newRole({
+    user: ["list", "get", "ban", "update"],
+    session: ["list"],
+});
+
+const userAc = ac.newRole({
+    user: [],
+    session: [],
+});
 
 export const auth = betterAuth({
     database: drizzleAdapter(db, {
@@ -54,6 +77,11 @@ export const auth = betterAuth({
         admin({
             defaultRole: 'user',
             adminRoles: ['admin', 'moderator'],
+            roles: {
+                admin: adminAc,
+                moderator: moderatorAc,
+                user: userAc,
+            },
         }),
     ],
 
