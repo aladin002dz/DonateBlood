@@ -8,6 +8,7 @@ import {
 import { drizzleAdapter } from 'better-auth/adapters/drizzle';
 import { nextCookies } from 'better-auth/next-js';
 import { admin } from 'better-auth/plugins';
+import { adminAc, defaultAc, userAc } from 'better-auth/plugins/admin/access';
 
 export const auth = betterAuth({
     database: drizzleAdapter(db, {
@@ -54,6 +55,14 @@ export const auth = betterAuth({
         admin({
             defaultRole: 'user',
             adminRoles: ['admin', 'moderator'],
+            roles: {
+                admin: adminAc,
+                moderator: defaultAc.newRole({
+                    user: ['list', 'get', 'ban'],
+                    session: ['list'],
+                }),
+                user: userAc,
+            },
         }),
     ],
 

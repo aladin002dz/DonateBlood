@@ -2,7 +2,7 @@
   "name": "donate-blood",
   "version": "0.8.0",
   "private": true,
-  "packageManager": "pnpm@11.22.0",
+  "packageManager": "pnpm@10.34.5",
   "scripts": {
     "dev": "next dev --turbopack",
     "prebuild": "npm run lint && tsc --noEmit",
