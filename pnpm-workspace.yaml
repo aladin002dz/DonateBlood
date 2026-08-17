@@ -6,3 +6,17 @@ allowBuilds:
   msw: true
   sharp: true
   unrs-resolver: true
+minimumReleaseAgeExclude:
+  - '@better-auth/core@1.6.30'
+  - '@better-auth/drizzle-adapter@1.6.30'
+  - '@better-auth/kysely-adapter@1.6.30'
+  - '@better-auth/memory-adapter@1.6.30'
+  - '@better-auth/mongo-adapter@1.6.30'
+  - '@better-auth/prisma-adapter@1.6.30'
+  - '@better-auth/telemetry@1.6.30'
+  - '@hookform/resolvers@5.9.1'
+  - better-auth@1.6.30
+  - icu-minify@4.13.7
+  - next-intl-swc-plugin-extractor@4.13.7
+  - next-intl@4.13.7
+  - use-intl@4.13.7
