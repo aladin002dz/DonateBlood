@@ -18,29 +18,29 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 'lts/*'
-          cache: 'npm'
-
-      - name: Install npm-check-updates
-        run: npm install -g npm-check-updates
+          cache: 'pnpm'
 
       - name: Update package.json to latest versions
         run: npx npm-check-updates -u
 
-      - name: Regenerate package-lock.json (without installing)
-        run: npm install --package-lock-only
+      - name: Regenerate pnpm-lock.yaml (without installing)
+        run: pnpm install --lockfile-only
 
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v7
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          commit-message: "📦 build: update npm dependencies to latest versions"
+          commit-message: "📦 build: update dependencies to latest versions"
           branch: chore/update-dependencies
           delete-branch: true
-          title: "📦 build: update npm dependencies"
+          title: "📦 build: update dependencies"
           body: |
             ## Automated Dependency Update
 
@@ -48,7 +48,7 @@ jobs:
 
             ### What changed?
             - `package.json` — versions bumped to latest via `npm-check-updates`
-            - `package-lock.json` — regenerated via `npm install --package-lock-only`
+            - `pnpm-lock.yaml` — regenerated via `pnpm install --lockfile-only`
 
             ### Next steps
             1. Review the version bumps below.

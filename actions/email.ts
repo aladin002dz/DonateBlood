@@ -7,7 +7,7 @@ import { getLocale } from 'next-intl/server';
 
 export async function sendPasswordResetEmail(email: string, token: string) {
     try {
-        const resend = new Resend(process.env.RESEND_API_KEY);
+        const resend = new Resend(process.env.RESEND_API_KEY || 're_mock_key');
         const resetUrl = `${process.env.NEXT_PUBLIC_APP_URL}/reset-password?token=${token}`;
         const locale = await getLocale();
         const subjectMap: Record<string, string> = {
