@@ -51,6 +51,10 @@ describe('registerUser', () => {
         image: null,
         createdAt: new Date(),
         updatedAt: new Date(),
+        banned: false,
+        role: 'user',
+        banReason: null,
+        banExpires: null,
       },
       token: 'signup-token',
     });
