@@ -3,9 +3,24 @@
 import { db } from '@/db/db';
 import { donor, report, user } from '@/db/schema';
 import { auth } from '@/lib/auth';
-import { eq, gt, or, sql, desc } from 'drizzle-orm';
+import { and, eq, gt, ne, or, sql, desc } from 'drizzle-orm';
 import { revalidatePath } from 'next/cache';
 import { headers } from 'next/headers';
+import { z } from 'zod';
+
+const reportDonorSchema = z.object({
+    userId: z.string().min(1, 'User ID is required'),
+    reason: z
+        .string()
+        .trim()
+        .min(10, 'Reason must be at least 10 characters')
+        .max(500, 'Reason must be at most 500 characters'),
+});
+
+const updateDonorStatusSchema = z.object({
+    donorId: z.string().min(1, 'Donor ID is required'),
+    newStatus: z.enum(['active', 'hidden', 'banned']),
+});
 
 /**
  * Helper function to get the current session.
@@ -43,15 +58,10 @@ export async function reportDonor(userId: string, reason: string) {
         const session = await getAuthenticatedSession();
 
         // Validate inputs
-        if (!userId || !reason) {
-            return {
-                success: false,
-                error: 'User ID and reason are required'
-            };
-        }
+        const { userId: validatedUserId, reason: validatedReason } = reportDonorSchema.parse({ userId, reason });
 
         // Prevent users from reporting themselves
-        if (userId === session.user.id) {
+        if (validatedUserId === session.user.id) {
             return {
                 success: false,
                 error: 'You cannot report yourself'
@@ -61,7 +71,7 @@ export async function reportDonor(userId: string, reason: string) {
         // Check if the donor exists for this user
         let donorResult = await db.select()
             .from(donor)
-            .where(eq(donor.userId, userId))
+            .where(eq(donor.userId, validatedUserId))
             .limit(1);
 
         let targetDonor;
@@ -71,14 +81,14 @@ export async function reportDonor(userId: string, reason: string) {
             const newDonorId = generateId();
             await db.insert(donor).values({
                 id: newDonorId,
-                userId: userId,
+                userId: validatedUserId,
                 status: 'active',
                 reportCount: 0,
             });
 
             targetDonor = {
                 id: newDonorId,
-                userId: userId,
+                userId: validatedUserId,
                 reportCount: 0,
                 status: 'active'
             };
@@ -86,12 +96,31 @@ export async function reportDonor(userId: string, reason: string) {
             targetDonor = donorResult[0];
         }
 
+        // Prevent the same reporter from submitting more than one active report
+        // against the same donor (otherwise a single account could reach the
+        // 3-report auto-hide threshold on its own).
+        const existingReport = await db.select({ id: report.id })
+            .from(report)
+            .where(and(
+                eq(report.reporterId, session.user.id),
+                eq(report.donorId, targetDonor.id),
+                ne(report.status, 'dismissed')
+            ))
+            .limit(1);
+
+        if (existingReport.length > 0) {
+            return {
+                success: false,
+                error: 'You have already reported this donor'
+            };
+        }
+
         // Insert report record
         await db.insert(report).values({
             id: generateId(),
             reporterId: session.user.id,
             donorId: targetDonor.id,
-            reason: reason,
+            reason: validatedReason,
             status: 'pending',
         });
 
@@ -118,6 +147,13 @@ export async function reportDonor(userId: string, reason: string) {
     } catch (error) {
         console.error('Error reporting donor:', error);
 
+        if (error instanceof z.ZodError) {
+            return {
+                success: false,
+                error: error.issues[0]?.message || 'Validation error'
+            };
+        }
+
         if (error instanceof Error && error.message === 'Unauthorized') {
             return {
                 success: false,
@@ -143,21 +179,7 @@ export async function updateDonorStatus(donorId: string, newStatus: string) {
         const session = await getAuthenticatedSession();
 
         // Validate inputs
-        if (!donorId || !newStatus) {
-            return {
-                success: false,
-                error: 'Donor ID and new status are required'
-            };
-        }
-
-        // Validate the new status value
-        const validStatuses = ['active', 'hidden', 'banned'];
-        if (!validStatuses.includes(newStatus)) {
-            return {
-                success: false,
-                error: `Invalid status. Must be one of: ${validStatuses.join(', ')}`
-            };
-        }
+        const { donorId: validatedDonorId, newStatus: validatedStatus } = updateDonorStatusSchema.parse({ donorId, newStatus });
 
         // Get the current user's role
         const currentUserRole = (session.user as { role?: string }).role || 'user';
@@ -170,7 +192,7 @@ export async function updateDonorStatus(donorId: string, newStatus: string) {
         // Fetch the target donor
         const donorResult = await db.select()
             .from(donor)
-            .where(eq(donor.id, donorId))
+            .where(eq(donor.id, validatedDonorId))
             .limit(1);
 
         if (donorResult.length === 0) {
@@ -211,16 +233,16 @@ export async function updateDonorStatus(donorId: string, newStatus: string) {
         // Update the donor's status
         // Reset reportCount when approving
         const updateData: { status: 'active' | 'hidden' | 'banned'; reportCount?: number } = {
-            status: newStatus as 'active' | 'hidden' | 'banned'
+            status: validatedStatus
         };
 
-        if (newStatus === 'active') {
+        if (validatedStatus === 'active') {
             updateData.reportCount = 0;
         }
 
         await db.update(donor)
             .set(updateData)
-            .where(eq(donor.id, donorId));
+            .where(eq(donor.id, validatedDonorId));
 
         // Revalidate relevant paths
         revalidatePath('/dashboard');
@@ -229,10 +251,17 @@ export async function updateDonorStatus(donorId: string, newStatus: string) {
 
         return {
             success: true,
-            message: `Donor status updated to ${newStatus}`
+            message: `Donor status updated to ${validatedStatus}`
         };
     } catch (error) {
         console.error('Error updating donor status:', error);
+
+        if (error instanceof z.ZodError) {
+            return {
+                success: false,
+                error: error.issues[0]?.message || 'Validation error'
+            };
+        }
 
         if (error instanceof Error) {
             if (error.message === 'Unauthorized') {
