@@ -30,7 +30,7 @@ jobs:
           cache: 'pnpm'
 
       - name: Update package.json to latest versions
-        run: npx npm-check-updates -u --reject packageManager
+        run: npx npm-check-updates -u --dep prod,dev,optional --reject pnpm
 
       - name: Regenerate pnpm-lock.yaml (without installing)
         run: pnpm install --lockfile-only
