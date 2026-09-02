@@ -35,11 +35,11 @@ export async function deleteAccount() {
             };
         }
 
-        // TEST MODE: Skip actual deletion during E2E tests
-        // Set PLAYWRIGHT_TEST_MODE=true in your playwright.config.ts
-        if (process.env.PLAYWRIGHT_TEST_MODE === 'true') {
-            console.log('⚠️ TEST MODE: Simulating account deletion without database changes');
-
+        // TEST MODE: Skip actual deletion during E2E tests.
+        // Set PLAYWRIGHT_TEST_MODE=true in your playwright.config.ts.
+        // Guarded by NODE_ENV so this bypass can never fire in a production
+        // deploy, even if PLAYWRIGHT_TEST_MODE is accidentally set there.
+        if (process.env.PLAYWRIGHT_TEST_MODE === 'true' && process.env.NODE_ENV !== 'production') {
             // Return success response without deleting anything
             return {
                 success: true,

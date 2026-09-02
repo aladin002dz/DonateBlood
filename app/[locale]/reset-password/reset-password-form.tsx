@@ -67,16 +67,13 @@ export default function ResetPasswordForm({ token: propToken }: ResetPasswordFor
 
     useEffect(() => {
         const validateToken = async () => {
-            console.log('Validating token:', token);
             if (!token) {
-                console.log('No token provided');
                 setValidating(false);
                 return;
             }
 
             try {
                 const result = await validateResetToken(token);
-                console.log('Token validation result:', result);
                 setTokenValid(result.valid);
                 if (!result.valid) {
                     toast.error(result.error);

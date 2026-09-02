@@ -1,0 +1,59 @@
+name: CI
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+# Cancel superseded runs on the same branch/PR.
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  # Dummy values so `next build` (which imports lib/auth.ts at build time)
+  # doesn't need real secrets or a reachable database. db/db.ts already
+  # falls back to a mock connection string when DATABASE_URL is unset.
+  BETTER_AUTH_SECRET: ci-dummy-secret-not-for-production
+  BETTER_AUTH_URL: http://localhost:3000
+  NEXT_PUBLIC_APP_URL: http://localhost:3000
+  GOOGLE_CLIENT_ID: ci-dummy
+  GOOGLE_CLIENT_SECRET: ci-dummy
+  GITHUB_CLIENT_ID: ci-dummy
+  GITHUB_CLIENT_SECRET: ci-dummy
+  RESEND_API_KEY: ci-dummy
+  EMAIL_FROM: ci@example.com
+
+jobs:
+  lint-typecheck-test-build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10.34.5
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 'lts/*'
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Lint
+        run: pnpm lint
+
+      - name: Type check
+        run: npx tsc --noEmit
+
+      - name: Unit / integration tests
+        run: pnpm test
+
+      - name: Build
+        run: pnpm build
