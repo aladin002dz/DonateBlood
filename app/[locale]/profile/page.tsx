@@ -80,9 +80,7 @@ export default function ProfilePage() {
 
   // Redirect if not authenticated
   useEffect(() => {
-    console.log('Profile Page: sessionLoading:', sessionLoading, 'session:', session);
     if (!sessionLoading && !session) {
-      console.log('Profile Page: Redirecting to /signin');
       router.push("/signin")
     }
   }, [session, sessionLoading, router])
