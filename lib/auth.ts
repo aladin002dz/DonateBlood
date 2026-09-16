@@ -1,6 +1,7 @@
 
 import { db } from '@/db/db';
 import WelcomeVerificationEmail from '@/lib/email/WelcomeVerificationEmail';
+import { isPlatformOnHold } from '@/lib/platform-status';
 import { resend } from '@/lib/resend-client';
 import {
     betterAuth
@@ -16,6 +17,9 @@ export const auth = betterAuth({
     }),
     emailAndPassword: {
         enabled: true,
+        // PLATFORM_ON_HOLD kill switch: blocks new email/password accounts
+        // server-side while existing users can still sign in.
+        disableSignUp: isPlatformOnHold(),
         requireEmailVerification: false, // Allow unverified emails for phone users
         sendResetPassword: async ({ user, url }) => {
             try {
@@ -43,11 +47,15 @@ export const auth = betterAuth({
     socialProviders: {
         google: {
             clientId: process.env.GOOGLE_CLIENT_ID!,
-            clientSecret: process.env.GOOGLE_CLIENT_SECRET!
+            clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
+            // Existing users can still sign in with Google; new accounts are
+            // blocked while the platform is on hold.
+            disableSignUp: isPlatformOnHold(),
         },
         github: {
             clientId: process.env.GITHUB_CLIENT_ID!,
-            clientSecret: process.env.GITHUB_CLIENT_SECRET!
+            clientSecret: process.env.GITHUB_CLIENT_SECRET!,
+            disableSignUp: isPlatformOnHold(),
         }
     },
     plugins: [

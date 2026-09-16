@@ -4,6 +4,8 @@ import { db } from '@/db/db';
 import { user } from '@/db/schema';
 import wilayasDataAr from '@/i18n/dictionnaries/wilayas-dairas-commune_ar.json';
 import wilayasDataEn from '@/i18n/dictionnaries/wilayas-dairas-commune_en.json';
+import { PAUSE_ACTION_MESSAGE_FR } from '@/lib/pause-notice';
+import { isPlatformOnHold } from '@/lib/platform-status';
 import { and, desc, eq, ilike, isNotNull, or } from 'drizzle-orm';
 
 export interface SearchFilters {
@@ -229,6 +231,13 @@ function getAllCommuneTranslations(searchName: string, wilayaCode?: string, dair
 }
 
 export async function searchDonors(filters: SearchFilters = {}) {
+    if (isPlatformOnHold()) {
+        return {
+            success: false,
+            error: PAUSE_ACTION_MESSAGE_FR,
+        };
+    }
+
     try {
         // Build the query conditions
         const conditions = [];

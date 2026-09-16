@@ -7,8 +7,10 @@ import { notFound } from 'next/navigation';
 import "@/app/globals.css";
 import { Footer } from "@/components/footer";
 import { Navigation } from "@/components/navigation";
+import { PauseBanner } from "@/components/pause-banner";
 import { ThemeProvider } from "@/components/theme-provider";
 import { ThemeToggle } from "@/components/theme-toggle";
+import { isPlatformOnHold } from "@/lib/platform-status";
 import { GeistMono } from "geist/font/mono";
 import { GeistSans } from "geist/font/sans";
 import type { Metadata } from "next";
@@ -60,6 +62,7 @@ export default async function RootLayout({
     notFound();
   }
   const messages = await getMessages();
+  const onHold = isPlatformOnHold();
   return (
     <html lang={locale} dir={locale === 'ar' ? 'rtl' : 'ltr'} suppressHydrationWarning>
       <NextIntlClientProvider locale={locale} messages={messages}>
@@ -71,8 +74,9 @@ export default async function RootLayout({
             disableTransitionOnChange
           >
             <div className="flex flex-col min-h-screen">
+              {onHold && <PauseBanner />}
               <Suspense fallback={<div>Loading...</div>}>
-                <Navigation />
+                <Navigation onHold={onHold} />
                 <main className="flex-1 bg-secondary/30">{children}</main>
               </Suspense>
               <Footer />
