@@ -3,6 +3,8 @@
 import { db } from '@/db/db';
 import { user } from '@/db/schema';
 import { auth } from '@/lib/auth';
+import { PAUSE_ACTION_MESSAGE_FR } from '@/lib/pause-notice';
+import { isPlatformOnHold } from '@/lib/platform-status';
 import { eq } from 'drizzle-orm';
 import { z } from 'zod';
 
@@ -31,6 +33,13 @@ const validatePhoneNumber = (phone: string): boolean => {
 };
 
 export async function registerUser(formData: FormData) {
+    if (isPlatformOnHold()) {
+        return {
+            success: false,
+            error: PAUSE_ACTION_MESSAGE_FR,
+        };
+    }
+
     try {
         // Extract form data
         const rawData = {

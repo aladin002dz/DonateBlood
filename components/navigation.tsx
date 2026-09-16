@@ -17,7 +17,7 @@ type NavItem = {
   onClick?: () => void | Promise<void>
 }
 
-export function Navigation() {
+export function Navigation({ onHold = false }: { onHold?: boolean }) {
   const t = useTranslations("Navigation")
   const locale = useLocale()
   const translate = (key: string) => (t ? t(key) : key)
@@ -57,7 +57,7 @@ export function Navigation() {
       : [
         { href: "/search", label: translate("search"), icon: Search },
         { href: "/signin", label: translate("signin"), icon: LogIn },
-        { href: "/register", label: translate("register"), icon: UserPlus },
+        ...(onHold ? [] : [{ href: "/register", label: translate("register"), icon: UserPlus }]),
       ]),
   ]
 
